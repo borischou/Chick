@@ -17,6 +17,8 @@
 		547696791E498D40001DAB5F /* Argument.m in Sources */ = {isa = PBXBuildFile; fileRef = 547696781E498D40001DAB5F /* Argument.m */; };
 		5476967C1E49B612001DAB5F /* CustomTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5476967B1E49B612001DAB5F /* CustomTableViewCell.m */; };
 		5476967F1E49BA46001DAB5F /* DDDViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5476967E1E49BA46001DAB5F /* DDDViewController.m */; };
+		547696811E49CE49001DAB5F /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 547696801E49CE49001DAB5F /* WebKit.framework */; };
+		547696841E49CE88001DAB5F /* SDDViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 547696831E49CE88001DAB5F /* SDDViewController.m */; };
 		548BF8CD1E482B060074F5F1 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 548BF8CC1E482B060074F5F1 /* main.m */; };
 		548BF8D01E482B060074F5F1 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 548BF8CF1E482B060074F5F1 /* AppDelegate.m */; };
 		548BF8D31E482B060074F5F1 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 548BF8D21E482B060074F5F1 /* ViewController.m */; };
@@ -68,6 +70,9 @@
 		5476967B1E49B612001DAB5F /* CustomTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomTableViewCell.m; sourceTree = "<group>"; };
 		5476967D1E49BA46001DAB5F /* DDDViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDDViewController.h; sourceTree = "<group>"; };
 		5476967E1E49BA46001DAB5F /* DDDViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDDViewController.m; sourceTree = "<group>"; };
+		547696801E49CE49001DAB5F /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
+		547696821E49CE88001DAB5F /* SDDViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDDViewController.h; sourceTree = "<group>"; };
+		547696831E49CE88001DAB5F /* SDDViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDDViewController.m; sourceTree = "<group>"; };
 		548BF8C81E482B060074F5F1 /* SVDLNADemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SVDLNADemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		548BF8CC1E482B060074F5F1 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		548BF8CE1E482B060074F5F1 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -100,6 +105,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				547696811E49CE49001DAB5F /* WebKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -161,6 +167,7 @@
 		548BF8BF1E482B060074F5F1 = {
 			isa = PBXGroup;
 			children = (
+				547696801E49CE49001DAB5F /* WebKit.framework */,
 				548BF8CA1E482B060074F5F1 /* SVDLNADemo */,
 				548BF8E41E482B060074F5F1 /* SVDLNADemoTests */,
 				548BF8EF1E482B060074F5F1 /* SVDLNADemoUITests */,
@@ -189,6 +196,8 @@
 				548BF8D21E482B060074F5F1 /* ViewController.m */,
 				5476967D1E49BA46001DAB5F /* DDDViewController.h */,
 				5476967E1E49BA46001DAB5F /* DDDViewController.m */,
+				547696821E49CE88001DAB5F /* SDDViewController.h */,
+				547696831E49CE88001DAB5F /* SDDViewController.m */,
 				547696731E498BCB001DAB5F /* Lib */,
 				547696721E498BB9001DAB5F /* Model */,
 				548BF8D71E482B060074F5F1 /* Assets.xcassets */,
@@ -372,6 +381,7 @@
 				547696761E498BEA001DAB5F /* Action.m in Sources */,
 				548BF8D01E482B060074F5F1 /* AppDelegate.m in Sources */,
 				547696711E498ADA001DAB5F /* Device.m in Sources */,
+				547696841E49CE88001DAB5F /* SDDViewController.m in Sources */,
 				547696621E49711D001DAB5F /* NSString+Ext.m in Sources */,
 				5476967C1E49B612001DAB5F /* CustomTableViewCell.m in Sources */,
 				548BF8CD1E482B060074F5F1 /* main.m in Sources */,

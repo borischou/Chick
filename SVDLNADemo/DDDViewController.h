@@ -7,9 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "Device.h"
 
 @interface DDDViewController : UIViewController
 
-- (instancetype)initWithLocation:(NSString *)location;
+- (instancetype)initWithLocation:(NSString *)location device:(Device *)device;
 
 @end

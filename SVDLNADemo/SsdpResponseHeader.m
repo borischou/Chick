@@ -120,11 +120,11 @@
     for (int i = 0; i < trim.length; i ++)
     {
         char ch = [trim characterAtIndex:i];
-        if (strcmp(&ch, "/") == 0)
+        if (ch == '/')
         {
             break;
         }
-        if (strcmp(&ch, "0") >= 0 && strcmp(&ch, "9") <= 0)
+        if (ch >= '0' && ch <= '9')
         {
             [mutStr appendString:[NSString stringWithFormat:@"%c", ch]];
         }

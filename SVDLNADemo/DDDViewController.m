@@ -9,6 +9,7 @@
 #import "DDDViewController.h"
 #import "XMLDictionary.h"
 #import "DeviceDescription.h"
+#import "SDDViewController.h"
 
 #define Screen_Width [UIScreen mainScreen].bounds.size.width
 #define Screen_Height [UIScreen mainScreen].bounds.size.height
@@ -20,17 +21,19 @@ static NSString *const REUSECELLID = @"reusecellid";
 @property (strong, nonatomic) UITableView *tableView;
 @property (strong, nonatomic) DeviceDescription *ddd;
 @property (copy, nonatomic) NSString *location;
+@property (strong, nonatomic) Device *device;
 
 @end
 
 @implementation DDDViewController
 
-- (instancetype)initWithLocation:(NSString *)location
+- (instancetype)initWithLocation:(NSString *)location device:(Device *)device
 {
     self = [super init];
     if (self)
     {
         _location = location;
+        _device = device;
         [self loadDDDWithLocation:location];
     }
     return self;
@@ -108,6 +111,7 @@ static NSString *const REUSECELLID = @"reusecellid";
             Service *service = [ddd.services objectAtIndex:idx];
             cell.textLabel.textColor = [UIColor blueColor];
             cell.textLabel.text = service.SCPDURL;
+            cell.textLabel.numberOfLines = 0;
         }
     }
     
@@ -117,6 +121,27 @@ static NSString *const REUSECELLID = @"reusecellid";
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     return self.ddd && self.ddd.services ? self.ddd.services.count+7 : 7;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 80;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (indexPath.row <= 6)
+    {
+        return;
+    }
+    if (self.device == nil)
+    {
+        return;
+    }
+    Service *service = [self.ddd.services objectAtIndex:indexPath.row-7];
+    NSString *url = [NSString stringWithFormat:@"%@:%@%@", self.device.address.ipv4, self.device.address.port, service.SCPDURL];
+    SDDViewController *sddvc = [[SDDViewController alloc] initWithURL:url];
+    [self.navigationController pushViewController:sddvc animated:YES];
 }
 
 @end

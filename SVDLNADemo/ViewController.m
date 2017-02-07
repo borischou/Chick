@@ -71,6 +71,8 @@ static NSString *const REUSECELLID = @"reuseid";
 
 - (void)refreshButtonPressed:(UIBarButtonItem *)sender
 {
+    [_devices removeAllObjects];
+    [self.tableView reloadData];
     [self _refreshUdpSocket];
 }
 
@@ -102,7 +104,7 @@ static NSString *const REUSECELLID = @"reuseid";
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     Device *device = [self.devices objectAtIndex:indexPath.row];
-    DDDViewController *dddvc = [[DDDViewController alloc] initWithLocation:device.location];
+    DDDViewController *dddvc = [[DDDViewController alloc] initWithLocation:device.location device:device];
     dddvc.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:dddvc animated:YES];
 }
