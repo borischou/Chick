@@ -11,6 +11,7 @@
 #import "SsdpResponseHeader.h"
 #import "XMLDictionary.h"
 #import "ARCWeakRef.h"
+#import "Device.h"
 
 #define Screen_Width [UIScreen mainScreen].bounds.size.width
 #define Screen_Height [UIScreen mainScreen].bounds.size.height
@@ -21,14 +22,14 @@
 #define TIMEOUT -1
 #define USER_AGENT @""
 
-@interface ViewController () <GCDAsyncUdpSocketDelegate>
+static NSString *const REUSECELLID = @"reuseid";
+
+@interface ViewController () <GCDAsyncUdpSocketDelegate, UITableViewDelegate, UITableViewDataSource>
+
+@property (strong, nonatomic) UITableView *tableView;
 
 @property (strong, nonatomic) GCDAsyncUdpSocket *udpSocket;
-@property (strong, nonatomic) UITextView *resultTextView;
-@property (strong, nonatomic) NSMutableArray *devices;
-@property (strong, nonatomic) SsdpResponseHeader *header;
-@property (strong, nonatomic) NSArray *currentServices;
-@property (strong, nonatomic) NSDictionary *currentService;
+@property (strong, nonatomic) NSMutableArray<Device *> *devices;
 
 @end
 
@@ -37,67 +38,73 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.title = @"设备列表";
     self.view.backgroundColor = [UIColor whiteColor];
     [self _initUI];
     [self _refreshUdpSocket];
 }
 
+#pragma mark - UI
+
 - (void)_initUI
 {
-    UITextView *textView = [UITextView new];
-    textView.frame = CGRectMake(20, 30, [UIScreen mainScreen].bounds.size.width-40, Screen_Height-30-20-40-10);
-    textView.textColor = [UIColor blackColor];
-    textView.font = [UIFont systemFontOfSize:15];
-    textView.editable = NO;
-    [self.view addSubview:textView];
-    self.resultTextView = textView;
+    self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, Screen_Width, Screen_Height) style:UITableViewStylePlain];
+    self.tableView.delegate = self;
+    self.tableView.dataSource = self;
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    self.tableView.backgroundColor = [UIColor whiteColor];
+    [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:REUSECELLID];
+    [self.view addSubview:self.tableView];
     
-    CGFloat buttonWidth = (Screen_Width-40-10)/3;
-    
-    UIButton *sendButton = [UIButton new];
-    [sendButton setTitle:@"搜索设备" forState:UIControlStateNormal];
-    [sendButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    sendButton.backgroundColor = [UIColor purpleColor];
-    sendButton.frame = CGRectMake(textView.frame.origin.x, textView.frame.origin.y+textView.frame.size.height+10, buttonWidth, 40);
-    [sendButton addTarget:self action:@selector(_sendButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:sendButton];
-    
-    UIButton *serviceButton = [UIButton new];
-    [serviceButton setTitle:@"可用服务" forState:UIControlStateNormal];
-    [serviceButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    serviceButton.backgroundColor = [UIColor redColor];
-    serviceButton.frame = CGRectMake(sendButton.frame.origin.x+buttonWidth+5, sendButton.frame.origin.y, buttonWidth, 40);
-    [serviceButton addTarget:self action:@selector(_serviceButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:serviceButton];
-    
-    UIButton *actionButton = [UIButton new];
-    [actionButton setTitle:@"可用动作" forState:UIControlStateNormal];
-    [actionButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    actionButton.backgroundColor = [UIColor blackColor];
-    actionButton.frame = CGRectMake(serviceButton.frame.origin.x+buttonWidth+5, sendButton.frame.origin.y, buttonWidth, 40);
-    [actionButton addTarget:self action:@selector(_actionButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:actionButton];
+    UIBarButtonItem *refreshButton = [[UIBarButtonItem alloc] initWithTitle:@"刷新" style:UIBarButtonItemStylePlain target:self action:@selector(refreshButtonPressed:)];
+    self.navigationItem.rightBarButtonItem = refreshButton;
 }
 
-- (void)_serviceButtonPressed:(UIButton *)sender
-{
-    if (self.currentServices)
-    {
-        self.resultTextView.text = self.currentServices.description;
-    }
-}
+#pragma mark - Action
 
-- (void)_actionButtonPressed:(UIButton *)sender
-{
-    if (self.currentService)
-    {
-        self.resultTextView.text = self.currentService.description;
-    }
-}
-
-- (void)_sendButtonPressed:(UIButton *)sender
+- (void)refreshButtonPressed:(UIBarButtonItem *)sender
 {
     [self _refreshUdpSocket];
+}
+
+#pragma mark - Table View Delegate & Datasource
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:REUSECELLID forIndexPath:indexPath];
+    cell.textLabel.textColor = [UIColor blackColor];
+    cell.detailTextLabel.textColor = [UIColor blueColor];
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    
+    if (self.devices && self.devices.count > 0)
+    {
+        Device *device = [self.devices objectAtIndex:indexPath.row];
+        cell.textLabel.text = device.server;
+        cell.detailTextLabel.text = device.location;
+    }
+    
+    return cell;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return self.devices ? self.devices.count : 1;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 60;
+}
+
+#pragma mark - Data
+
+- (NSMutableArray<Device *> *)devices
+{
+    if (_devices == nil)
+    {
+        _devices = [NSMutableArray new];
+    }
+    return _devices;
 }
 
 - (void)_refreshUdpSocket
@@ -137,74 +144,32 @@
     return mutRequestString.copy;
 }
 
-- (void)_updateTextView:(NSString *)text
-{
-    if (self.resultTextView)
-    {
-        self.resultTextView.text = text;
-    }
-}
-
 #pragma mark - GCDAsyncUdpSocketDelegate
 
 - (void)udpSocket:(GCDAsyncUdpSocket *)sock didSendDataWithTag:(long)tag
 {
     NSLog(@"发送信息成功");
-    [self _updateTextView:@"发送信息成功，正在搜索可用设备和服务..."];
 }
 
 - (void)udpSocket:(GCDAsyncUdpSocket *)sock didNotSendDataWithTag:(long)tag dueToError:(NSError *)error
 {
     NSLog(@"发送信息失败");
-    [self _updateTextView:@"发送信息失败"];
 }
 
 - (void)udpSocket:(GCDAsyncUdpSocket *)sock didReceiveData:(NSData *)data fromAddress:(NSData *)address withFilterContext:(id)filterContext
 {
     NSString *text = [NSString stringWithFormat:@"从地址:\n\n%@\n\n收到UDP套接字数据:\n\n%@", [[NSString alloc] initWithData:address encoding:NSUTF8StringEncoding], [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]];
     NSLog(@"%@", text);
-    [self _updateTextView:text];
     
-    SsdpResponseHeader *header = [[SsdpResponseHeader alloc] initWithReceivedMsg:[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]];
-    self.header = header;
-    
-    [self _updateTextView:[NSString stringWithFormat:@"header:\n\n%@", header.description]];
-    
-    if (self.header.location && self.header.location.length > 0)
-    {
-        NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
-        NSURLSession *session = [NSURLSession sessionWithConfiguration:configuration];
-        NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:self.header.location] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:30];
-        NSURLSessionDataTask *task = [session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
-            NSString *xmlStr = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-            if (xmlStr == nil || xmlStr.length <= 0)
-            {
-                return;
-            }
-            NSXMLParser *parser = [[NSXMLParser alloc] initWithData:data];
-            NSDictionary *xmlDict = [NSDictionary dictionaryWithXMLParser:parser];
-            
-            NSArray *services = [xmlDict arrayValueForKeyPath:@"device.serviceList.service"];
-            self.currentServices = services;
-            
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [self _updateTextView:[NSString stringWithFormat:@"Header: %@\n\n\n\nXML DDD:\n%@\n\n\n\nXML services:\n%@", self.header, xmlStr, services.description]];
-            });
-            
-            NSDictionary *service = [services objectAtIndex:0];
-            NSString *serviceUrlStr = [NSString stringWithFormat:@"%@:%@%@", self.header.address.ipv4, self.header.address.port, [service stringValueForKeyPath:@"SCPDURL"]];
-            NSURLSessionDataTask *serviceTask = [session dataTaskWithURL:[NSURL URLWithString:serviceUrlStr] completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
-                NSDictionary *serviceDict = [NSDictionary dictionaryWithXMLData:data];
-                self.currentService = serviceDict;
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [self _updateTextView:[NSString stringWithFormat:@"Service:\n%@", serviceDict]];
-                });
-            }];
-            [serviceTask resume];
-            
-        }];
-        [task resume];
-    }
+    //异步接收数据
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        SsdpResponseHeader *header = [[SsdpResponseHeader alloc] initWithReceivedMsg:[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]];
+        Device *device = [[Device alloc] initWithSsdpResponse:header];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.devices addObject:device];
+            [self.tableView reloadData];
+        });
+    });
 }
 
 @end

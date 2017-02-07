@@ -9,6 +9,12 @@
 /* Begin PBXBuildFile section */
 		547696621E49711D001DAB5F /* NSString+Ext.m in Sources */ = {isa = PBXBuildFile; fileRef = 547696611E49711D001DAB5F /* NSString+Ext.m */; };
 		547696651E497B2E001DAB5F /* Address.m in Sources */ = {isa = PBXBuildFile; fileRef = 547696641E497B2E001DAB5F /* Address.m */; };
+		547696681E4986D7001DAB5F /* DeviceDescription.m in Sources */ = {isa = PBXBuildFile; fileRef = 547696671E4986D7001DAB5F /* DeviceDescription.m */; };
+		5476966B1E4987A6001DAB5F /* Service.m in Sources */ = {isa = PBXBuildFile; fileRef = 5476966A1E4987A6001DAB5F /* Service.m */; };
+		5476966E1E4988D5001DAB5F /* ServiceDescription.m in Sources */ = {isa = PBXBuildFile; fileRef = 5476966D1E4988D5001DAB5F /* ServiceDescription.m */; };
+		547696711E498ADA001DAB5F /* Device.m in Sources */ = {isa = PBXBuildFile; fileRef = 547696701E498ADA001DAB5F /* Device.m */; };
+		547696761E498BEA001DAB5F /* Action.m in Sources */ = {isa = PBXBuildFile; fileRef = 547696751E498BEA001DAB5F /* Action.m */; };
+		547696791E498D40001DAB5F /* Argument.m in Sources */ = {isa = PBXBuildFile; fileRef = 547696781E498D40001DAB5F /* Argument.m */; };
 		548BF8CD1E482B060074F5F1 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 548BF8CC1E482B060074F5F1 /* main.m */; };
 		548BF8D01E482B060074F5F1 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 548BF8CF1E482B060074F5F1 /* AppDelegate.m */; };
 		548BF8D31E482B060074F5F1 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 548BF8D21E482B060074F5F1 /* ViewController.m */; };
@@ -44,6 +50,18 @@
 		547696611E49711D001DAB5F /* NSString+Ext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Ext.m"; sourceTree = "<group>"; };
 		547696631E497B2E001DAB5F /* Address.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Address.h; sourceTree = "<group>"; };
 		547696641E497B2E001DAB5F /* Address.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Address.m; sourceTree = "<group>"; };
+		547696661E4986D7001DAB5F /* DeviceDescription.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeviceDescription.h; sourceTree = "<group>"; };
+		547696671E4986D7001DAB5F /* DeviceDescription.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DeviceDescription.m; sourceTree = "<group>"; };
+		547696691E4987A6001DAB5F /* Service.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Service.h; sourceTree = "<group>"; };
+		5476966A1E4987A6001DAB5F /* Service.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Service.m; sourceTree = "<group>"; };
+		5476966C1E4988D5001DAB5F /* ServiceDescription.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ServiceDescription.h; sourceTree = "<group>"; };
+		5476966D1E4988D5001DAB5F /* ServiceDescription.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ServiceDescription.m; sourceTree = "<group>"; };
+		5476966F1E498ADA001DAB5F /* Device.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Device.h; sourceTree = "<group>"; };
+		547696701E498ADA001DAB5F /* Device.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Device.m; sourceTree = "<group>"; };
+		547696741E498BEA001DAB5F /* Action.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Action.h; sourceTree = "<group>"; };
+		547696751E498BEA001DAB5F /* Action.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Action.m; sourceTree = "<group>"; };
+		547696771E498D40001DAB5F /* Argument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Argument.h; sourceTree = "<group>"; };
+		547696781E498D40001DAB5F /* Argument.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Argument.m; sourceTree = "<group>"; };
 		548BF8C81E482B060074F5F1 /* SVDLNADemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SVDLNADemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		548BF8CC1E482B060074F5F1 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		548BF8CE1E482B060074F5F1 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -96,6 +114,44 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		547696721E498BB9001DAB5F /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				548BF9041E4855C10074F5F1 /* SsdpResponseHeader.h */,
+				548BF9051E4855C10074F5F1 /* SsdpResponseHeader.m */,
+				547696631E497B2E001DAB5F /* Address.h */,
+				547696641E497B2E001DAB5F /* Address.m */,
+				547696661E4986D7001DAB5F /* DeviceDescription.h */,
+				547696671E4986D7001DAB5F /* DeviceDescription.m */,
+				547696691E4987A6001DAB5F /* Service.h */,
+				5476966A1E4987A6001DAB5F /* Service.m */,
+				5476966C1E4988D5001DAB5F /* ServiceDescription.h */,
+				5476966D1E4988D5001DAB5F /* ServiceDescription.m */,
+				5476966F1E498ADA001DAB5F /* Device.h */,
+				547696701E498ADA001DAB5F /* Device.m */,
+				547696741E498BEA001DAB5F /* Action.h */,
+				547696751E498BEA001DAB5F /* Action.m */,
+				547696771E498D40001DAB5F /* Argument.h */,
+				547696781E498D40001DAB5F /* Argument.m */,
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
+		547696731E498BCB001DAB5F /* Lib */ = {
+			isa = PBXGroup;
+			children = (
+				548BF8FE1E482CBF0074F5F1 /* GCDAsyncUdpSocket.h */,
+				548BF8FF1E482CBF0074F5F1 /* GCDAsyncUdpSocket.m */,
+				548BF9101E488CFA0074F5F1 /* EXTScope.h */,
+				548BF9111E488CFA0074F5F1 /* metamacros.h */,
+				548BF90D1E488C2A0074F5F1 /* ARCWeakRef.h */,
+				548BF90E1E488C2A0074F5F1 /* ARCWeakRef.m */,
+				548BF90A1E48766C0074F5F1 /* XMLDictionary.h */,
+				548BF90B1E48766C0074F5F1 /* XMLDictionary.m */,
+			);
+			name = Lib;
+			sourceTree = "<group>";
+		};
 		548BF8BF1E482B060074F5F1 = {
 			isa = PBXGroup;
 			children = (
@@ -123,24 +179,12 @@
 				548BF8CF1E482B060074F5F1 /* AppDelegate.m */,
 				548BF8D11E482B060074F5F1 /* ViewController.h */,
 				548BF8D21E482B060074F5F1 /* ViewController.m */,
-				548BF8FE1E482CBF0074F5F1 /* GCDAsyncUdpSocket.h */,
-				548BF8FF1E482CBF0074F5F1 /* GCDAsyncUdpSocket.m */,
-				548BF9101E488CFA0074F5F1 /* EXTScope.h */,
-				548BF9111E488CFA0074F5F1 /* metamacros.h */,
-				548BF90D1E488C2A0074F5F1 /* ARCWeakRef.h */,
-				548BF90E1E488C2A0074F5F1 /* ARCWeakRef.m */,
-				548BF90A1E48766C0074F5F1 /* XMLDictionary.h */,
-				548BF90B1E48766C0074F5F1 /* XMLDictionary.m */,
+				547696731E498BCB001DAB5F /* Lib */,
+				547696721E498BB9001DAB5F /* Model */,
 				548BF8D71E482B060074F5F1 /* Assets.xcassets */,
 				548BF8D91E482B060074F5F1 /* LaunchScreen.storyboard */,
 				548BF8DC1E482B060074F5F1 /* Info.plist */,
 				548BF8CB1E482B060074F5F1 /* Supporting Files */,
-				548BF9041E4855C10074F5F1 /* SsdpResponseHeader.h */,
-				548BF9051E4855C10074F5F1 /* SsdpResponseHeader.m */,
-				547696601E49711D001DAB5F /* NSString+Ext.h */,
-				547696611E49711D001DAB5F /* NSString+Ext.m */,
-				547696631E497B2E001DAB5F /* Address.h */,
-				547696641E497B2E001DAB5F /* Address.m */,
 			);
 			path = SVDLNADemo;
 			sourceTree = "<group>";
@@ -148,6 +192,8 @@
 		548BF8CB1E482B060074F5F1 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				547696601E49711D001DAB5F /* NSString+Ext.h */,
+				547696611E49711D001DAB5F /* NSString+Ext.m */,
 				548BF8CC1E482B060074F5F1 /* main.m */,
 			);
 			name = "Supporting Files";
@@ -302,13 +348,19 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				547696791E498D40001DAB5F /* Argument.m in Sources */,
 				548BF9061E4855C10074F5F1 /* SsdpResponseHeader.m in Sources */,
 				548BF9001E482CBF0074F5F1 /* GCDAsyncUdpSocket.m in Sources */,
 				548BF90F1E488C2A0074F5F1 /* ARCWeakRef.m in Sources */,
+				547696681E4986D7001DAB5F /* DeviceDescription.m in Sources */,
 				548BF8D31E482B060074F5F1 /* ViewController.m in Sources */,
 				547696651E497B2E001DAB5F /* Address.m in Sources */,
+				5476966B1E4987A6001DAB5F /* Service.m in Sources */,
 				548BF90C1E48766C0074F5F1 /* XMLDictionary.m in Sources */,
+				5476966E1E4988D5001DAB5F /* ServiceDescription.m in Sources */,
+				547696761E498BEA001DAB5F /* Action.m in Sources */,
 				548BF8D01E482B060074F5F1 /* AppDelegate.m in Sources */,
+				547696711E498ADA001DAB5F /* Device.m in Sources */,
 				547696621E49711D001DAB5F /* NSString+Ext.m in Sources */,
 				548BF8CD1E482B060074F5F1 /* main.m in Sources */,
 			);
