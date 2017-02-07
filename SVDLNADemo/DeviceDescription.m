@@ -20,16 +20,23 @@
         {
             return nil;
         }
-        _udn = [dictionary stringValueForKeyPath:@"UDN"];
-        _deviceType = [dictionary stringValueForKeyPath:@"deviceType"];
-        _friendlyName = [dictionary stringValueForKeyPath:@"friendlyName"];
-        _manufacturer = [dictionary stringValueForKeyPath:@"manufacturer"];
-        _manufacturerURL = [dictionary stringValueForKeyPath:@"manufacturerURL"];
-        _modelName = [dictionary stringValueForKeyPath:@"modelName"];
-        _modelDescription = [dictionary stringValueForKeyPath:@"modelDescription"];
+        
+        NSDictionary *aDict = [dictionary dictionaryValueForKeyPath:@"device"];
+        if (aDict == nil)
+        {
+            return nil;
+        }
+        
+        _udn = [aDict stringValueForKeyPath:@"UDN"];
+        _deviceType = [aDict stringValueForKeyPath:@"deviceType"];
+        _friendlyName = [aDict stringValueForKeyPath:@"friendlyName"];
+        _manufacturer = [aDict stringValueForKeyPath:@"manufacturer"];
+        _manufacturerURL = [aDict stringValueForKeyPath:@"manufacturerURL"];
+        _modelName = [aDict stringValueForKeyPath:@"modelName"];
+        _modelDescription = [aDict stringValueForKeyPath:@"modelDescription"];
         
         NSMutableArray *services = [NSMutableArray new];
-        NSArray *serviceList = [dictionary arrayValueForKeyPath:@"serviceList"];
+        NSArray *serviceList = [aDict arrayValueForKeyPath:@"serviceList.service"];
         if (serviceList != nil && serviceList.count > 0)
         {
             for (NSDictionary *service in serviceList)

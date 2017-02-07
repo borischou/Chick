@@ -15,6 +15,8 @@
 		547696711E498ADA001DAB5F /* Device.m in Sources */ = {isa = PBXBuildFile; fileRef = 547696701E498ADA001DAB5F /* Device.m */; };
 		547696761E498BEA001DAB5F /* Action.m in Sources */ = {isa = PBXBuildFile; fileRef = 547696751E498BEA001DAB5F /* Action.m */; };
 		547696791E498D40001DAB5F /* Argument.m in Sources */ = {isa = PBXBuildFile; fileRef = 547696781E498D40001DAB5F /* Argument.m */; };
+		5476967C1E49B612001DAB5F /* CustomTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5476967B1E49B612001DAB5F /* CustomTableViewCell.m */; };
+		5476967F1E49BA46001DAB5F /* DDDViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5476967E1E49BA46001DAB5F /* DDDViewController.m */; };
 		548BF8CD1E482B060074F5F1 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 548BF8CC1E482B060074F5F1 /* main.m */; };
 		548BF8D01E482B060074F5F1 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 548BF8CF1E482B060074F5F1 /* AppDelegate.m */; };
 		548BF8D31E482B060074F5F1 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 548BF8D21E482B060074F5F1 /* ViewController.m */; };
@@ -62,6 +64,10 @@
 		547696751E498BEA001DAB5F /* Action.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Action.m; sourceTree = "<group>"; };
 		547696771E498D40001DAB5F /* Argument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Argument.h; sourceTree = "<group>"; };
 		547696781E498D40001DAB5F /* Argument.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Argument.m; sourceTree = "<group>"; };
+		5476967A1E49B612001DAB5F /* CustomTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomTableViewCell.h; sourceTree = "<group>"; };
+		5476967B1E49B612001DAB5F /* CustomTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomTableViewCell.m; sourceTree = "<group>"; };
+		5476967D1E49BA46001DAB5F /* DDDViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDDViewController.h; sourceTree = "<group>"; };
+		5476967E1E49BA46001DAB5F /* DDDViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDDViewController.m; sourceTree = "<group>"; };
 		548BF8C81E482B060074F5F1 /* SVDLNADemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SVDLNADemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		548BF8CC1E482B060074F5F1 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		548BF8CE1E482B060074F5F1 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -177,8 +183,12 @@
 			children = (
 				548BF8CE1E482B060074F5F1 /* AppDelegate.h */,
 				548BF8CF1E482B060074F5F1 /* AppDelegate.m */,
+				5476967A1E49B612001DAB5F /* CustomTableViewCell.h */,
+				5476967B1E49B612001DAB5F /* CustomTableViewCell.m */,
 				548BF8D11E482B060074F5F1 /* ViewController.h */,
 				548BF8D21E482B060074F5F1 /* ViewController.m */,
+				5476967D1E49BA46001DAB5F /* DDDViewController.h */,
+				5476967E1E49BA46001DAB5F /* DDDViewController.m */,
 				547696731E498BCB001DAB5F /* Lib */,
 				547696721E498BB9001DAB5F /* Model */,
 				548BF8D71E482B060074F5F1 /* Assets.xcassets */,
@@ -358,10 +368,12 @@
 				5476966B1E4987A6001DAB5F /* Service.m in Sources */,
 				548BF90C1E48766C0074F5F1 /* XMLDictionary.m in Sources */,
 				5476966E1E4988D5001DAB5F /* ServiceDescription.m in Sources */,
+				5476967F1E49BA46001DAB5F /* DDDViewController.m in Sources */,
 				547696761E498BEA001DAB5F /* Action.m in Sources */,
 				548BF8D01E482B060074F5F1 /* AppDelegate.m in Sources */,
 				547696711E498ADA001DAB5F /* Device.m in Sources */,
 				547696621E49711D001DAB5F /* NSString+Ext.m in Sources */,
+				5476967C1E49B612001DAB5F /* CustomTableViewCell.m in Sources */,
 				548BF8CD1E482B060074F5F1 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

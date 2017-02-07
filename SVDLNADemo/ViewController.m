@@ -12,13 +12,15 @@
 #import "XMLDictionary.h"
 #import "ARCWeakRef.h"
 #import "Device.h"
+#import "CustomTableViewCell.h"
+#import "DDDViewController.h"
 
 #define Screen_Width [UIScreen mainScreen].bounds.size.width
 #define Screen_Height [UIScreen mainScreen].bounds.size.height
 
 #define UDP_PORT 2345
-#define HOST_IP @"239.255.255.250"
-#define HOST_PORT 1900
+#define LAN_MULTICAST_HOST_IP @"239.255.255.250"
+#define LAN_MULTICAST_HOST_PORT 1900
 #define TIMEOUT -1
 #define USER_AGENT @""
 
@@ -44,6 +46,12 @@ static NSString *const REUSECELLID = @"reuseid";
     [self _refreshUdpSocket];
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    self.navigationItem.rightBarButtonItem.enabled = YES;
+}
+
 #pragma mark - UI
 
 - (void)_initUI
@@ -51,9 +59,8 @@ static NSString *const REUSECELLID = @"reuseid";
     self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, Screen_Width, Screen_Height) style:UITableViewStylePlain];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
-    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableView.backgroundColor = [UIColor whiteColor];
-    [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:REUSECELLID];
+    [self.tableView registerClass:[CustomTableViewCell class] forCellReuseIdentifier:REUSECELLID];
     [self.view addSubview:self.tableView];
     
     UIBarButtonItem *refreshButton = [[UIBarButtonItem alloc] initWithTitle:@"刷新" style:UIBarButtonItemStylePlain target:self action:@selector(refreshButtonPressed:)];
@@ -71,16 +78,12 @@ static NSString *const REUSECELLID = @"reuseid";
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:REUSECELLID forIndexPath:indexPath];
-    cell.textLabel.textColor = [UIColor blackColor];
-    cell.detailTextLabel.textColor = [UIColor blueColor];
-    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    CustomTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:REUSECELLID forIndexPath:indexPath];
     
     if (self.devices && self.devices.count > 0)
     {
         Device *device = [self.devices objectAtIndex:indexPath.row];
-        cell.textLabel.text = device.server;
-        cell.detailTextLabel.text = device.location;
+        [cell loadDevice:device];
     }
     
     return cell;
@@ -93,7 +96,15 @@ static NSString *const REUSECELLID = @"reuseid";
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 60;
+    return 110;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    Device *device = [self.devices objectAtIndex:indexPath.row];
+    DDDViewController *dddvc = [[DDDViewController alloc] initWithLocation:device.location];
+    dddvc.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:dddvc animated:YES];
 }
 
 #pragma mark - Data
@@ -128,14 +139,14 @@ static NSString *const REUSECELLID = @"reuseid";
     
     NSLog(@"发送请求:\n%@", searchText);
     NSData *socketData = [searchText dataUsingEncoding:NSUTF8StringEncoding];
-    [self.udpSocket sendData:socketData toHost:HOST_IP port:HOST_PORT withTimeout:TIMEOUT tag:12];
+    [self.udpSocket sendData:socketData toHost:LAN_MULTICAST_HOST_IP port:LAN_MULTICAST_HOST_PORT withTimeout:TIMEOUT tag:12];
 }
 
 - (NSString *)_ssdpRequestHeader
 {
     NSMutableString *mutRequestString = [NSMutableString new];
     [mutRequestString appendString:@"M-SEARCH * HTTP/1.1\r\n"];
-    [mutRequestString appendString:[NSString stringWithFormat:@"HOST:%@:%@\r\n", HOST_IP, [NSString stringWithFormat:@"%d", HOST_PORT]]];
+    [mutRequestString appendString:[NSString stringWithFormat:@"HOST:%@:%@\r\n", LAN_MULTICAST_HOST_IP, [NSString stringWithFormat:@"%d", LAN_MULTICAST_HOST_PORT]]];
     [mutRequestString appendString:@"MAN:\"ssdp:discover\"\r\n"];
     [mutRequestString appendString:@"MX:5\r\n"];
     [mutRequestString appendString:@"ST:upnp:rootdevice\r\n"];
@@ -168,6 +179,7 @@ static NSString *const REUSECELLID = @"reuseid";
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.devices addObject:device];
             [self.tableView reloadData];
+            self.title = [NSString stringWithFormat:@"DLNA设备列表(%lu)", (unsigned long)self.devices.count];
         });
     });
 }
