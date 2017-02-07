@@ -23,7 +23,7 @@
         }
         
         NSMutableArray *actions = [NSMutableArray new];
-        NSArray *actionList = [dictionary arrayValueForKeyPath:@"actionList"];
+        NSArray *actionList = [dictionary arrayValueForKeyPath:@"actionList.action"];
         if (actionList != nil && actionList.count > 0)
         {
             for (NSDictionary *action in actionList)

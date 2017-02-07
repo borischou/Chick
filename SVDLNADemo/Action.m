@@ -24,7 +24,7 @@
         _name = [dictionary stringValueForKeyPath:@"name"];
         
         NSMutableArray *arguments = [NSMutableArray new];
-        NSArray *argumentList = [dictionary arrayValueForKeyPath:@"argumentList"];
+        NSArray *argumentList = [dictionary arrayValueForKeyPath:@"argumentList.argument"];
         if (argumentList != nil && argumentList.count > 0)
         {
             for (NSDictionary *argument in argumentList)

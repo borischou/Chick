@@ -17,7 +17,6 @@
 		547696791E498D40001DAB5F /* Argument.m in Sources */ = {isa = PBXBuildFile; fileRef = 547696781E498D40001DAB5F /* Argument.m */; };
 		5476967C1E49B612001DAB5F /* CustomTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5476967B1E49B612001DAB5F /* CustomTableViewCell.m */; };
 		5476967F1E49BA46001DAB5F /* DDDViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5476967E1E49BA46001DAB5F /* DDDViewController.m */; };
-		547696811E49CE49001DAB5F /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 547696801E49CE49001DAB5F /* WebKit.framework */; };
 		547696841E49CE88001DAB5F /* SDDViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 547696831E49CE88001DAB5F /* SDDViewController.m */; };
 		548BF8CD1E482B060074F5F1 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 548BF8CC1E482B060074F5F1 /* main.m */; };
 		548BF8D01E482B060074F5F1 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 548BF8CF1E482B060074F5F1 /* AppDelegate.m */; };
@@ -105,7 +104,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				547696811E49CE49001DAB5F /* WebKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -303,6 +301,7 @@
 				TargetAttributes = {
 					548BF8C71E482B060074F5F1 = {
 						CreatedOnToolsVersion = 7.3.1;
+						DevelopmentTeam = R8SXHLJ4HE;
 					};
 					548BF8E01E482B060074F5F1 = {
 						CreatedOnToolsVersion = 7.3.1;
@@ -518,11 +517,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = SVDLNADemo/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.bolizhou.SOHUTest.SVDLNADemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Debug;
 		};
@@ -531,11 +532,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = SVDLNADemo/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.bolizhou.SOHUTest.SVDLNADemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Release;
 		};
