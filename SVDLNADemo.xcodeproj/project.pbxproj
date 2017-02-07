@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		547696621E49711D001DAB5F /* NSString+Ext.m in Sources */ = {isa = PBXBuildFile; fileRef = 547696611E49711D001DAB5F /* NSString+Ext.m */; };
+		547696651E497B2E001DAB5F /* Address.m in Sources */ = {isa = PBXBuildFile; fileRef = 547696641E497B2E001DAB5F /* Address.m */; };
 		548BF8CD1E482B060074F5F1 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 548BF8CC1E482B060074F5F1 /* main.m */; };
 		548BF8D01E482B060074F5F1 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 548BF8CF1E482B060074F5F1 /* AppDelegate.m */; };
 		548BF8D31E482B060074F5F1 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 548BF8D21E482B060074F5F1 /* ViewController.m */; };
@@ -15,8 +17,7 @@
 		548BF8E61E482B060074F5F1 /* SVDLNADemoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 548BF8E51E482B060074F5F1 /* SVDLNADemoTests.m */; };
 		548BF8F11E482B060074F5F1 /* SVDLNADemoUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 548BF8F01E482B060074F5F1 /* SVDLNADemoUITests.m */; };
 		548BF9001E482CBF0074F5F1 /* GCDAsyncUdpSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 548BF8FF1E482CBF0074F5F1 /* GCDAsyncUdpSocket.m */; };
-		548BF9061E4855C10074F5F1 /* HttpResponseHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = 548BF9051E4855C10074F5F1 /* HttpResponseHeader.m */; };
-		548BF9091E48562E0074F5F1 /* HttpRespHeaderExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 548BF9081E48562E0074F5F1 /* HttpRespHeaderExtension.m */; };
+		548BF9061E4855C10074F5F1 /* SsdpResponseHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = 548BF9051E4855C10074F5F1 /* SsdpResponseHeader.m */; };
 		548BF90C1E48766C0074F5F1 /* XMLDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = 548BF90B1E48766C0074F5F1 /* XMLDictionary.m */; };
 		548BF90F1E488C2A0074F5F1 /* ARCWeakRef.m in Sources */ = {isa = PBXBuildFile; fileRef = 548BF90E1E488C2A0074F5F1 /* ARCWeakRef.m */; };
 /* End PBXBuildFile section */
@@ -39,6 +40,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		547696601E49711D001DAB5F /* NSString+Ext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Ext.h"; sourceTree = "<group>"; };
+		547696611E49711D001DAB5F /* NSString+Ext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Ext.m"; sourceTree = "<group>"; };
+		547696631E497B2E001DAB5F /* Address.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Address.h; sourceTree = "<group>"; };
+		547696641E497B2E001DAB5F /* Address.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Address.m; sourceTree = "<group>"; };
 		548BF8C81E482B060074F5F1 /* SVDLNADemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SVDLNADemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		548BF8CC1E482B060074F5F1 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		548BF8CE1E482B060074F5F1 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -56,10 +61,8 @@
 		548BF8F21E482B060074F5F1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		548BF8FE1E482CBF0074F5F1 /* GCDAsyncUdpSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GCDAsyncUdpSocket.h; sourceTree = "<group>"; };
 		548BF8FF1E482CBF0074F5F1 /* GCDAsyncUdpSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GCDAsyncUdpSocket.m; sourceTree = "<group>"; };
-		548BF9041E4855C10074F5F1 /* HttpResponseHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HttpResponseHeader.h; sourceTree = "<group>"; };
-		548BF9051E4855C10074F5F1 /* HttpResponseHeader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HttpResponseHeader.m; sourceTree = "<group>"; };
-		548BF9071E48562E0074F5F1 /* HttpRespHeaderExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HttpRespHeaderExtension.h; sourceTree = "<group>"; };
-		548BF9081E48562E0074F5F1 /* HttpRespHeaderExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HttpRespHeaderExtension.m; sourceTree = "<group>"; };
+		548BF9041E4855C10074F5F1 /* SsdpResponseHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SsdpResponseHeader.h; sourceTree = "<group>"; };
+		548BF9051E4855C10074F5F1 /* SsdpResponseHeader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SsdpResponseHeader.m; sourceTree = "<group>"; };
 		548BF90A1E48766C0074F5F1 /* XMLDictionary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XMLDictionary.h; sourceTree = "<group>"; };
 		548BF90B1E48766C0074F5F1 /* XMLDictionary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XMLDictionary.m; sourceTree = "<group>"; };
 		548BF90D1E488C2A0074F5F1 /* ARCWeakRef.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARCWeakRef.h; sourceTree = "<group>"; };
@@ -132,10 +135,12 @@
 				548BF8D91E482B060074F5F1 /* LaunchScreen.storyboard */,
 				548BF8DC1E482B060074F5F1 /* Info.plist */,
 				548BF8CB1E482B060074F5F1 /* Supporting Files */,
-				548BF9041E4855C10074F5F1 /* HttpResponseHeader.h */,
-				548BF9051E4855C10074F5F1 /* HttpResponseHeader.m */,
-				548BF9071E48562E0074F5F1 /* HttpRespHeaderExtension.h */,
-				548BF9081E48562E0074F5F1 /* HttpRespHeaderExtension.m */,
+				548BF9041E4855C10074F5F1 /* SsdpResponseHeader.h */,
+				548BF9051E4855C10074F5F1 /* SsdpResponseHeader.m */,
+				547696601E49711D001DAB5F /* NSString+Ext.h */,
+				547696611E49711D001DAB5F /* NSString+Ext.m */,
+				547696631E497B2E001DAB5F /* Address.h */,
+				547696641E497B2E001DAB5F /* Address.m */,
 			);
 			path = SVDLNADemo;
 			sourceTree = "<group>";
@@ -297,13 +302,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				548BF9061E4855C10074F5F1 /* HttpResponseHeader.m in Sources */,
+				548BF9061E4855C10074F5F1 /* SsdpResponseHeader.m in Sources */,
 				548BF9001E482CBF0074F5F1 /* GCDAsyncUdpSocket.m in Sources */,
 				548BF90F1E488C2A0074F5F1 /* ARCWeakRef.m in Sources */,
 				548BF8D31E482B060074F5F1 /* ViewController.m in Sources */,
+				547696651E497B2E001DAB5F /* Address.m in Sources */,
 				548BF90C1E48766C0074F5F1 /* XMLDictionary.m in Sources */,
 				548BF8D01E482B060074F5F1 /* AppDelegate.m in Sources */,
-				548BF9091E48562E0074F5F1 /* HttpRespHeaderExtension.m in Sources */,
+				547696621E49711D001DAB5F /* NSString+Ext.m in Sources */,
 				548BF8CD1E482B060074F5F1 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -8,7 +8,7 @@
 
 #import "ViewController.h"
 #import "GCDAsyncUdpSocket.h"
-#import "HttpResponseHeader.h"
+#import "SsdpResponseHeader.h"
 #import "XMLDictionary.h"
 #import "ARCWeakRef.h"
 
@@ -26,7 +26,7 @@
 @property (strong, nonatomic) GCDAsyncUdpSocket *udpSocket;
 @property (strong, nonatomic) UITextView *resultTextView;
 @property (strong, nonatomic) NSMutableArray *devices;
-@property (strong, nonatomic) HttpResponseHeader *header;
+@property (strong, nonatomic) SsdpResponseHeader *header;
 @property (strong, nonatomic) NSArray *currentServices;
 @property (strong, nonatomic) NSDictionary *currentService;
 
@@ -161,12 +161,14 @@
 
 - (void)udpSocket:(GCDAsyncUdpSocket *)sock didReceiveData:(NSData *)data fromAddress:(NSData *)address withFilterContext:(id)filterContext
 {
-    NSString *text = [NSString stringWithFormat:@"从地址: %@\n收到UDP套接字数据:\n%@", [[NSString alloc] initWithData:address encoding:NSUTF8StringEncoding], [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]];
+    NSString *text = [NSString stringWithFormat:@"从地址:\n\n%@\n\n收到UDP套接字数据:\n\n%@", [[NSString alloc] initWithData:address encoding:NSUTF8StringEncoding], [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]];
     NSLog(@"%@", text);
     [self _updateTextView:text];
     
-    HttpResponseHeader *header = [[HttpResponseHeader alloc] initWithReceivedMsg:[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]];
+    SsdpResponseHeader *header = [[SsdpResponseHeader alloc] initWithReceivedMsg:[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]];
     self.header = header;
+    
+    [self _updateTextView:[NSString stringWithFormat:@"header:\n\n%@", header.description]];
     
     if (self.header.location && self.header.location.length > 0)
     {
@@ -175,6 +177,10 @@
         NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:self.header.location] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:30];
         NSURLSessionDataTask *task = [session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
             NSString *xmlStr = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+            if (xmlStr == nil || xmlStr.length <= 0)
+            {
+                return;
+            }
             NSXMLParser *parser = [[NSXMLParser alloc] initWithData:data];
             NSDictionary *xmlDict = [NSDictionary dictionaryWithXMLParser:parser];
             
@@ -186,7 +192,7 @@
             });
             
             NSDictionary *service = [services objectAtIndex:0];
-            NSString *serviceUrlStr = [NSString stringWithFormat:@"%@%@", [self.header.location substringToIndex:self.header.location.length-1], [service stringValueForKeyPath:@"SCPDURL"]];
+            NSString *serviceUrlStr = [NSString stringWithFormat:@"%@:%@%@", self.header.address.ipv4, self.header.address.port, [service stringValueForKeyPath:@"SCPDURL"]];
             NSURLSessionDataTask *serviceTask = [session dataTaskWithURL:[NSURL URLWithString:serviceUrlStr] completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
                 NSDictionary *serviceDict = [NSDictionary dictionaryWithXMLData:data];
                 self.currentService = serviceDict;
