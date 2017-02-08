@@ -47,6 +47,7 @@
     UITextView *textView = [[UITextView alloc] initWithFrame:CGRectMake(20, 60, Screen_Width-40, Screen_Height*2/3)];
     [self.view addSubview:textView];
     textView.font = [UIFont systemFontOfSize:13.0];
+    textView.editable = NO;
     textView.text = [NSString stringWithFormat:@"Action name: %@\n\n%@", self.action.name, [self _argumentContent]];
     self.textView = textView;
     
