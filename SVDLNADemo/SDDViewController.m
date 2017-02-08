@@ -11,6 +11,7 @@
 #import "XMLDictionary.h"
 #import "UPnPManager.h"
 #import "UPnPManager+Connection.h"
+#import "ActionViewController.h"
 
 #define Screen_Width [UIScreen mainScreen].bounds.size.width
 #define Screen_Height [UIScreen mainScreen].bounds.size.height
@@ -103,6 +104,17 @@ static NSString *const REUSECELLID = @"reusecellid";
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return 60;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (self.sdd == nil || self.sdd.actions == nil || self.sdd.actions.count < indexPath.row+1)
+    {
+        return;
+    }
+    Action *action = [self.sdd.actions objectAtIndex:indexPath.row];
+    ActionViewController *avc = [[ActionViewController alloc] initWithAction:action];
+    [self.navigationController pushViewController:avc animated:YES];
 }
 
 @end

@@ -9,6 +9,9 @@
 /* Begin PBXBuildFile section */
 		5463665B1E4AD6A300BCDBF3 /* UPnPManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 5463665A1E4AD6A300BCDBF3 /* UPnPManager.m */; };
 		5463665E1E4AD6B700BCDBF3 /* UPnPManager+Connection.m in Sources */ = {isa = PBXBuildFile; fileRef = 5463665D1E4AD6B700BCDBF3 /* UPnPManager+Connection.m */; };
+		546366651E4AEE0000BCDBF3 /* UPnPActionRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 546366641E4AEE0000BCDBF3 /* UPnPActionRequest.m */; };
+		546366681E4AFF1B00BCDBF3 /* UPnPManager+ControlPoint.m in Sources */ = {isa = PBXBuildFile; fileRef = 546366671E4AFF1B00BCDBF3 /* UPnPManager+ControlPoint.m */; };
+		5463666C1E4B036000BCDBF3 /* ActionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5463666B1E4B036000BCDBF3 /* ActionViewController.m */; };
 		547696621E49711D001DAB5F /* NSString+Ext.m in Sources */ = {isa = PBXBuildFile; fileRef = 547696611E49711D001DAB5F /* NSString+Ext.m */; };
 		547696651E497B2E001DAB5F /* Address.m in Sources */ = {isa = PBXBuildFile; fileRef = 547696641E497B2E001DAB5F /* Address.m */; };
 		547696681E4986D7001DAB5F /* DeviceDescription.m in Sources */ = {isa = PBXBuildFile; fileRef = 547696671E4986D7001DAB5F /* DeviceDescription.m */; };
@@ -55,6 +58,12 @@
 		5463665A1E4AD6A300BCDBF3 /* UPnPManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UPnPManager.m; sourceTree = "<group>"; };
 		5463665C1E4AD6B700BCDBF3 /* UPnPManager+Connection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UPnPManager+Connection.h"; sourceTree = "<group>"; };
 		5463665D1E4AD6B700BCDBF3 /* UPnPManager+Connection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UPnPManager+Connection.m"; sourceTree = "<group>"; };
+		546366631E4AEE0000BCDBF3 /* UPnPActionRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UPnPActionRequest.h; sourceTree = "<group>"; };
+		546366641E4AEE0000BCDBF3 /* UPnPActionRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UPnPActionRequest.m; sourceTree = "<group>"; };
+		546366661E4AFF1B00BCDBF3 /* UPnPManager+ControlPoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UPnPManager+ControlPoint.h"; sourceTree = "<group>"; };
+		546366671E4AFF1B00BCDBF3 /* UPnPManager+ControlPoint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UPnPManager+ControlPoint.m"; sourceTree = "<group>"; };
+		5463666A1E4B036000BCDBF3 /* ActionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActionViewController.h; sourceTree = "<group>"; };
+		5463666B1E4B036000BCDBF3 /* ActionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActionViewController.m; sourceTree = "<group>"; };
 		547696601E49711D001DAB5F /* NSString+Ext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Ext.h"; sourceTree = "<group>"; };
 		547696611E49711D001DAB5F /* NSString+Ext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Ext.m"; sourceTree = "<group>"; };
 		547696631E497B2E001DAB5F /* Address.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Address.h; sourceTree = "<group>"; };
@@ -129,6 +138,36 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		546366621E4AEDE000BCDBF3 /* UPnP */ = {
+			isa = PBXGroup;
+			children = (
+				546366591E4AD6A300BCDBF3 /* UPnPManager.h */,
+				5463665A1E4AD6A300BCDBF3 /* UPnPManager.m */,
+				5463665C1E4AD6B700BCDBF3 /* UPnPManager+Connection.h */,
+				5463665D1E4AD6B700BCDBF3 /* UPnPManager+Connection.m */,
+				546366661E4AFF1B00BCDBF3 /* UPnPManager+ControlPoint.h */,
+				546366671E4AFF1B00BCDBF3 /* UPnPManager+ControlPoint.m */,
+				546366631E4AEE0000BCDBF3 /* UPnPActionRequest.h */,
+				546366641E4AEE0000BCDBF3 /* UPnPActionRequest.m */,
+			);
+			name = UPnP;
+			sourceTree = "<group>";
+		};
+		546366691E4B034400BCDBF3 /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				548BF8D11E482B060074F5F1 /* ViewController.h */,
+				548BF8D21E482B060074F5F1 /* ViewController.m */,
+				5476967D1E49BA46001DAB5F /* DDDViewController.h */,
+				5476967E1E49BA46001DAB5F /* DDDViewController.m */,
+				547696821E49CE88001DAB5F /* SDDViewController.h */,
+				547696831E49CE88001DAB5F /* SDDViewController.m */,
+				5463666A1E4B036000BCDBF3 /* ActionViewController.h */,
+				5463666B1E4B036000BCDBF3 /* ActionViewController.m */,
+			);
+			name = ViewController;
+			sourceTree = "<group>";
+		};
 		547696721E498BB9001DAB5F /* Model */ = {
 			isa = PBXGroup;
 			children = (
@@ -190,20 +229,12 @@
 		548BF8CA1E482B060074F5F1 /* SVDLNADemo */ = {
 			isa = PBXGroup;
 			children = (
+				546366691E4B034400BCDBF3 /* ViewController */,
+				546366621E4AEDE000BCDBF3 /* UPnP */,
 				548BF8CE1E482B060074F5F1 /* AppDelegate.h */,
 				548BF8CF1E482B060074F5F1 /* AppDelegate.m */,
-				546366591E4AD6A300BCDBF3 /* UPnPManager.h */,
-				5463665A1E4AD6A300BCDBF3 /* UPnPManager.m */,
-				5463665C1E4AD6B700BCDBF3 /* UPnPManager+Connection.h */,
-				5463665D1E4AD6B700BCDBF3 /* UPnPManager+Connection.m */,
 				5476967A1E49B612001DAB5F /* CustomTableViewCell.h */,
 				5476967B1E49B612001DAB5F /* CustomTableViewCell.m */,
-				548BF8D11E482B060074F5F1 /* ViewController.h */,
-				548BF8D21E482B060074F5F1 /* ViewController.m */,
-				5476967D1E49BA46001DAB5F /* DDDViewController.h */,
-				5476967E1E49BA46001DAB5F /* DDDViewController.m */,
-				547696821E49CE88001DAB5F /* SDDViewController.h */,
-				547696831E49CE88001DAB5F /* SDDViewController.m */,
 				547696731E498BCB001DAB5F /* Lib */,
 				547696721E498BB9001DAB5F /* Model */,
 				548BF8D71E482B060074F5F1 /* Assets.xcassets */,
@@ -377,16 +408,19 @@
 				548BF9061E4855C10074F5F1 /* SsdpResponseHeader.m in Sources */,
 				548BF9001E482CBF0074F5F1 /* GCDAsyncUdpSocket.m in Sources */,
 				548BF90F1E488C2A0074F5F1 /* ARCWeakRef.m in Sources */,
+				5463666C1E4B036000BCDBF3 /* ActionViewController.m in Sources */,
 				547696681E4986D7001DAB5F /* DeviceDescription.m in Sources */,
 				548BF8D31E482B060074F5F1 /* ViewController.m in Sources */,
 				547696651E497B2E001DAB5F /* Address.m in Sources */,
 				5476966B1E4987A6001DAB5F /* Service.m in Sources */,
 				548BF90C1E48766C0074F5F1 /* XMLDictionary.m in Sources */,
 				5463665B1E4AD6A300BCDBF3 /* UPnPManager.m in Sources */,
+				546366651E4AEE0000BCDBF3 /* UPnPActionRequest.m in Sources */,
 				5476966E1E4988D5001DAB5F /* ServiceDescription.m in Sources */,
 				5476967F1E49BA46001DAB5F /* DDDViewController.m in Sources */,
 				547696761E498BEA001DAB5F /* Action.m in Sources */,
 				548BF8D01E482B060074F5F1 /* AppDelegate.m in Sources */,
+				546366681E4AFF1B00BCDBF3 /* UPnPManager+ControlPoint.m in Sources */,
 				547696711E498ADA001DAB5F /* Device.m in Sources */,
 				547696841E49CE88001DAB5F /* SDDViewController.m in Sources */,
 				5463665E1E4AD6B700BCDBF3 /* UPnPManager+Connection.m in Sources */,

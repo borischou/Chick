@@ -7,8 +7,11 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "Address.h"
 
 @interface UPnPManager : NSObject
+
+@property (strong, nonatomic) Address *address;
 
 + (instancetype)sharedManager;
 

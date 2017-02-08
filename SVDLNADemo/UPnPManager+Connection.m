@@ -60,7 +60,7 @@ dispatch_async(dispatch_get_main_queue(), block);\
                  successHandler:(successHandler _Nonnull)successblk
                  failureHandler:(failureHandler _Nonnull)failureblk;
 {
-    NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
+    NSURLSession *session = [NSURLSession sharedSession];
     NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:url]];
     [[session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error)
       {

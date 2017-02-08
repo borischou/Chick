@@ -8,6 +8,10 @@
 
 #import "UPnPManager.h"
 
+@interface UPnPManager ()
+
+@end
+
 @implementation UPnPManager
 
 + (instancetype)sharedManager
