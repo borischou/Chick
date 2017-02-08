@@ -10,6 +10,8 @@
 #import "XMLDictionary.h"
 #import "DeviceDescription.h"
 #import "SDDViewController.h"
+#import "UPnPManager.h"
+#import "UPnPManager+Connection.h"
 
 #define Screen_Width [UIScreen mainScreen].bounds.size.width
 #define Screen_Height [UIScreen mainScreen].bounds.size.height
@@ -55,33 +57,14 @@ static NSString *const REUSECELLID = @"reusecellid";
 
 - (void)loadDDDWithLocation:(NSString *)location
 {
-    NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
-    NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:location]];
-    [[session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error)
-    {
-        if (data && data.length > 0)
-        {
-            NSDictionary *dataDict = [NSDictionary dictionaryWithXMLData:data];
-            DeviceDescription *ddd = [[DeviceDescription alloc] initWithDictionary:dataDict];
-            dispatch_async(dispatch_get_main_queue(), ^{
-                self.title = @"DDD";
-                if (ddd == nil)
-                {
-                    [self presentAlertWithError:error];
-                    return;
-                }
-                self.ddd = ddd;
-                [self.tableView reloadData];
-            });
-        }
-        else
-        {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                self.title = @"DDD";
-                [self presentAlertWithError:error];
-            });
-        }
-    }] resume];
+    [[UPnPManager sharedManager] fetchDDDWithLocation:location successHandler:^(DeviceDescription * _Nullable ddd) {
+        self.title = ddd.friendlyName ? ddd.friendlyName : @"DDD";
+        self.ddd = ddd;
+        [self.tableView reloadData];
+    } failureHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+        self.title = @"DDD";
+        [self presentAlertWithError:error];
+    }];
 }
 
 - (void)presentAlertWithError:(NSError *)error
@@ -133,7 +116,7 @@ static NSString *const REUSECELLID = @"reusecellid";
             NSInteger idx = indexPath.row-7;
             Service *service = [ddd.services objectAtIndex:idx];
             cell.textLabel.textColor = [UIColor blueColor];
-            cell.textLabel.text = service.SCPDURL;
+            cell.textLabel.text = service.serviceID;
             cell.textLabel.numberOfLines = 0;
         }
     }
@@ -162,7 +145,15 @@ static NSString *const REUSECELLID = @"reusecellid";
         return;
     }
     Service *service = [self.ddd.services objectAtIndex:indexPath.row-7];
-    NSString *url = [NSString stringWithFormat:@"%@:%@%@", self.device.address.ipv4, self.device.address.port, service.SCPDURL];
+    NSString *url = nil;
+    if ([service.SCPDURL hasPrefix:@"/"])
+    {
+        url = [NSString stringWithFormat:@"%@:%@%@", self.device.address.ipv4, self.device.address.port, service.SCPDURL];
+    }
+    else
+    {
+        url = [NSString stringWithFormat:@"%@:%@/%@", self.device.address.ipv4, self.device.address.port, service.SCPDURL];
+    }
     SDDViewController *sddvc = [[SDDViewController alloc] initWithURL:url];
     [self.navigationController pushViewController:sddvc animated:YES];
 }

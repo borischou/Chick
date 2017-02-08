@@ -9,6 +9,8 @@
 #import "SDDViewController.h"
 #import "ServiceDescription.h"
 #import "XMLDictionary.h"
+#import "UPnPManager.h"
+#import "UPnPManager+Connection.h"
 
 #define Screen_Width [UIScreen mainScreen].bounds.size.width
 #define Screen_Height [UIScreen mainScreen].bounds.size.height
@@ -39,7 +41,7 @@ static NSString *const REUSECELLID = @"reusecellid";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+    self.title = @"SDD: Action List";
     self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, Screen_Width, Screen_Height) style:UITableViewStylePlain];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
@@ -52,7 +54,6 @@ static NSString *const REUSECELLID = @"reusecellid";
 
 - (void)loadSDDWithURL:(NSString *)url
 {
-    NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
     NSString *urlStr = nil;
     if ([url hasPrefix:@"http"] == NO)
     {
@@ -62,18 +63,21 @@ static NSString *const REUSECELLID = @"reusecellid";
     {
         urlStr = url;
     }
-    NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:urlStr]];
-    [[session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
-        if (data)
-        {
-            NSDictionary *dataDict = [NSDictionary dictionaryWithXMLData:data];
-            ServiceDescription *sdd = [[ServiceDescription alloc] initWithDictionary:dataDict];
-            dispatch_async(dispatch_get_main_queue(), ^{
-                self.sdd = sdd;
-                [self.tableView reloadData];
-            });
-        }
-    }] resume];
+    
+    [[UPnPManager sharedManager] fetchSDDWithLocation:urlStr successHandler:^(ServiceDescription * _Nullable sdd) {
+        self.sdd = sdd;
+        [self.tableView reloadData];
+    } failureHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+        [self presentAlertWithError:error];
+    }];
+}
+
+- (void)presentAlertWithError:(NSError *)error
+{
+    UIAlertController *ac = [UIAlertController alertControllerWithTitle:@"错误" message:[NSString stringWithFormat:@"无效地址或发生错误\n%@", error ? error.description : @""] preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *confirmAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
+    [ac addAction:confirmAction];
+    [self.navigationController presentViewController:ac animated:YES completion:nil];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath

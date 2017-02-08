@@ -98,13 +98,25 @@
     }
     if (subs.count == 2)
     {
+        if ([subs.firstObject hasPrefix:@"http"])
+        {
+            return nil;
+        }
         address.ipv4 = [subs.firstObject trimmedString];
     }
-    if (subs.count == 3)
+    if (subs.count >= 3)
     {
-        address.ipv4 = [[subs objectAtIndex:1] substringFromIndex:2];
+        if ([subs.firstObject hasPrefix:@"http"])
+        {
+            address.ipv4 = [[subs objectAtIndex:1] substringFromIndex:2];
+            address.port = [self portFromString:[subs objectAtIndex:2]];
+        }
+        else
+        {
+            address.ipv4 = subs.firstObject;
+            address.port = [self portFromString:[subs objectAtIndex:1]];
+        }
     }
-    address.port = [self portFromString:subs.lastObject];
     
     return address;
 }
