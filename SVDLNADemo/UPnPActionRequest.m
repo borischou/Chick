@@ -46,7 +46,7 @@
 
 -(void)_addXmlSoapWrapper
 {
-    NSString *start = [NSString stringWithFormat:@"<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<s:Envelope s:encodingStyle=\"http://schemas.xmlsoap.org/soap/encoding/\" xmlns:s=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:u=\"%@\">\n<s:Body>\n<u:%@ xmlns:u=\"%@\">\n", self.service.serviceType, self.action.name, self.service.serviceType];
+    NSString *start = [NSString stringWithFormat:@"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<s:Envelope s:encodingStyle=\"http://schemas.xmlsoap.org/soap/encoding/\" xmlns:s=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:u=\"%@\">\n<s:Body>\n<u:%@ xmlns:u=\"%@\">\n", self.service.serviceType, self.action.name, self.service.serviceType];
     NSString *end = [NSString stringWithFormat:@"</u:%@>\n</s:Body>\n</s:Envelope>\r\n", self.action.name];
     [self.xmlLines insertObject:start atIndex:0];
     [self.xmlLines addObject:end];

@@ -13,7 +13,7 @@
 #define Screen_Width [UIScreen mainScreen].bounds.size.width
 #define Screen_Height [UIScreen mainScreen].bounds.size.height
 
-#define VIDEO_URL @"http://10.2.15.163/movie/Homeless.mp4"
+#define VIDEO_URL @"http://baobab.wdjcdn.com/14571455324031.mp4"
 
 @interface ActionViewController ()
 
