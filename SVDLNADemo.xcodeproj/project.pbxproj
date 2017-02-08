@@ -69,7 +69,6 @@
 		5476967B1E49B612001DAB5F /* CustomTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomTableViewCell.m; sourceTree = "<group>"; };
 		5476967D1E49BA46001DAB5F /* DDDViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDDViewController.h; sourceTree = "<group>"; };
 		5476967E1E49BA46001DAB5F /* DDDViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDDViewController.m; sourceTree = "<group>"; };
-		547696801E49CE49001DAB5F /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		547696821E49CE88001DAB5F /* SDDViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDDViewController.h; sourceTree = "<group>"; };
 		547696831E49CE88001DAB5F /* SDDViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDDViewController.m; sourceTree = "<group>"; };
 		548BF8C81E482B060074F5F1 /* SVDLNADemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SVDLNADemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -165,7 +164,6 @@
 		548BF8BF1E482B060074F5F1 = {
 			isa = PBXGroup;
 			children = (
-				547696801E49CE49001DAB5F /* WebKit.framework */,
 				548BF8CA1E482B060074F5F1 /* SVDLNADemo */,
 				548BF8E41E482B060074F5F1 /* SVDLNADemoTests */,
 				548BF8EF1E482B060074F5F1 /* SVDLNADemoUITests */,
@@ -301,7 +299,6 @@
 				TargetAttributes = {
 					548BF8C71E482B060074F5F1 = {
 						CreatedOnToolsVersion = 7.3.1;
-						DevelopmentTeam = R8SXHLJ4HE;
 					};
 					548BF8E01E482B060074F5F1 = {
 						CreatedOnToolsVersion = 7.3.1;
