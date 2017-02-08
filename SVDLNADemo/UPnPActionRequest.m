@@ -15,11 +15,6 @@
 
 @interface UPnPActionRequest ()
 
-@property (strong, nonatomic) Address *address;
-
-@property (copy, nonatomic) NSString *serviceId;
-@property (copy, nonatomic) NSString *soapActionName;
-@property (copy, nonatomic) NSString *pathControlURL;
 @property (copy, nonatomic) NSString *requestURL;
 @property (strong, nonatomic) NSData *requestBody;
 @property (strong, nonatomic) NSMutableArray<NSString *> *xmlLines;
@@ -27,34 +22,6 @@
 @end
 
 @implementation UPnPActionRequest
-
-- (instancetype)initWithAddress:(Address *)address pathControlURL:(NSString *)pathControlURL
-{
-    if (address == nil)
-    {
-        return nil;
-    }
-    NSString *url = nil;
-    if ([pathControlURL hasPrefix:@"/"])
-    {
-        url = [NSString stringWithFormat:@"http://%@:%@%@", address.ipv4, address.port, pathControlURL];
-    }
-    else
-    {
-        url = [NSString stringWithFormat:@"http://%@:%@/%@", address.ipv4, address.port, pathControlURL];
-    }
-    self = [super initWithURL:[NSURL URLWithString:url]];
-    if (self)
-    {
-        _address = address;
-        _pathControlURL = pathControlURL;
-        _requestURL = url;
-        self.HTTPMethod = @"POST";
-        [self addValue:@"text/xml" forHTTPHeaderField:@"Content-Type"];
-        [self addValue:@"SOAPAction" forHTTPHeaderField:[self _soapAction]];
-    }
-    return self;
-}
 
 - (NSMutableArray<NSString *> *)xmlLines
 {
@@ -65,39 +32,64 @@
     return _xmlLines;
 }
 
-- (void)addParameterWithKey:(NSString * _Nonnull)key value:(NSString * _Nonnull)value
+- (void)addParameterWithKey:(NSString * _Nonnull)key
+{
+    NSString *para = [NSString stringWithFormat:@"<%@>%@</%@>\n", key, @" ", key];
+    [self.xmlLines addObject:para];
+}
+
+- (void)addParameterWithKey:(NSString * _Nonnull)key value:(NSString * _Nullable)value
 {
     NSString *para = [NSString stringWithFormat:@"<%@>%@</%@>\n", key, value, key];
-    [_xmlLines addObject:para];
+    [self.xmlLines addObject:para];
 }
 
 -(void)_addXmlSoapWrapper
 {
-    NSString *start = [NSString stringWithFormat:@"<?xml version=\"1.0\"?>\n<s:Envelope xmlns:s=\"http://schemas.xmlsoap.org/soap/envelope/\" s:encodingStyle=\"http://schemas.xmlsoap.org/soap/encoding/\">\n<s:Body>\n<u:%@ xmlns:u=\"%@\">\n", _soapActionName, _serviceId];
-    NSString *end = [NSString stringWithFormat:@"/u:%@\n</s:Body>\n</s:Envelope>\r\n", _soapActionName];
-    [_xmlLines insertObject:start atIndex:0];
-    [_xmlLines addObject:end];
+    NSString *start = [NSString stringWithFormat:@"<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<s:Envelope s:encodingStyle=\"http://schemas.xmlsoap.org/soap/encoding/\" xmlns:s=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:u=\"%@\">\n<s:Body>\n<u:%@ xmlns:u=\"%@\">\n", self.service.serviceType, self.action.name, self.service.serviceType];
+    NSString *end = [NSString stringWithFormat:@"</u:%@>\n</s:Body>\n</s:Envelope>\r\n", self.action.name];
+    [self.xmlLines insertObject:start atIndex:0];
+    [self.xmlLines addObject:end];
 }
 
 - (NSString *)_soapAction
 {
-    return [NSString stringWithFormat:@"\"%@#%@\"", _serviceId, _soapActionName];
+    return [NSString stringWithFormat:@"\"%@#%@\"", self.service.serviceType, self.action.name];
 }
 
-- (NSData *)composeBodyData
+- (void)composeRequest
 {
-    if (_xmlLines == nil || _xmlLines.count <= 0)
+    if (self.xmlLines == nil || self.xmlLines.count <= 0)
     {
-        return nil;
+        return;
     }
     [self _addXmlSoapWrapper];
+    
+    NSString *url = nil;
+    NSString *controlURL = self.service.controlURL;
+    
+    if ([self.service.controlURL hasPrefix:@"/"])
+    {
+        url = [NSString stringWithFormat:@"http://%@:%@%@", self.address.ipv4, self.address.port, controlURL];
+    }
+    else
+    {
+        url = [NSString stringWithFormat:@"http://%@:%@/%@", self.address.ipv4, self.address.port, controlURL];
+    }
+    _requestURL = url;
+    [self setURL:[NSURL URLWithString:url]];
+    self.HTTPMethod = @"POST";
+    [self addValue:[self _soapAction] forHTTPHeaderField:@"SOAPAction"];
+    [self addValue:@"text/xml;charset=\"utf-8\"" forHTTPHeaderField:@"Content-Type"];
+    
     NSMutableString *mutStr = [NSMutableString new];
-    for (NSString *line in _xmlLines)
+    for (NSString *line in self.xmlLines)
     {
         [mutStr appendString:line];
     }
     NSData *data = [mutStr dataUsingEncoding:NSUTF8StringEncoding];
-    return data;
+    self.HTTPBody = data;
+    _requestBody = data;
 }
 
 @end

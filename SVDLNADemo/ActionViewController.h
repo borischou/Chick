@@ -8,9 +8,10 @@
 
 #import <UIKit/UIKit.h>
 #import "Action.h"
+#import "ServiceDescription.h"
 
 @interface ActionViewController : UIViewController
 
-- (instancetype)initWithAction:(Action *)action;
+- (instancetype)initWithAction:(Action *)action SDD:(ServiceDescription *)sdd;
 
 @end

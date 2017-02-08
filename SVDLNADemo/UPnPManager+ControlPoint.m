@@ -9,28 +9,44 @@
 #import "UPnPManager+ControlPoint.h"
 #import "UPnPActionRequest.h"
 
-typedef void(^successHandler)(NSData * _Nullable data);
-typedef void(^failureHandler)(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error);
-
 @implementation UPnPManager (ControlPoint)
 
-- (void)setAVTransportURI:(NSString *)uri pathControlURL:(NSString *)pathControlURL
+- (void)setAVTransportURI:(NSString * _Nullable)uri completion:(completionHandler _Nullable)completion
 {
-    UPnPActionRequest *request = [[UPnPActionRequest alloc] initWithAddress:self.address pathControlURL:pathControlURL];
+    UPnPActionRequest *request = [[UPnPActionRequest alloc] init];
+    request.address = self.address;
+    request.action = self.action;
+    request.service = self.service;
+    [request addParameterWithKey:@"InstanceID" value:@"0"];
+    [request addParameterWithKey:@"CurrentURI" value:[uri stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+    [request addParameterWithKey:@"CurrentURIMetaData"];
+    [request composeRequest];
+    
+    [self _httpPostWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+        completion(data, response, error);
+    }];
 }
 
-- (void)_httpPostWithRequest:(UPnPActionRequest *)request successHandler:(successHandler)succBlk failureHandler:(failureHandler)failBlk
+- (void)playCompletion:(completionHandler _Nullable)completion
+{
+    UPnPActionRequest *request = [[UPnPActionRequest alloc] init];
+    request.address = self.address;
+    request.action = self.action;
+    request.service = self.service;
+    [request addParameterWithKey:@"InstanceID" value:@"0"];
+    [request addParameterWithKey:@"Speed" value:@"1"];
+    [request composeRequest];
+    
+    [self _httpPostWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+        completion(data, response, error);
+    }];
+}
+
+- (void)_httpPostWithRequest:(UPnPActionRequest *)request completionHandler:(completionHandler)handler
 {
     NSURLSession *session = [NSURLSession sharedSession];
     [[session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
-        if (data == nil || data.length == 0 || error != nil)
-        {
-            failBlk(data, response, error);
-        }
-        else
-        {
-            succBlk(data);
-        }
+        handler(data, response, error);
     }] resume];
 }
 

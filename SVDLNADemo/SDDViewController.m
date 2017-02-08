@@ -7,7 +7,6 @@
 //
 
 #import "SDDViewController.h"
-#import "ServiceDescription.h"
 #import "XMLDictionary.h"
 #import "UPnPManager.h"
 #import "UPnPManager+Connection.h"
@@ -21,6 +20,7 @@ static NSString *const REUSECELLID = @"reusecellid";
 @interface SDDViewController () <UITableViewDelegate, UITableViewDataSource>
 
 @property (strong, nonatomic) ServiceDescription *sdd;
+@property (strong, nonatomic) Service *service;
 @property (copy, nonatomic) NSString *url;
 
 @property (strong, nonatomic) UITableView *tableView;
@@ -29,12 +29,13 @@ static NSString *const REUSECELLID = @"reusecellid";
 
 @implementation SDDViewController
 
-- (instancetype)initWithURL:(NSString *)url
+- (instancetype)initWithURL:(NSString *)url service:(Service *)service
 {
     self = [super init];
     if (self)
     {
         _url = url;
+        _service = service;
     }
     return self;
 }
@@ -67,6 +68,7 @@ static NSString *const REUSECELLID = @"reusecellid";
     
     [[UPnPManager sharedManager] fetchSDDWithLocation:urlStr successHandler:^(ServiceDescription * _Nullable sdd) {
         self.sdd = sdd;
+        self.sdd.service = self.service;
         [self.tableView reloadData];
     } failureHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
         [self presentAlertWithError:error];
@@ -113,7 +115,7 @@ static NSString *const REUSECELLID = @"reusecellid";
         return;
     }
     Action *action = [self.sdd.actions objectAtIndex:indexPath.row];
-    ActionViewController *avc = [[ActionViewController alloc] initWithAction:action];
+    ActionViewController *avc = [[ActionViewController alloc] initWithAction:action SDD:self.sdd];
     [self.navigationController pushViewController:avc animated:YES];
 }
 

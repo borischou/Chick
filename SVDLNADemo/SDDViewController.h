@@ -7,9 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ServiceDescription.h"
 
 @interface SDDViewController : UIViewController
 
-- (instancetype)initWithURL:(NSString *)url;
+- (instancetype)initWithURL:(NSString *)url service:(Service *)service;
 
 @end

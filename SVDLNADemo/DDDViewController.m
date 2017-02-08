@@ -12,6 +12,7 @@
 #import "SDDViewController.h"
 #import "UPnPManager.h"
 #import "UPnPManager+Connection.h"
+#import "Device+Current.h"
 
 #define Screen_Width [UIScreen mainScreen].bounds.size.width
 #define Screen_Height [UIScreen mainScreen].bounds.size.height
@@ -36,6 +37,7 @@ static NSString *const REUSECELLID = @"reusecellid";
     {
         _location = location;
         _device = device;
+        [Device currentDevice].address = device.address;
     }
     return self;
 }
@@ -154,7 +156,7 @@ static NSString *const REUSECELLID = @"reusecellid";
     {
         url = [NSString stringWithFormat:@"%@:%@/%@", self.device.address.ipv4, self.device.address.port, service.SCPDURL];
     }
-    SDDViewController *sddvc = [[SDDViewController alloc] initWithURL:url];
+    SDDViewController *sddvc = [[SDDViewController alloc] initWithURL:url service:service];
     [self.navigationController pushViewController:sddvc animated:YES];
 }
 
