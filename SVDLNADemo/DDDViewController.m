@@ -73,7 +73,9 @@ static NSString *const REUSECELLID = @"reusecellid";
         {
             dispatch_async(dispatch_get_main_queue(), ^{
                 self.title = @"DDD";
-                UIAlertController *ac = [UIAlertController alertControllerWithTitle:@"错误" message:[NSString stringWithFormat:@"无效地址或发生错误: %@", error.description] preferredStyle:UIAlertControllerStyleAlert];
+                UIAlertController *ac = [UIAlertController alertControllerWithTitle:@"错误" message:[NSString stringWithFormat:@"无效地址或发生错误\n%@", error ? error.description : @""] preferredStyle:UIAlertControllerStyleAlert];
+                UIAlertAction *confirmAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
+                [ac addAction:confirmAction];
                 [self.navigationController presentViewController:ac animated:YES completion:nil];
             });
         }
