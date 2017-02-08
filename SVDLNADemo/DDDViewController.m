@@ -34,7 +34,6 @@ static NSString *const REUSECELLID = @"reusecellid";
     {
         _location = location;
         _device = device;
-        [self loadDDDWithLocation:location];
     }
     return self;
 }
@@ -49,6 +48,9 @@ static NSString *const REUSECELLID = @"reusecellid";
     self.tableView.separatorStyle = UITableViewCellSelectionStyleNone;
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:REUSECELLID];
     [self.view addSubview:self.tableView];
+    
+    self.title = @"正在加载...";
+    [self loadDDDWithLocation:self.location];
 }
 
 - (void)loadDDDWithLocation:(NSString *)location
@@ -57,13 +59,22 @@ static NSString *const REUSECELLID = @"reusecellid";
     NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:location]];
     [[session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error)
     {
-        if (data)
+        if (data && data.length > 0)
         {
             NSDictionary *dataDict = [NSDictionary dictionaryWithXMLData:data];
             DeviceDescription *ddd = [[DeviceDescription alloc] initWithDictionary:dataDict];
             dispatch_async(dispatch_get_main_queue(), ^{
+                self.title = @"DDD";
                 self.ddd = ddd;
                 [self.tableView reloadData];
+            });
+        }
+        else
+        {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                self.title = @"DDD";
+                UIAlertController *ac = [UIAlertController alertControllerWithTitle:@"错误" message:[NSString stringWithFormat:@"无效地址或发生错误: %@", error.description] preferredStyle:UIAlertControllerStyleAlert];
+                [self.navigationController presentViewController:ac animated:YES completion:nil];
             });
         }
     }] resume];
