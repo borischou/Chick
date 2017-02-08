@@ -65,6 +65,11 @@ static NSString *const REUSECELLID = @"reusecellid";
             DeviceDescription *ddd = [[DeviceDescription alloc] initWithDictionary:dataDict];
             dispatch_async(dispatch_get_main_queue(), ^{
                 self.title = @"DDD";
+                if (ddd == nil)
+                {
+                    [self presentAlertWithError:error];
+                    return;
+                }
                 self.ddd = ddd;
                 [self.tableView reloadData];
             });
@@ -73,13 +78,18 @@ static NSString *const REUSECELLID = @"reusecellid";
         {
             dispatch_async(dispatch_get_main_queue(), ^{
                 self.title = @"DDD";
-                UIAlertController *ac = [UIAlertController alertControllerWithTitle:@"错误" message:[NSString stringWithFormat:@"无效地址或发生错误\n%@", error ? error.description : @""] preferredStyle:UIAlertControllerStyleAlert];
-                UIAlertAction *confirmAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
-                [ac addAction:confirmAction];
-                [self.navigationController presentViewController:ac animated:YES completion:nil];
+                [self presentAlertWithError:error];
             });
         }
     }] resume];
+}
+
+- (void)presentAlertWithError:(NSError *)error
+{
+    UIAlertController *ac = [UIAlertController alertControllerWithTitle:@"错误" message:[NSString stringWithFormat:@"无效地址或发生错误\n%@", error ? error.description : @""] preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *confirmAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
+    [ac addAction:confirmAction];
+    [self.navigationController presentViewController:ac animated:YES completion:nil];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
