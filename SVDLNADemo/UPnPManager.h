@@ -21,6 +21,7 @@
 - (void)uPnpManager:(UPnPManager * _Nullable)manager didPlayResponse:(UPnPActionResponse * _Nullable)response;
 - (void)uPnpManager:(UPnPManager * _Nullable)manager didPauseResponse:(UPnPActionResponse * _Nullable)response;
 - (void)uPnpManager:(UPnPManager * _Nullable)manager didStopResponse:(UPnPActionResponse * _Nullable)response;
+- (void)uPnpManager:(UPnPManager * _Nullable)manager didSeekTo:(NSString *)target response:(UPnPActionResponse *)response;
 
 @end
 

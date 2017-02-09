@@ -23,6 +23,11 @@
 
 @implementation UPnPActionRequest
 
++ (instancetype)request
+{
+    return [[UPnPActionRequest alloc] init];
+}
+
 - (NSMutableArray<NSString *> *)xmlLines
 {
     if (_xmlLines == nil)
@@ -55,6 +60,11 @@
 - (NSString *)_soapAction
 {
     return [NSString stringWithFormat:@"\"%@#%@\"", self.service.serviceType, self.action.name];
+}
+
+- (void)setActionName:(NSString *)actionName
+{
+    self.action.name = actionName;
 }
 
 - (void)composeRequest
@@ -90,6 +100,15 @@
     NSData *data = [mutStr dataUsingEncoding:NSUTF8StringEncoding];
     self.HTTPBody = data;
     _requestBody = data;
+}
+
+- (Action *)action
+{
+    if (_action == nil)
+    {
+        _action = [[Action alloc] init];
+    }
+    return _action;
 }
 
 @end

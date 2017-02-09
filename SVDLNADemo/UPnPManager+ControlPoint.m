@@ -10,13 +10,6 @@
 #import "UPnPActionRequest.h"
 #import <objc/runtime.h>
 
-#define dispatch_async_main_safe(block)\
-if ([NSThread isMainThread]) {\
-block();\
-} else {\
-dispatch_async(dispatch_get_main_queue(), block);\
-}
-
 static NSString *const KEY_SHARED_SESSION = @"sharedSessionKey";
 
 @interface UPnPManager ()
@@ -40,6 +33,7 @@ static NSString *const KEY_SHARED_SESSION = @"sharedSessionKey";
 - (void)setAVTransportURI:(NSString * _Nullable)uri response:(ActionResponseHandler)responseHandler
 {
     NSString *encodedURI = [uri stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    [self.request setActionName:@"SetAVTransportURI"];
     [self.request addParameterWithKey:@"InstanceID" value:@"0"];
     [self.request addParameterWithKey:@"CurrentURI" value:encodedURI];
     [self.request addParameterWithKey:@"CurrentURIMetaData"];
@@ -53,14 +47,33 @@ static NSString *const KEY_SHARED_SESSION = @"sharedSessionKey";
         {
             [self.controlPointDelegate uPnpManager:self didSetAVTransportURI:uri response:actResp];
         }
-        dispatch_async_main_safe(^{
-            responseHandler(actResp, response, error);
-        });
+        responseHandler(actResp, response, error);
+    }];
+}
+
+- (void)seekTo:(NSString *)target response:(ActionResponseHandler)responseHandler
+{
+    [self.request setActionName:@"Seek"];
+    [self.request addParameterWithKey:@"InstanceID" value:@"0"];
+    [self.request addParameterWithKey:@"Unit" value:@"REL_TIME"];
+    [self.request addParameterWithKey:@"Target" value:@"00:00:01"];
+    [self.request composeRequest];
+    
+    [self _httpRequest:self.request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+        UPnPActionResponse *actResp = [[UPnPActionResponse alloc] initWithData:data];
+        NSHTTPURLResponse *resp = (NSHTTPURLResponse *)response;
+        actResp.statusCode = resp.statusCode;
+        if ([self.controlPointDelegate respondsToSelector:@selector(uPnpManager:didSeekTo:response:)])
+        {
+            [self.controlPointDelegate uPnpManager:self didSeekTo:target response:actResp];
+        }
+        responseHandler(actResp, response, error);
     }];
 }
 
 - (void)playWithResponse:(ActionResponseHandler)responseHandler
 {
+    [self.request setActionName:@"Play"];
     [self.request addParameterWithKey:@"InstanceID" value:@"0"];
     [self.request addParameterWithKey:@"Speed" value:@"1"];
     [self.request composeRequest];
@@ -71,14 +84,13 @@ static NSString *const KEY_SHARED_SESSION = @"sharedSessionKey";
         {
             [self.controlPointDelegate uPnpManager:self didPlayResponse:actResp];
         }
-        dispatch_async_main_safe(^{
-            responseHandler(actResp, response, error);
-        });
+        responseHandler(actResp, response, error);
     }];
 }
 
 - (void)pauseWithResponse:(ActionResponseHandler)responseHandler
 {
+    [self.request setActionName:@"Pause"];
     [self.request addParameterWithKey:@"InstanceID" value:@"0"];
     [self.request composeRequest];
     
@@ -88,14 +100,13 @@ static NSString *const KEY_SHARED_SESSION = @"sharedSessionKey";
         {
             [self.controlPointDelegate uPnpManager:self didPauseResponse:actResp];
         }
-        dispatch_async_main_safe(^{
-            responseHandler(actResp, response, error);
-        });
+        responseHandler(actResp, response, error);
     }];
 }
 
 - (void)stopWithResponse:(ActionResponseHandler)responseHandler
 {
+    [self.request setActionName:@"Stop"];
     [self.request addParameterWithKey:@"InstanceID" value:@"0"];
     [self.request composeRequest];
     
@@ -105,14 +116,13 @@ static NSString *const KEY_SHARED_SESSION = @"sharedSessionKey";
         {
             [self.controlPointDelegate uPnpManager:self didStopResponse:actResp];
         }
-        dispatch_async_main_safe(^{
-            responseHandler(actResp, response, error);
-        });
+        responseHandler(actResp, response, error);
     }];
 }
 
 - (void)getTransportInfo:(ActionResponseHandler)responseHandler
 {
+    [self.request setActionName:@"GetTransportInfo"];
     [self.request addParameterWithKey:@"InstanceID" value:@"0"];
     [self.request composeRequest];
     
@@ -122,14 +132,13 @@ static NSString *const KEY_SHARED_SESSION = @"sharedSessionKey";
         {
             [self.controlPointDelegate uPnpManager:self didGetTransportInfoResponse:actResp];
         }
-        dispatch_async_main_safe(^{
-            responseHandler(actResp, response, error);
-        });
+        responseHandler(actResp, response, error);
     }];
 }
 
 - (void)getPositionInfo:(ActionResponseHandler)responseHandler
 {
+    [self.request setActionName:@"GetPositionInfo"];
     [self.request addParameterWithKey:@"InstanceID" value:@"0"];
     [self.request composeRequest];
     
@@ -139,9 +148,7 @@ static NSString *const KEY_SHARED_SESSION = @"sharedSessionKey";
         {
             [self.controlPointDelegate uPnpManager:self didGetPositionInfoResponse:actResp];
         }
-        dispatch_async_main_safe(^{
-            responseHandler(actResp, response, error);
-        });
+        responseHandler(actResp, response, error);
     }];
 }
 

@@ -25,4 +25,6 @@ typedef void(^ActionResponseHandler)(UPnPActionResponse * _Nullable actionRespon
 
 - (void)getPositionInfo:(ActionResponseHandler)responseHandler;
 
+- (void)seekTo:(NSString *)target response:(ActionResponseHandler)responseHandler;
+
 @end

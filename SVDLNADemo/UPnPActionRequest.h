@@ -16,6 +16,10 @@
 @property (strong, nonatomic) Service * _Nullable service;
 @property (strong, nonatomic) Action * _Nullable action;
 
++ (instancetype)request;
+
+- (void)setActionName:(NSString *)actionName;
+
 /*
  * 添加动作参数的键名
  */
