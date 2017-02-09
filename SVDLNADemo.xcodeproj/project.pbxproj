@@ -601,6 +601,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.bolizhou.SOHUTest.SVDLNADemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				WARNING_CFLAGS = "-Wno-nullability-completeness";
+				WARNING_LDFLAGS = "";
 			};
 			name = Debug;
 		};
@@ -618,6 +620,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.bolizhou.SOHUTest.SVDLNADemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				WARNING_CFLAGS = "-Wno-nullability-completeness";
+				WARNING_LDFLAGS = "";
 			};
 			name = Release;
 		};

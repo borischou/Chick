@@ -26,7 +26,7 @@
 
 @interface UPnPManager : NSObject
 
-@property (strong, nonatomic) UPnPActionRequest  * _Nullable request;
+@property (strong, nonatomic) UPnPActionRequest * _Nullable request;
 
 + (_Nullable instancetype)sharedManager;
 
