@@ -49,7 +49,10 @@ static NSString *const KEY_SHARED_SESSION = @"sharedSessionKey";
         UPnPActionResponse *actResp = [[UPnPActionResponse alloc] initWithData:data];
         NSHTTPURLResponse *resp = (NSHTTPURLResponse *)response;
         actResp.statusCode = resp.statusCode;
-        [self.controlPointDelegate uPnpManager:self didSetAVTransportURI:uri response:actResp];
+        if ([self.controlPointDelegate respondsToSelector:@selector(uPnpManager:didSetAVTransportURI:response:)])
+        {
+            [self.controlPointDelegate uPnpManager:self didSetAVTransportURI:uri response:actResp];
+        }
         dispatch_async_main_safe(^{
             responseHandler(actResp, response, error);
         });
@@ -64,7 +67,10 @@ static NSString *const KEY_SHARED_SESSION = @"sharedSessionKey";
     
     [self _httpRequest:self.request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
         UPnPActionResponse *actResp = [[UPnPActionResponse alloc] initWithData:data];
-        [self.controlPointDelegate uPnpManager:self didPlayResponse:actResp];
+        if ([self.controlPointDelegate respondsToSelector:@selector(uPnpManager:didPlayResponse:)])
+        {
+            [self.controlPointDelegate uPnpManager:self didPlayResponse:actResp];
+        }
         dispatch_async_main_safe(^{
             responseHandler(actResp, response, error);
         });
@@ -78,7 +84,10 @@ static NSString *const KEY_SHARED_SESSION = @"sharedSessionKey";
     
     [self _httpRequest:self.request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
         UPnPActionResponse *actResp = [[UPnPActionResponse alloc] initWithData:data];
-        [self.controlPointDelegate uPnpManager:self didPauseResponse:actResp];
+        if ([self.controlPointDelegate respondsToSelector:@selector(uPnpManager:didPauseResponse:)])
+        {
+            [self.controlPointDelegate uPnpManager:self didPauseResponse:actResp];
+        }
         dispatch_async_main_safe(^{
             responseHandler(actResp, response, error);
         });
@@ -92,6 +101,10 @@ static NSString *const KEY_SHARED_SESSION = @"sharedSessionKey";
     
     [self _httpRequest:self.request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
         UPnPActionResponse *actResp = [[UPnPActionResponse alloc] initWithData:data];
+        if ([self.controlPointDelegate respondsToSelector:@selector(uPnpManager:didStopResponse:)])
+        {
+            [self.controlPointDelegate uPnpManager:self didStopResponse:actResp];
+        }
         dispatch_async_main_safe(^{
             responseHandler(actResp, response, error);
         });
@@ -105,7 +118,10 @@ static NSString *const KEY_SHARED_SESSION = @"sharedSessionKey";
     
     [self _httpRequest:self.request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
         UPnPActionResponse *actResp = [[UPnPActionResponse alloc] initWithData:data];
-        [self.controlPointDelegate uPnpManager:self didGetTransportInfoResponse:actResp];
+        if ([self.controlPointDelegate respondsToSelector:@selector(uPnpManager:didGetTransportInfoResponse:)])
+        {
+            [self.controlPointDelegate uPnpManager:self didGetTransportInfoResponse:actResp];
+        }
         dispatch_async_main_safe(^{
             responseHandler(actResp, response, error);
         });
@@ -119,7 +135,10 @@ static NSString *const KEY_SHARED_SESSION = @"sharedSessionKey";
     
     [self _httpRequest:self.request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
         UPnPActionResponse *actResp = [[UPnPActionResponse alloc] initWithData:data];
-        [self.controlPointDelegate uPnpManager:self didGetPositionInfoResponse:actResp];
+        if ([self.controlPointDelegate respondsToSelector:@selector(uPnpManager:didGetPositionInfoResponse:)])
+        {
+            [self.controlPointDelegate uPnpManager:self didGetPositionInfoResponse:actResp];
+        }
         dispatch_async_main_safe(^{
             responseHandler(actResp, response, error);
         });
