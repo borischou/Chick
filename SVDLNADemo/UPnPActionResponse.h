@@ -11,6 +11,8 @@
 
 @interface UPnPActionResponse : NSObject
 
+@property (assign, nonatomic) NSInteger statusCode;
+@property (copy, nonatomic) NSString *respMsg;
 @property (copy, nonatomic) NSString *errorCode;
 @property (copy, nonatomic) NSString *errorDescription;
 @property (copy, nonatomic) NSArray<Action *> *actions;

@@ -11,14 +11,29 @@
 #import "Service.h"
 #import "UPnPActionRequest.h"
 
+@class UPnPManager;
+@protocol UPnPControlPointDelegate <NSObject>
+
+@optional
+- (void)uPnpManager:(UPnPManager * _Nullable)manager didGetTransportInfoResponse:(UPnPActionResponse * _Nullable)response;
+- (void)uPnpManager:(UPnPManager * _Nullable)manager didGetPositionInfoResponse:(UPnPActionResponse * _Nullable)response;
+- (void)uPnpManager:(UPnPManager * _Nullable)manager didSetAVTransportURI:(NSString * _Nullable)uri response:(UPnPActionResponse * _Nullable)response;
+- (void)uPnpManager:(UPnPManager * _Nullable)manager didPlayResponse:(UPnPActionResponse * _Nullable)response;
+- (void)uPnpManager:(UPnPManager * _Nullable)manager didPauseResponse:(UPnPActionResponse * _Nullable)response;
+- (void)uPnpManager:(UPnPManager * _Nullable)manager didStopResponse:(UPnPActionResponse * _Nullable)response;
+
+@end
+
 @interface UPnPManager : NSObject
 
-@property (strong, nonatomic) UPnPActionRequest *request;
+@property (strong, nonatomic) UPnPActionRequest  * _Nullable request;
 
-+ (instancetype)sharedManager;
++ (_Nullable instancetype)sharedManager;
 
-- (instancetype)initWithRequest:(UPnPActionRequest *)request;
+- (_Nullable instancetype)initWithRequest:(UPnPActionRequest * _Nullable)request;
 
-- (void)setRequest:(UPnPActionRequest *)request;
+- (void)setRequest:(UPnPActionRequest * _Nullable)request;
+
+@property (weak, nonatomic) id <UPnPControlPointDelegate> _Nullable controlPointDelegate;
 
 @end

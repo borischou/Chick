@@ -11,13 +11,6 @@
 #import "ControlPanelViewController.h"
 #import "CurrentDevice.h"
 
-#define Screen_Width [UIScreen mainScreen].bounds.size.width
-#define Screen_Height [UIScreen mainScreen].bounds.size.height
-
-#define Below_Navbar [UIApplication sharedApplication].statusBarFrame.size.height+self.navigationController.navigationBar.frame.size.height
-
-#define VIDEO_URL @"http://baobab.wdjcdn.com/14571455324031.mp4"
-
 @interface ActionViewController ()
 
 @property (strong, nonatomic) Action *action;

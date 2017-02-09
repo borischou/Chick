@@ -14,5 +14,18 @@
 
 #import "XMLDictionary.h"
 #import "ARCWeakRef.h"
+#import "UPnPActionResponse.h"
+
+#define Below_Navbar [UIApplication sharedApplication].statusBarFrame.size.height+self.navigationController.navigationBar.frame.size.height
+
+#define Screen_Width [UIScreen mainScreen].bounds.size.width
+#define Screen_Height [UIScreen mainScreen].bounds.size.height
+
+#define VIDEO_URL @"http://baobab.wdjcdn.com/14571455324031.mp4"
+
+typedef void(^successHandler)(NSData * _Nullable data);
+typedef void(^failureHandler)(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error);
+typedef void(^completionHandler)(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error);
+typedef void(^actionResponseHandler)(UPnPActionResponse * _Nullable actionResponse, NSURLResponse * _Nullable response, NSError * _Nullable error);
 
 #endif /* PrefixHeader_pch */

@@ -9,15 +9,18 @@
 #import "UPnPManager.h"
 #import "UPnPActionResponse.h"
 
-typedef void(^successHandler)(NSData * _Nullable data);
-typedef void(^failureHandler)(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error);
-typedef void(^completionHandler)(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error);
-typedef void(^actionResponseHandler)(UPnPActionResponse * _Nullable actionResponse, NSURLResponse * _Nullable response, NSError * _Nullable error);
-
 @interface UPnPManager (ControlPoint)
 
-- (void)setAVTransportURI:(NSString * _Nullable)uri response:(actionResponseHandler _Nullable)handler;
+- (void)setAVTransportURI:(NSString * _Nullable)uri response:(actionResponseHandler _Nullable)responseHandler;
 
-- (void)playWithResponse:(actionResponseHandler _Nullable)handler;
+- (void)playWithResponse:(actionResponseHandler _Nullable)responseHandler;
+
+- (void)pauseWithResponse:(actionResponseHandler _Nullable)responseHandler;
+
+- (void)stopWithResponse:(actionResponseHandler _Nullable)responseHandler;
+
+- (void)getTransportInfo:(actionResponseHandler _Nullable)responseHandler;
+
+- (void)getPositionInfo:(actionResponseHandler _Nullable)responseHandler;
 
 @end
