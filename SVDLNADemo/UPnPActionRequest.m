@@ -111,4 +111,9 @@
     return _action;
 }
 
+- (void)reset
+{
+    [_xmlLines removeAllObjects];
+}
+
 @end

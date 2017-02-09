@@ -152,6 +152,18 @@ static NSString *const KEY_SHARED_SESSION = @"sharedSessionKey";
     }];
 }
 
+- (void)getCurrentTransportActions:(ActionResponseHandler)responseHandler
+{
+    [self.request setActionName:@"GetCurrentTransportActions"];
+    [self.request addParameterWithKey:@"InstanceID" value:@"0"];
+    [self.request composeRequest];
+    
+    [self _httpRequest:self.request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+        UPnPActionResponse *actResp = [[UPnPActionResponse alloc] initWithData:data];
+        responseHandler(actResp, response, error);
+    }];
+}
+
 #pragma mark - Private
 
 - (void)_httpRequest:(UPnPActionRequest *)request completionHandler:(completionHandler)handler

@@ -18,6 +18,8 @@
 
 + (instancetype)request;
 
+- (void)reset;
+
 - (void)setActionName:(NSString *)actionName;
 
 /*

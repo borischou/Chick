@@ -16,7 +16,7 @@
 @property (strong, nonatomic) UIButton *pauseButton;
 @property (strong, nonatomic) UIButton *stopButton;
 @property (strong, nonatomic) UIButton *playButton;
-@property (strong, nonatomic) UIButton *seekButton;
+@property (strong, nonatomic) UIButton *testButton;
 
 @property (strong, nonatomic) ServiceDescription *sdd;
 
@@ -64,12 +64,12 @@
     [_stopButton addTarget:self action:@selector(stopButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:_stopButton];
     
-    _seekButton = [UIButton new];
-    [_seekButton setTitle:@"跳播" forState:UIControlStateNormal];
-    [_seekButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [_seekButton setBackgroundColor:[UIColor purpleColor]];
-    [_seekButton addTarget:self action:@selector(seekButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:_seekButton];
+    _testButton = [UIButton new];
+    [_testButton setTitle:@"测试" forState:UIControlStateNormal];
+    [_testButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [_testButton setBackgroundColor:[UIColor purpleColor]];
+    [_testButton addTarget:self action:@selector(testButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:_testButton];
     
     CGFloat top = _reminderLabel.frame.origin.y+_reminderLabel.frame.size.height+10;
     CGFloat width = (Screen_Width-80)/3;
@@ -78,10 +78,10 @@
     _playButton.frame = CGRectMake(20, top, width, height);
     _pauseButton.frame = CGRectMake(_playButton.frame.origin.x+_playButton.frame.size.width+20, top, width, height);
     _stopButton.frame = CGRectMake(_pauseButton.frame.origin.x+_pauseButton.frame.size.width+20, top, width, height);
-    _seekButton.frame = CGRectMake(20, _playButton.frame.origin.y+_playButton.frame.size.height+10, width, height);
+    _testButton.frame = CGRectMake(20, _playButton.frame.origin.y+_playButton.frame.size.height+10, width, height);
 }
 
-- (void)seekButtonPressed:(UIButton *)sender
+- (void)testButtonPressed:(UIButton *)sender
 {
     UPnPManager *manager = [UPnPManager sharedManager];
     Address *address = [CurrentDevice sharedDevice].device.address;
@@ -89,9 +89,9 @@
     request.address = address;
     request.service = self.sdd.service;
     [manager setRequest:request];
-    [manager seekTo:@"00:00:01" response:^(UPnPActionResponse * _Nullable actionResponse, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+    [manager getCurrentTransportActions:^(UPnPActionResponse * _Nullable actionResponse, NSURLResponse * _Nullable response, NSError * _Nullable error) {
         dispatch_async_main_safe(^{
-            NSLog(@"Seek的回调:\n%@", actionResponse.xmlDictionary);
+            NSLog(@"GetCurrentTransportActions的回调:\n%@", actionResponse.xmlDictionary);
         });
     }];
 }
