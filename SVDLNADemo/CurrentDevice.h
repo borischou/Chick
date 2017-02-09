@@ -11,10 +11,16 @@
 
 @interface CurrentDevice : NSObject
 
-+ (instancetype)sharedDevice;
++ (_Nullable instancetype)sharedDevice;
 
-- (void)setDevice:(Device *)device;
+- (void)setDevice:(Device * _Nullable)device;
 
-@property (strong, nonatomic, readonly) Device *device;
+- (void)setServices:(NSArray<Service *> * _Nullable)services;
+
+- (void)resetDevice;
+
+@property (strong, nonatomic, readonly) Device * _Nullable device;
+
+@property (copy, nonatomic, readonly) NSArray<Service *> * _Nullable services;
 
 @end

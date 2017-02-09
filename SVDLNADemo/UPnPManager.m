@@ -27,4 +27,16 @@
     return manager;
 }
 
+- (instancetype)initWithRequest:(UPnPActionRequest *)request
+{
+    self = [UPnPManager sharedManager];
+    self.request = request;
+    return self;
+}
+
+- (void)setRequest:(UPnPActionRequest *)request;
+{
+    _request = request;
+}
+
 @end

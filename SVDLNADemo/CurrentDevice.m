@@ -10,7 +10,8 @@
 
 @interface CurrentDevice ()
 
-@property (strong, nonatomic) Device *device;
+@property (strong, nonatomic) Device * _Nullable device;
+@property (copy, nonatomic) NSArray<Service *> * _Nullable services;
 
 @end
 
@@ -32,6 +33,17 @@
 - (void)setDevice:(Device *)device
 {
     _device = device;
+}
+
+- (void)setServices:(NSArray<Service *> *)services
+{
+    _services = services;
+}
+
+- (void)resetDevice
+{
+    _device = nil;
+    _services = nil;
 }
 
 @end

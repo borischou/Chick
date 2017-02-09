@@ -81,16 +81,15 @@
 {
     UPnPManager *manager = [UPnPManager sharedManager];
     Address *address = [CurrentDevice sharedDevice].device.address;
-    manager.address = address;
-    manager.action = self.action;
-    manager.service = self.sdd.service;
+    UPnPActionRequest *request = [[UPnPActionRequest alloc] init];
+    request.address = address;
+    request.action = self.action;
+    request.service = self.sdd.service;
+    [manager setRequest:request];
     
-    [manager setAVTransportURI:VIDEO_URL completion:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
-        if (data != nil && data.length > 0)
-        {
-            NSDictionary *dataDict = [NSDictionary dictionaryWithXMLData:data];
-            NSLog(@"发送视频地址(setAVTransportURI)的回调:\n%@", dataDict);
-        }
+    [manager setAVTransportURI:VIDEO_URL response:^(UPnPActionResponse * _Nullable actionResponse, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+        NSLog(@"发送视频地址(setAVTransportURI)的回调:\n%@", actionResponse.xmlDictionary);
+
     }];
 }
 

@@ -9,13 +9,16 @@
 #import <Foundation/Foundation.h>
 #import "Address.h"
 #import "Service.h"
+#import "UPnPActionRequest.h"
 
 @interface UPnPManager : NSObject
 
-@property (strong, nonatomic) Address *address;
-@property (strong, nonatomic) Service *service;
-@property (strong, nonatomic) Action *action;
+@property (strong, nonatomic) UPnPActionRequest *request;
 
 + (instancetype)sharedManager;
+
+- (instancetype)initWithRequest:(UPnPActionRequest *)request;
+
+- (void)setRequest:(UPnPActionRequest *)request;
 
 @end

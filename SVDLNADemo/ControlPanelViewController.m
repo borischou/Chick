@@ -10,6 +10,10 @@
 
 @interface ControlPanelViewController ()
 
+@property (strong, nonatomic) UILabel *reminderLabel;
+@property (strong, nonatomic) UIButton *playPauseButton;
+@property (strong, nonatomic) UIButton *stopButton;
+
 @end
 
 @implementation ControlPanelViewController

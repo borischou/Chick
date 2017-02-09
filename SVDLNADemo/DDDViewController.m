@@ -37,7 +37,6 @@ static NSString *const REUSECELLID = @"reusecellid";
     {
         _location = location;
         _device = device;
-        [[CurrentDevice sharedDevice] setDevice:device];
     }
     return self;
 }
@@ -61,8 +60,11 @@ static NSString *const REUSECELLID = @"reusecellid";
 {
     [[UPnPManager sharedManager] fetchDDDWithLocation:location successHandler:^(DeviceDescription * _Nullable ddd) {
         self.title = ddd.friendlyName ? ddd.friendlyName : @"DDD";
-        ddd.device = self.device;
         self.ddd = ddd;
+        ddd.device = self.device;
+        self.device.ddd = ddd;
+        [[CurrentDevice sharedDevice] setDevice:self.device];
+        [[CurrentDevice sharedDevice] setServices:self.ddd.services];
         [self.tableView reloadData];
     } failureHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
         self.title = @"DDD";

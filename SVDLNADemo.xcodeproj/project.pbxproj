@@ -16,6 +16,7 @@
 		546366761E4B0AB200BCDBF3 /* AllowedValueRange.m in Sources */ = {isa = PBXBuildFile; fileRef = 546366751E4B0AB200BCDBF3 /* AllowedValueRange.m */; };
 		54724F0E1E4C07E900F44A53 /* ControlPanelViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54724F0D1E4C07E900F44A53 /* ControlPanelViewController.m */; };
 		54724F111E4C123200F44A53 /* CurrentDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = 54724F101E4C123200F44A53 /* CurrentDevice.m */; };
+		54724F171E4C1A8400F44A53 /* UPnPActionResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 54724F161E4C1A8400F44A53 /* UPnPActionResponse.m */; };
 		547696621E49711D001DAB5F /* NSString+Ext.m in Sources */ = {isa = PBXBuildFile; fileRef = 547696611E49711D001DAB5F /* NSString+Ext.m */; };
 		547696651E497B2E001DAB5F /* Address.m in Sources */ = {isa = PBXBuildFile; fileRef = 547696641E497B2E001DAB5F /* Address.m */; };
 		547696681E4986D7001DAB5F /* DeviceDescription.m in Sources */ = {isa = PBXBuildFile; fileRef = 547696671E4986D7001DAB5F /* DeviceDescription.m */; };
@@ -77,6 +78,8 @@
 		54724F0D1E4C07E900F44A53 /* ControlPanelViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ControlPanelViewController.m; sourceTree = "<group>"; };
 		54724F0F1E4C123200F44A53 /* CurrentDevice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CurrentDevice.h; sourceTree = "<group>"; };
 		54724F101E4C123200F44A53 /* CurrentDevice.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CurrentDevice.m; sourceTree = "<group>"; };
+		54724F151E4C1A8400F44A53 /* UPnPActionResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UPnPActionResponse.h; sourceTree = "<group>"; };
+		54724F161E4C1A8400F44A53 /* UPnPActionResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UPnPActionResponse.m; sourceTree = "<group>"; };
 		547696601E49711D001DAB5F /* NSString+Ext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Ext.h"; sourceTree = "<group>"; };
 		547696611E49711D001DAB5F /* NSString+Ext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Ext.m"; sourceTree = "<group>"; };
 		547696631E497B2E001DAB5F /* Address.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Address.h; sourceTree = "<group>"; };
@@ -162,6 +165,8 @@
 				546366671E4AFF1B00BCDBF3 /* UPnPManager+ControlPoint.m */,
 				546366631E4AEE0000BCDBF3 /* UPnPActionRequest.h */,
 				546366641E4AEE0000BCDBF3 /* UPnPActionRequest.m */,
+				54724F151E4C1A8400F44A53 /* UPnPActionResponse.h */,
+				54724F161E4C1A8400F44A53 /* UPnPActionResponse.m */,
 			);
 			name = UPnP;
 			sourceTree = "<group>";
@@ -252,13 +257,12 @@
 		548BF8CA1E482B060074F5F1 /* SVDLNADemo */ = {
 			isa = PBXGroup;
 			children = (
-				546366691E4B034400BCDBF3 /* ViewController */,
-				546366621E4AEDE000BCDBF3 /* UPnP */,
 				548BF8CE1E482B060074F5F1 /* AppDelegate.h */,
 				548BF8CF1E482B060074F5F1 /* AppDelegate.m */,
 				5476967A1E49B612001DAB5F /* CustomTableViewCell.h */,
 				5476967B1E49B612001DAB5F /* CustomTableViewCell.m */,
-				547696731E498BCB001DAB5F /* Lib */,
+				546366691E4B034400BCDBF3 /* ViewController */,
+				546366621E4AEDE000BCDBF3 /* UPnP */,
 				547696721E498BB9001DAB5F /* Model */,
 				548BF8CB1E482B060074F5F1 /* Supporting Files */,
 			);
@@ -268,6 +272,7 @@
 		548BF8CB1E482B060074F5F1 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				547696731E498BCB001DAB5F /* Lib */,
 				548BF8D71E482B060074F5F1 /* Assets.xcassets */,
 				548BF8D91E482B060074F5F1 /* LaunchScreen.storyboard */,
 				548BF8DC1E482B060074F5F1 /* Info.plist */,
@@ -429,6 +434,7 @@
 				547696791E498D40001DAB5F /* Argument.m in Sources */,
 				546366731E4B0A1800BCDBF3 /* StateVariable.m in Sources */,
 				548BF9061E4855C10074F5F1 /* SsdpResponseHeader.m in Sources */,
+				54724F171E4C1A8400F44A53 /* UPnPActionResponse.m in Sources */,
 				548BF9001E482CBF0074F5F1 /* GCDAsyncUdpSocket.m in Sources */,
 				548BF90F1E488C2A0074F5F1 /* ARCWeakRef.m in Sources */,
 				5463666C1E4B036000BCDBF3 /* ActionViewController.m in Sources */,

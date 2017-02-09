@@ -11,39 +11,33 @@
 
 @implementation UPnPManager (ControlPoint)
 
-- (void)setAVTransportURI:(NSString * _Nullable)uri completion:(completionHandler _Nullable)completion
+- (void)setAVTransportURI:(NSString * _Nullable)uri response:(actionResponseHandler _Nullable)handler
 {
     NSString *encodedURI = [uri stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-    UPnPActionRequest *request = [[UPnPActionRequest alloc] init];
-    request.address = self.address;
-    request.action = self.action;
-    request.service = self.service;
-    [request addParameterWithKey:@"InstanceID" value:@"0"];
-    [request addParameterWithKey:@"CurrentURI" value:encodedURI];
-    [request addParameterWithKey:@"CurrentURIMetaData"];
-    [request composeRequest];
+    [self.request addParameterWithKey:@"InstanceID" value:@"0"];
+    [self.request addParameterWithKey:@"CurrentURI" value:encodedURI];
+    [self.request addParameterWithKey:@"CurrentURIMetaData"];
+    [self.request composeRequest];
     
-    [self _httpPostWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
-        completion(data, response, error);
+    [self _httpRequest:self.request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+        UPnPActionResponse *actResp = [[UPnPActionResponse alloc] initWithData:data];
+        handler(actResp, response, error);
     }];
 }
 
-- (void)playCompletion:(completionHandler _Nullable)completion
+- (void)playWithResponse:(actionResponseHandler _Nullable)handler
 {
-    UPnPActionRequest *request = [[UPnPActionRequest alloc] init];
-    request.address = self.address;
-    request.action = self.action;
-    request.service = self.service;
-    [request addParameterWithKey:@"InstanceID" value:@"0"];
-    [request addParameterWithKey:@"Speed" value:@"1"];
-    [request composeRequest];
+    [self.request addParameterWithKey:@"InstanceID" value:@"0"];
+    [self.request addParameterWithKey:@"Speed" value:@"1"];
+    [self.request composeRequest];
     
-    [self _httpPostWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
-        completion(data, response, error);
+    [self _httpRequest:self.request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+        UPnPActionResponse *actResp = [[UPnPActionResponse alloc] initWithData:data];
+        handler(actResp, response, error);
     }];
 }
 
-- (void)_httpPostWithRequest:(UPnPActionRequest *)request completionHandler:(completionHandler)handler
+- (void)_httpRequest:(UPnPActionRequest *)request completionHandler:(completionHandler)handler
 {
     NSURLSession *session = [NSURLSession sharedSession];
     [[session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
