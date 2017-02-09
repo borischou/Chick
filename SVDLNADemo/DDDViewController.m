@@ -12,7 +12,7 @@
 #import "SDDViewController.h"
 #import "UPnPManager.h"
 #import "UPnPManager+Connection.h"
-#import "Device+Current.h"
+#import "CurrentDevice.h"
 
 #define Screen_Width [UIScreen mainScreen].bounds.size.width
 #define Screen_Height [UIScreen mainScreen].bounds.size.height
@@ -37,7 +37,7 @@ static NSString *const REUSECELLID = @"reusecellid";
     {
         _location = location;
         _device = device;
-        [Device currentDevice].address = device.address;
+        [[CurrentDevice sharedDevice] setDevice:device];
     }
     return self;
 }
@@ -61,6 +61,7 @@ static NSString *const REUSECELLID = @"reusecellid";
 {
     [[UPnPManager sharedManager] fetchDDDWithLocation:location successHandler:^(DeviceDescription * _Nullable ddd) {
         self.title = ddd.friendlyName ? ddd.friendlyName : @"DDD";
+        ddd.device = self.device;
         self.ddd = ddd;
         [self.tableView reloadData];
     } failureHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {

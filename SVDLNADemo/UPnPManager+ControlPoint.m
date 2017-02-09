@@ -13,12 +13,13 @@
 
 - (void)setAVTransportURI:(NSString * _Nullable)uri completion:(completionHandler _Nullable)completion
 {
+    NSString *encodedURI = [uri stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     UPnPActionRequest *request = [[UPnPActionRequest alloc] init];
     request.address = self.address;
     request.action = self.action;
     request.service = self.service;
     [request addParameterWithKey:@"InstanceID" value:@"0"];
-    [request addParameterWithKey:@"CurrentURI" value:[uri stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+    [request addParameterWithKey:@"CurrentURI" value:encodedURI];
     [request addParameterWithKey:@"CurrentURIMetaData"];
     [request composeRequest];
     

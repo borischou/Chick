@@ -14,7 +14,8 @@
 		5463666C1E4B036000BCDBF3 /* ActionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5463666B1E4B036000BCDBF3 /* ActionViewController.m */; };
 		546366731E4B0A1800BCDBF3 /* StateVariable.m in Sources */ = {isa = PBXBuildFile; fileRef = 546366721E4B0A1800BCDBF3 /* StateVariable.m */; };
 		546366761E4B0AB200BCDBF3 /* AllowedValueRange.m in Sources */ = {isa = PBXBuildFile; fileRef = 546366751E4B0AB200BCDBF3 /* AllowedValueRange.m */; };
-		5463667A1E4B109C00BCDBF3 /* Device+Current.m in Sources */ = {isa = PBXBuildFile; fileRef = 546366791E4B109C00BCDBF3 /* Device+Current.m */; };
+		54724F0E1E4C07E900F44A53 /* ControlPanelViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54724F0D1E4C07E900F44A53 /* ControlPanelViewController.m */; };
+		54724F111E4C123200F44A53 /* CurrentDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = 54724F101E4C123200F44A53 /* CurrentDevice.m */; };
 		547696621E49711D001DAB5F /* NSString+Ext.m in Sources */ = {isa = PBXBuildFile; fileRef = 547696611E49711D001DAB5F /* NSString+Ext.m */; };
 		547696651E497B2E001DAB5F /* Address.m in Sources */ = {isa = PBXBuildFile; fileRef = 547696641E497B2E001DAB5F /* Address.m */; };
 		547696681E4986D7001DAB5F /* DeviceDescription.m in Sources */ = {isa = PBXBuildFile; fileRef = 547696671E4986D7001DAB5F /* DeviceDescription.m */; };
@@ -72,8 +73,10 @@
 		546366741E4B0AB200BCDBF3 /* AllowedValueRange.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AllowedValueRange.h; sourceTree = "<group>"; };
 		546366751E4B0AB200BCDBF3 /* AllowedValueRange.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AllowedValueRange.m; sourceTree = "<group>"; };
 		546366771E4B0B1300BCDBF3 /* PrefixHeader.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PrefixHeader.pch; sourceTree = "<group>"; };
-		546366781E4B109C00BCDBF3 /* Device+Current.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Device+Current.h"; sourceTree = "<group>"; };
-		546366791E4B109C00BCDBF3 /* Device+Current.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Device+Current.m"; sourceTree = "<group>"; };
+		54724F0C1E4C07E900F44A53 /* ControlPanelViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ControlPanelViewController.h; sourceTree = "<group>"; };
+		54724F0D1E4C07E900F44A53 /* ControlPanelViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ControlPanelViewController.m; sourceTree = "<group>"; };
+		54724F0F1E4C123200F44A53 /* CurrentDevice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CurrentDevice.h; sourceTree = "<group>"; };
+		54724F101E4C123200F44A53 /* CurrentDevice.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CurrentDevice.m; sourceTree = "<group>"; };
 		547696601E49711D001DAB5F /* NSString+Ext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Ext.h"; sourceTree = "<group>"; };
 		547696611E49711D001DAB5F /* NSString+Ext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Ext.m"; sourceTree = "<group>"; };
 		547696631E497B2E001DAB5F /* Address.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Address.h; sourceTree = "<group>"; };
@@ -174,6 +177,8 @@
 				547696831E49CE88001DAB5F /* SDDViewController.m */,
 				5463666A1E4B036000BCDBF3 /* ActionViewController.h */,
 				5463666B1E4B036000BCDBF3 /* ActionViewController.m */,
+				54724F0C1E4C07E900F44A53 /* ControlPanelViewController.h */,
+				54724F0D1E4C07E900F44A53 /* ControlPanelViewController.m */,
 			);
 			name = ViewController;
 			sourceTree = "<group>";
@@ -193,8 +198,6 @@
 				5476966D1E4988D5001DAB5F /* ServiceDescription.m */,
 				5476966F1E498ADA001DAB5F /* Device.h */,
 				547696701E498ADA001DAB5F /* Device.m */,
-				546366781E4B109C00BCDBF3 /* Device+Current.h */,
-				546366791E4B109C00BCDBF3 /* Device+Current.m */,
 				547696741E498BEA001DAB5F /* Action.h */,
 				547696751E498BEA001DAB5F /* Action.m */,
 				547696771E498D40001DAB5F /* Argument.h */,
@@ -203,6 +206,8 @@
 				546366721E4B0A1800BCDBF3 /* StateVariable.m */,
 				546366741E4B0AB200BCDBF3 /* AllowedValueRange.h */,
 				546366751E4B0AB200BCDBF3 /* AllowedValueRange.m */,
+				54724F0F1E4C123200F44A53 /* CurrentDevice.h */,
+				54724F101E4C123200F44A53 /* CurrentDevice.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -428,11 +433,12 @@
 				548BF90F1E488C2A0074F5F1 /* ARCWeakRef.m in Sources */,
 				5463666C1E4B036000BCDBF3 /* ActionViewController.m in Sources */,
 				547696681E4986D7001DAB5F /* DeviceDescription.m in Sources */,
+				54724F111E4C123200F44A53 /* CurrentDevice.m in Sources */,
+				54724F0E1E4C07E900F44A53 /* ControlPanelViewController.m in Sources */,
 				548BF8D31E482B060074F5F1 /* ViewController.m in Sources */,
 				547696651E497B2E001DAB5F /* Address.m in Sources */,
 				5476966B1E4987A6001DAB5F /* Service.m in Sources */,
 				548BF90C1E48766C0074F5F1 /* XMLDictionary.m in Sources */,
-				5463667A1E4B109C00BCDBF3 /* Device+Current.m in Sources */,
 				5463665B1E4AD6A300BCDBF3 /* UPnPManager.m in Sources */,
 				546366651E4AEE0000BCDBF3 /* UPnPActionRequest.m in Sources */,
 				5476966E1E4988D5001DAB5F /* ServiceDescription.m in Sources */,
