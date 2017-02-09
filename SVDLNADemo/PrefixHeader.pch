@@ -15,6 +15,15 @@
 #import "XMLDictionary.h"
 #import "ARCWeakRef.h"
 #import "UPnPActionResponse.h"
+#import "UPnPManager.h"
+#import "UPnPManager+ControlPoint.h"
+
+#define dispatch_async_main_safe(block)\
+if ([NSThread isMainThread]) {\
+block();\
+} else {\
+dispatch_async(dispatch_get_main_queue(), block);\
+}
 
 #define Below_Navbar [UIApplication sharedApplication].statusBarFrame.size.height+self.navigationController.navigationBar.frame.size.height
 
@@ -26,6 +35,6 @@
 typedef void(^successHandler)(NSData * _Nullable data);
 typedef void(^failureHandler)(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error);
 typedef void(^completionHandler)(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error);
-typedef void(^actionResponseHandler)(UPnPActionResponse * _Nullable actionResponse, NSURLResponse * _Nullable response, NSError * _Nullable error);
+typedef void(^ActionResponseHandler)(UPnPActionResponse * _Nullable actionResponse, NSURLResponse * _Nullable response, NSError * _Nullable error);
 
 #endif /* PrefixHeader_pch */

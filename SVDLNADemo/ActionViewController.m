@@ -79,10 +79,10 @@
     request.action = self.action;
     request.service = self.sdd.service;
     [manager setRequest:request];
-    
     [manager setAVTransportURI:VIDEO_URL response:^(UPnPActionResponse * _Nullable actionResponse, NSURLResponse * _Nullable response, NSError * _Nullable error) {
         NSLog(@"发送视频地址(setAVTransportURI)的回调:\n%@", actionResponse.xmlDictionary);
-
+        ControlPanelViewController *cpvc = [[ControlPanelViewController alloc] initWithSDD:self.sdd];
+        [self.navigationController pushViewController:cpvc animated:YES];
     }];
 }
 

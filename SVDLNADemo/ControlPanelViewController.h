@@ -10,4 +10,6 @@
 
 @interface ControlPanelViewController : UIViewController
 
+- (instancetype)initWithSDD:(ServiceDescription *)sdd;
+
 @end
