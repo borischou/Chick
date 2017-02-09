@@ -89,9 +89,9 @@
     request.address = address;
     request.service = self.sdd.service;
     [manager setRequest:request];
-    [manager getCurrentTransportActions:^(UPnPActionResponse * _Nullable actionResponse, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+    [manager getTransportInfo:^(UPnPActionResponse * _Nullable actionResponse, NSURLResponse * _Nullable response, NSError * _Nullable error) {
         dispatch_async_main_safe(^{
-            NSLog(@"GetCurrentTransportActions的回调:\n%@", actionResponse.xmlDictionary);
+            NSLog(@"GetTransportInfo的回调:\n%@", actionResponse.xmlDictionary);
         });
     }];
 }
