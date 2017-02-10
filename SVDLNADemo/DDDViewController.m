@@ -7,12 +7,7 @@
 //
 
 #import "DDDViewController.h"
-#import "XMLDictionary.h"
-#import "DeviceDescription.h"
 #import "SDDViewController.h"
-#import "UPnPManager.h"
-#import "UPnPManager+Connection.h"
-#import "CurrentDevice.h"
 
 #define Screen_Width [UIScreen mainScreen].bounds.size.width
 #define Screen_Height [UIScreen mainScreen].bounds.size.height

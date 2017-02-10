@@ -7,14 +7,9 @@
 //
 
 #import "ViewController.h"
-#import "GCDAsyncUdpSocket.h"
-#import "SsdpResponseHeader.h"
-#import "XMLDictionary.h"
-#import "ARCWeakRef.h"
-#import "Device.h"
 #import "CustomTableViewCell.h"
 #import "DDDViewController.h"
-#import "UPnPManager.h"
+#import "ARCWeakRef.h"
 
 static NSString *const REUSECELLID = @"reuseid";
 

@@ -7,7 +7,6 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "Device.h"
 
 @interface CustomTableViewCell : UITableViewCell
 

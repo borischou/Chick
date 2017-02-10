@@ -7,9 +7,7 @@
 //
 
 #import "ActionViewController.h"
-#import "UPnPManager+ControlPoint.h"
 #import "ControlPanelViewController.h"
-#import "CurrentDevice.h"
 
 @interface ActionViewController ()
 

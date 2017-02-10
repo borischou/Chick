@@ -7,9 +7,6 @@
 //
 
 #import "SDDViewController.h"
-#import "XMLDictionary.h"
-#import "UPnPManager.h"
-#import "UPnPManager+Connection.h"
 #import "ActionViewController.h"
 
 #define Screen_Width [UIScreen mainScreen].bounds.size.width

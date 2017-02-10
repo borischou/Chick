@@ -7,8 +7,6 @@
 //
 
 #import "ControlPanelViewController.h"
-#import "ServiceDescription.h"
-#import "CurrentDevice.h"
 
 @interface ControlPanelViewController ()
 

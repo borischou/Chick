@@ -7,9 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "Address.h"
-#import "Service.h"
 #import "UPnPActionRequest.h"
+#import "UPnPManager.h"
 #import "Device.h"
 
 @class UPnPManager;
