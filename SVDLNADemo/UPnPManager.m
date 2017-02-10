@@ -22,7 +22,6 @@
     {
         dispatch_once(&onceToken, ^{
             manager = [[UPnPManager alloc] init];
-            
         });
     }
     return manager;
@@ -38,6 +37,11 @@
 - (void)setRequest:(UPnPActionRequest *)request;
 {
     _request = request;
+}
+
+- (void)searchDevice
+{
+    
 }
 
 @end

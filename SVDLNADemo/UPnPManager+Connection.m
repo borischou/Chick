@@ -9,13 +9,6 @@
 #import "UPnPManager+Connection.h"
 #import "XMLDictionary.h"
 
-#define dispatch_async_main_safe(block)\
-if ([NSThread isMainThread]) {\
-block();\
-} else {\
-dispatch_async(dispatch_get_main_queue(), block);\
-}
-
 @implementation UPnPManager (Connection)
 
 - (void)fetchDDDWithLocation:(NSString *)location successHandler:(DDDHandler)dddBlk failureHandler:(failureHandler)failBlk

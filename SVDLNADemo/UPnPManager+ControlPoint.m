@@ -10,6 +10,8 @@
 #import "UPnPActionRequest.h"
 #import <objc/runtime.h>
 
+typedef void(^completionHandler)(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error);
+
 static NSString *const KEY_SHARED_SESSION = @"sharedSessionKey";
 
 @interface UPnPManager ()
