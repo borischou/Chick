@@ -27,10 +27,10 @@
 #define USER_AGENT @""
 #define MAN @"ssdp:discover" //请勿修改
 #define MX @"5"
-#define ST UPNP_MEDIA_RENDERER
+#define ST UPNP_ROOT_DEVICE
 
 //SSDP DEVICE
-#define UPNP_ROOT_DEVICE @"upnp:rootdevice"
+#define UPNP_ROOT_DEVICE @"upnp:rootdevice" //包括智能电视、机顶盒、路由器、支持DLNA的电脑设备等
 #define UPNP_MEDIA_RENDERER @"urn:schemas-upnp-org:device:MediaRenderer:1"
 #define UPNP_MEDIA_SERVER @"urn:schemas-upnp-org:device:MediaServer:1"
 #define UPNP_INTERNET_GATEWAY_DEVICE @"urn:schemas-upnp-org:device:InternetGatewayDevice:1"
