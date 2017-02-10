@@ -36,7 +36,7 @@ static NSString *const KEY_SHARED_SESSION = @"sharedSessionKey";
     [self.request setActionName:@"SetAVTransportURI"];
     [self.request addParameterWithKey:@"InstanceID" value:@"0"];
     [self.request addParameterWithKey:@"CurrentURI" value:encodedURI];
-    [self.request addParameterWithKey:@"CurrentURIMetaData" value:TENCENT_META_DATA];
+    [self.request addParameterWithKey:@"CurrentURIMetaData" value:@""];
     [self.request composeRequest];
     
     [self _httpRequest:self.request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
@@ -46,6 +46,27 @@ static NSString *const KEY_SHARED_SESSION = @"sharedSessionKey";
         if ([self.controlPointDelegate respondsToSelector:@selector(uPnpManager:didSetAVTransportURI:response:)])
         {
             [self.controlPointDelegate uPnpManager:self didSetAVTransportURI:uri response:actResp];
+        }
+        responseHandler(actResp, response, error);
+    }];
+}
+
+- (void)setNextAVTransportURI:(NSString *)uri response:(ActionResponseHandler)responseHandler
+{
+    NSString *encodedURI = [uri stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    [self.request setActionName:@"SetNextAVTransportURI"];
+    [self.request addParameterWithKey:@"InstanceID" value:@"0"];
+    [self.request addParameterWithKey:@"NextURI" value:encodedURI];
+    [self.request addParameterWithKey:@"NextURIMetaData" value:@""];
+    [self.request composeRequest];
+    
+    [self _httpRequest:self.request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+        UPnPActionResponse *actResp = [[UPnPActionResponse alloc] initWithData:data];
+        NSHTTPURLResponse *resp = (NSHTTPURLResponse *)response;
+        actResp.statusCode = resp.statusCode;
+        if ([self.controlPointDelegate respondsToSelector:@selector(uPnpManager:didSetNextAVTransportURI:response:)])
+        {
+            [self.controlPointDelegate uPnpManager:self didSetNextAVTransportURI:uri response:actResp];
         }
         responseHandler(actResp, response, error);
     }];
