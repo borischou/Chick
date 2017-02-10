@@ -55,7 +55,7 @@ static NSString *const KEY_SHARED_SESSION = @"sharedSessionKey";
 
 - (void)setNextAVTransportURI:(NSString *)uri response:(ActionResponseHandler)responseHandler
 {
-    NSString *encodedURI = [uri stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    NSString *encodedURI = uri.stringByRemovingPercentEncoding;
     [self.request setActionName:@"SetNextAVTransportURI"];
     [self.request addParameterWithKey:@"InstanceID" value:@"0"];
     [self.request addParameterWithKey:@"NextURI" value:encodedURI];
