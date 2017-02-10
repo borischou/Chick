@@ -34,7 +34,7 @@ static NSString *const KEY_SHARED_SESSION = @"sharedSessionKey";
 
 - (void)setAVTransportURI:(NSString * _Nullable)uri response:(ActionResponseHandler)responseHandler
 {
-    NSString *encodedURI = [uri stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    NSString *encodedURI = uri.stringByRemovingPercentEncoding;
     [self.request setActionName:@"SetAVTransportURI"];
     [self.request addParameterWithKey:@"InstanceID" value:@"0"];
     [self.request addParameterWithKey:@"CurrentURI" value:encodedURI];
