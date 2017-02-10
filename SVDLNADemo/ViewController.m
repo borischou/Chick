@@ -26,7 +26,7 @@
 #define TIMEOUT -1
 #define USER_AGENT @""
 #define MAN @"ssdp:discover" //请勿修改
-#define MX @"3"
+#define MX @"5"
 #define ST UPNP_MEDIA_RENDERER
 
 //SSDP DEVICE
