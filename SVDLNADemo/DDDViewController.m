@@ -65,10 +65,14 @@ static NSString *const REUSECELLID = @"reusecellid";
         self.device.ddd = ddd;
         [[CurrentDevice sharedDevice] setDevice:self.device];
         [[CurrentDevice sharedDevice] setServices:self.ddd.services];
-        [self.tableView reloadData];
+        dispatch_async_main_safe(^{
+            [self.tableView reloadData];
+        });
     } failureHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
-        self.title = @"DDD";
-        [self presentAlertWithError:error];
+        dispatch_async_main_safe(^{
+            self.title = @"DDD";
+            [self presentAlertWithError:error];
+        });
     }];
 }
 

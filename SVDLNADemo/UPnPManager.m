@@ -9,6 +9,26 @@
 #import "UPnPManager.h"
 #import "GCDAsyncUdpSocket.h"
 
+#define UDP_PORT 2345
+
+//SSDP M-SEARCH Header
+#define LAN_MULTICAST_HOST_IP @"239.255.255.250"
+#define LAN_MULTICAST_HOST_PORT 1900
+#define TIMEOUT -1
+#define USER_AGENT @""
+#define MAN @"ssdp:discover" //请勿修改
+#define MX @"5"
+#define ST UPNP_ROOT_DEVICE
+
+//SSDP DEVICE
+#define UPNP_ALL @"ssdp:all"
+#define UPNP_ROOT_DEVICE @"upnp:rootdevice" //包括智能电视、机顶盒、路由器、支持DLNA的电脑设备等
+#define UPNP_MEDIA_RENDERER @"urn:schemas-upnp-org:device:MediaRenderer:1"
+#define UPNP_MEDIA_SERVER @"urn:schemas-upnp-org:device:MediaServer:1"
+#define UPNP_INTERNET_GATEWAY_DEVICE @"urn:schemas-upnp-org:device:InternetGatewayDevice:1"
+#define UPNP_WFA_DEVICE @"urn:schemas-wifialliance-org:device:WFADevice:1"
+#define UPNP_DEVICE_WITH(__UUID) [NSString stringWithFormat:@"uuid:device-%@", __UUID]
+
 @interface UPnPManager () <GCDAsyncUdpSocketDelegate>
 
 @property (strong, nonatomic) GCDAsyncUdpSocket *udpSocket;

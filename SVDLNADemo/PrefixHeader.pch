@@ -30,26 +30,6 @@ dispatch_async(dispatch_get_main_queue(), block);\
 #define Screen_Width [UIScreen mainScreen].bounds.size.width
 #define Screen_Height [UIScreen mainScreen].bounds.size.height
 
-#define UDP_PORT 2345
-
-//SSDP M-SEARCH Header
-#define LAN_MULTICAST_HOST_IP @"239.255.255.250"
-#define LAN_MULTICAST_HOST_PORT 1900
-#define TIMEOUT -1
-#define USER_AGENT @""
-#define MAN @"ssdp:discover" //请勿修改
-#define MX @"5"
-#define ST UPNP_ROOT_DEVICE
-
-//SSDP DEVICE
-#define UPNP_ALL @"ssdp:all"
-#define UPNP_ROOT_DEVICE @"upnp:rootdevice" //包括智能电视、机顶盒、路由器、支持DLNA的电脑设备等
-#define UPNP_MEDIA_RENDERER @"urn:schemas-upnp-org:device:MediaRenderer:1"
-#define UPNP_MEDIA_SERVER @"urn:schemas-upnp-org:device:MediaServer:1"
-#define UPNP_INTERNET_GATEWAY_DEVICE @"urn:schemas-upnp-org:device:InternetGatewayDevice:1"
-#define UPNP_WFA_DEVICE @"urn:schemas-wifialliance-org:device:WFADevice:1"
-#define UPNP_DEVICE_WITH(__UUID) [NSString stringWithFormat:@"uuid:device-%@", __UUID]
-
 #define TENCENT_VIDEO_URL @"http://111.202.98.155/vhot2hls.tc.qq.com/mp4/1/yLiYn19aVfLlApKXhLZlzvcxHDzk5rgvgLXsAR-vXjQ_4JLns1ljbw/3erdGZJGQ4jGdnAkRUZ1fbcY7WQMZcxcvctT4U41UmXB8HFY0o2pAOHhSwrDsDewifql_hyY3OaWN5OwDdWI3GhM6zIWI8yRDWKCYbBYnFYVZTJ7NJhmJA/w0373d2iqsg.p712.mp4/w0373d2iqsg.p712.mp4.av.m3u8?fn=p712&amp;bw=250&amp;st=0&amp;et=0&amp;iv=&amp;ivfn=&amp;ivfc=&amp;ivt=&amp;ivs=&amp;ivd=&amp;ivl=&amp;ftype=mp4&amp;fbw=47&amp;type=m3u8&amp;drm=0&amp;sdtfrom=v3000&amp;platform=10403&amp;appver=5.4.0.17642&amp;projection=dlna"
 
 #define TEST_VIDEO_URL @"http://baobab.wdjcdn.com/14571455324031.mp4"

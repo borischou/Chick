@@ -17,15 +17,11 @@
     {
         NSDictionary *dataDict = [NSDictionary dictionaryWithXMLData:data];
         DeviceDescription *ddd = [[DeviceDescription alloc] initWithDictionary:dataDict];
-        dispatch_async_main_safe(^{
-            dddBlk(ddd);
-        });
+        dddBlk(ddd);
     }
     failureHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error)
     {
-        dispatch_async_main_safe(^{
-            failBlk(data, response, error);
-        });
+        failBlk(data, response, error);
     }];
 }
 
@@ -35,15 +31,11 @@
     {
         NSDictionary *dataDict = [NSDictionary dictionaryWithXMLData:data];
         ServiceDescription *sdd = [[ServiceDescription alloc] initWithDictionary:dataDict];
-        dispatch_async_main_safe(^{
-            dddBlk(sdd);
-        });
+        dddBlk(sdd);
     }
     failureHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error)
     {
-        dispatch_async_main_safe(^{
-            failBlk(data, response, error);
-        });
+        failBlk(data, response, error);
     }];
 }
 

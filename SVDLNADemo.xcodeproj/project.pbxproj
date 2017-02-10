@@ -220,16 +220,10 @@
 		547696731E498BCB001DAB5F /* Lib */ = {
 			isa = PBXGroup;
 			children = (
-				548BF8FE1E482CBF0074F5F1 /* GCDAsyncUdpSocket.h */,
-				548BF8FF1E482CBF0074F5F1 /* GCDAsyncUdpSocket.m */,
 				548BF9101E488CFA0074F5F1 /* EXTScope.h */,
 				548BF9111E488CFA0074F5F1 /* metamacros.h */,
 				548BF90D1E488C2A0074F5F1 /* ARCWeakRef.h */,
 				548BF90E1E488C2A0074F5F1 /* ARCWeakRef.m */,
-				548BF90A1E48766C0074F5F1 /* XMLDictionary.h */,
-				548BF90B1E48766C0074F5F1 /* XMLDictionary.m */,
-				547696601E49711D001DAB5F /* NSString+Ext.h */,
-				547696611E49711D001DAB5F /* NSString+Ext.m */,
 			);
 			name = Lib;
 			sourceTree = "<group>";
@@ -257,13 +251,12 @@
 		548BF8CA1E482B060074F5F1 /* SVDLNADemo */ = {
 			isa = PBXGroup;
 			children = (
+				54A7A23C1E4DCBD7001CDA79 /* SVDLNASDK */,
 				548BF8CE1E482B060074F5F1 /* AppDelegate.h */,
 				548BF8CF1E482B060074F5F1 /* AppDelegate.m */,
 				5476967A1E49B612001DAB5F /* CustomTableViewCell.h */,
 				5476967B1E49B612001DAB5F /* CustomTableViewCell.m */,
 				546366691E4B034400BCDBF3 /* ViewController */,
-				546366621E4AEDE000BCDBF3 /* UPnP */,
-				547696721E498BB9001DAB5F /* Model */,
 				548BF8CB1E482B060074F5F1 /* Supporting Files */,
 			);
 			path = SVDLNADemo;
@@ -298,6 +291,29 @@
 				548BF8F21E482B060074F5F1 /* Info.plist */,
 			);
 			path = SVDLNADemoUITests;
+			sourceTree = "<group>";
+		};
+		54A7A23C1E4DCBD7001CDA79 /* SVDLNASDK */ = {
+			isa = PBXGroup;
+			children = (
+				547696721E498BB9001DAB5F /* Model */,
+				546366621E4AEDE000BCDBF3 /* UPnP */,
+				54A7A23D1E4DCCC0001CDA79 /* Libs */,
+			);
+			name = SVDLNASDK;
+			sourceTree = "<group>";
+		};
+		54A7A23D1E4DCCC0001CDA79 /* Libs */ = {
+			isa = PBXGroup;
+			children = (
+				548BF8FE1E482CBF0074F5F1 /* GCDAsyncUdpSocket.h */,
+				548BF8FF1E482CBF0074F5F1 /* GCDAsyncUdpSocket.m */,
+				548BF90A1E48766C0074F5F1 /* XMLDictionary.h */,
+				548BF90B1E48766C0074F5F1 /* XMLDictionary.m */,
+				547696601E49711D001DAB5F /* NSString+Ext.h */,
+				547696611E49711D001DAB5F /* NSString+Ext.m */,
+			);
+			name = Libs;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

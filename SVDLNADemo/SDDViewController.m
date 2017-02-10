@@ -69,9 +69,13 @@ static NSString *const REUSECELLID = @"reusecellid";
     [[UPnPManager sharedManager] fetchSDDWithLocation:urlStr successHandler:^(ServiceDescription * _Nullable sdd) {
         self.sdd = sdd;
         self.sdd.service = self.service;
-        [self.tableView reloadData];
+        dispatch_async_main_safe(^{
+            [self.tableView reloadData];
+        });
     } failureHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
-        [self presentAlertWithError:error];
+        dispatch_async_main_safe(^{
+            [self presentAlertWithError:error];
+        });
     }];
 }
 
