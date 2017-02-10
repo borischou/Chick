@@ -30,7 +30,11 @@ dispatch_async(dispatch_get_main_queue(), block);\
 #define Screen_Width [UIScreen mainScreen].bounds.size.width
 #define Screen_Height [UIScreen mainScreen].bounds.size.height
 
-#define VIDEO_URL @"http://baobab.wdjcdn.com/14571455324031.mp4"
+#define TENCENT_VIDEO_URL @"http://111.202.98.155/vhot2hls.tc.qq.com/mp4/1/yLiYn19aVfLlApKXhLZlzvcxHDzk5rgvgLXsAR-vXjQ_4JLns1ljbw/3erdGZJGQ4jGdnAkRUZ1fbcY7WQMZcxcvctT4U41UmXB8HFY0o2pAOHhSwrDsDewifql_hyY3OaWN5OwDdWI3GhM6zIWI8yRDWKCYbBYnFYVZTJ7NJhmJA/w0373d2iqsg.p712.mp4/w0373d2iqsg.p712.mp4.av.m3u8?fn=p712&amp;bw=250&amp;st=0&amp;et=0&amp;iv=&amp;ivfn=&amp;ivfc=&amp;ivt=&amp;ivs=&amp;ivd=&amp;ivl=&amp;ftype=mp4&amp;fbw=47&amp;type=m3u8&amp;drm=0&amp;sdtfrom=v3000&amp;platform=10403&amp;appver=5.4.0.17642&amp;projection=dlna"
+
+#define TEST_VIDEO_URL @"http://baobab.wdjcdn.com/14571455324031.mp4"
+
+#define TENCENT_META_DATA @"&lt;DIDL-Lite xmlns=&quot;urn:schemas-upnp-org:metadata-1-0/DIDL-Lite/&quot; xmlns:upnp=&quot;urn:schemas-upnp-org:metadata-1-0/upnp/&quot; xmlns:dc=&quot;http://purl.org/dc/elements/1.1/&quot; xmlns:sec=&quot;http://www.sec.co.kr/&quot;&gt;&lt;item id=&quot;0&quot; parentID=&quot;0&quot; restricted=&quot;0&quot;&gt;&lt;res protocolInfo=&quot;http-get:*:video/mp4:DLNA.ORG_PN=MP3;DLNA.ORG_OP=01;DLNA.ORG_FLAGS=01500000000000000000000000000000&quot;&gt;http://111.202.98.155/vhot2hls.tc.qq.com/mp4/1/yLiYn19aVfLlApKXhLZlzvcxHDzk5rgvgLXsAR-vXjQ_4JLns1ljbw/3erdGZJGQ4jGdnAkRUZ1fbcY7WQMZcxcvctT4U41UmXB8HFY0o2pAOHhSwrDsDewifql_hyY3OaWN5OwDdWI3GhM6zIWI8yRDWKCYbBYnFYVZTJ7NJhmJA/w0373d2iqsg.p712.mp4/w0373d2iqsg.p712.mp4.av.m3u8?fn=p712&amp;amp;bw=250&amp;amp;st=0&amp;amp;et=0&amp;amp;iv=&amp;amp;ivfn=&amp;amp;ivfc=&amp;amp;ivt=&amp;amp;ivs=&amp;amp;ivd=&amp;amp;ivl=&amp;amp;ftype=mp4&amp;amp;fbw=47&amp;amp;type=m3u8&amp;amp;drm=0&amp;amp;sdtfrom=v3000&amp;amp;platform=10403&amp;amp;appver=5.4.0.17642&amp;amp;projection=dlna&lt;/res&gt;&lt;upnp:albumArtURI&gt;&lt;/upnp:albumArtURI&gt;&lt;upnp:class&gt;object.item.videoItem&lt;/upnp:class&gt;&lt;/item&gt;&lt;/DIDL-Lite&gt;"
 
 typedef void(^successHandler)(NSData * _Nullable data);
 typedef void(^failureHandler)(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error);

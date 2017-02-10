@@ -100,7 +100,7 @@
 {
     UPnPManager *manager = [UPnPManager sharedManager];
     Address *address = [CurrentDevice sharedDevice].device.address;
-    UPnPActionRequest *request = [[UPnPActionRequest alloc] init];
+    UPnPActionRequest *request = [UPnPActionRequest request];
     request.address = address;
     request.service = self.sdd.service;
     [manager setRequest:request];

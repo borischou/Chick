@@ -36,7 +36,7 @@ static NSString *const KEY_SHARED_SESSION = @"sharedSessionKey";
     [self.request setActionName:@"SetAVTransportURI"];
     [self.request addParameterWithKey:@"InstanceID" value:@"0"];
     [self.request addParameterWithKey:@"CurrentURI" value:encodedURI];
-    [self.request addParameterWithKey:@"CurrentURIMetaData"];
+    [self.request addParameterWithKey:@"CurrentURIMetaData" value:TENCENT_META_DATA];
     [self.request composeRequest];
     
     [self _httpRequest:self.request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {

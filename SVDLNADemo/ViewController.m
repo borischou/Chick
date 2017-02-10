@@ -19,10 +19,22 @@
 #define Screen_Height [UIScreen mainScreen].bounds.size.height
 
 #define UDP_PORT 2345
+
+//SSDP M-SEARCH Header
 #define LAN_MULTICAST_HOST_IP @"239.255.255.250"
 #define LAN_MULTICAST_HOST_PORT 1900
 #define TIMEOUT -1
 #define USER_AGENT @""
+#define MAN @"ssdp:discover" //请勿修改
+#define MX @"3"
+#define ST UPNP_MEDIA_RENDERER
+
+//SSDP DEVICE
+#define UPNP_ROOT_DEVICE @"upnp:rootdevice"
+#define UPNP_MEDIA_RENDERER @"urn:schemas-upnp-org:device:MediaRenderer:1"
+#define UPNP_MEDIA_SERVER @"urn:schemas-upnp-org:device:MediaServer:1"
+#define UPNP_INTERNET_GATEWAY_DEVICE @"urn:schemas-upnp-org:device:InternetGatewayDevice:1"
+#define UPNP_WFA_DEVICE @"urn:schemas-wifialliance-org:device:WFADevice:1"
 
 static NSString *const REUSECELLID = @"reuseid";
 
@@ -137,21 +149,21 @@ static NSString *const REUSECELLID = @"reuseid";
         }
     }
     
-    NSString *searchText = [self _ssdpRequestHeader];
+    NSString *searchText = [self _SSDP_M_Search_RequestHeader];
     
     NSLog(@"发送请求:\n%@", searchText);
     NSData *socketData = [searchText dataUsingEncoding:NSUTF8StringEncoding];
     [self.udpSocket sendData:socketData toHost:LAN_MULTICAST_HOST_IP port:LAN_MULTICAST_HOST_PORT withTimeout:TIMEOUT tag:12];
 }
 
-- (NSString *)_ssdpRequestHeader
+- (NSString *)_SSDP_M_Search_RequestHeader
 {
     NSMutableString *mutRequestString = [NSMutableString new];
     [mutRequestString appendString:@"M-SEARCH * HTTP/1.1\r\n"];
     [mutRequestString appendString:[NSString stringWithFormat:@"HOST:%@:%@\r\n", LAN_MULTICAST_HOST_IP, [NSString stringWithFormat:@"%d", LAN_MULTICAST_HOST_PORT]]];
-    [mutRequestString appendString:@"MAN:\"ssdp:discover\"\r\n"];
-    [mutRequestString appendString:@"MX:5\r\n"];
-    [mutRequestString appendString:@"ST:upnp:rootdevice\r\n"];
+    [mutRequestString appendString:[NSString stringWithFormat:@"MAN:\"%@\"\r\n", MAN]];
+    [mutRequestString appendString:[NSString stringWithFormat:@"MX:%@\r\n", MX]];
+    [mutRequestString appendString:[NSString stringWithFormat:@"ST:%@\r\n", ST]];
     [mutRequestString appendString:[NSString stringWithFormat:@"USER-AGENT:%@\r\n\r\n\r\n", USER_AGENT]];
     
     return mutRequestString.copy;

@@ -78,11 +78,22 @@
     request.address = address;
     request.service = self.sdd.service;
     [manager setRequest:request];
-    [manager setAVTransportURI:VIDEO_URL response:^(UPnPActionResponse * _Nullable actionResponse, NSURLResponse * _Nullable response, NSError * _Nullable error) {
-        NSLog(@"发送视频地址(setAVTransportURI)的回调:\n%@", actionResponse.xmlDictionary);
-        ControlPanelViewController *cpvc = [[ControlPanelViewController alloc] initWithSDD:self.sdd];
+    [manager stopWithResponse:^(UPnPActionResponse * _Nullable actionResponse, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+        NSLog(@"Stop的回调:\n%@", actionResponse.xmlDictionary);
         dispatch_async_main_safe(^{
-            [self.navigationController pushViewController:cpvc animated:YES];
+            NSLog(@"Stop的回调:\n%@", actionResponse.xmlDictionary);
+            UPnPManager *aManager = [UPnPManager sharedManager];
+            UPnPActionRequest *aRequest = [UPnPActionRequest request];
+            aRequest.address = address;
+            aRequest.service = self.sdd.service;
+            [aManager setRequest:aRequest];
+            [aManager setAVTransportURI:TEST_VIDEO_URL response:^(UPnPActionResponse * _Nullable actionResponse, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+                ControlPanelViewController *cpvc = [[ControlPanelViewController alloc] initWithSDD:self.sdd];
+                dispatch_async_main_safe(^{
+                    NSLog(@"setAVTransportURI的回调:\n%@", actionResponse.xmlDictionary);
+                    [self.navigationController pushViewController:cpvc animated:YES];
+                });
+            }];
         });
     }];
 }
