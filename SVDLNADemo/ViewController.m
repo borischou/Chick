@@ -14,14 +14,14 @@
 #import "Device.h"
 #import "CustomTableViewCell.h"
 #import "DDDViewController.h"
+#import "UPnPManager.h"
 
 static NSString *const REUSECELLID = @"reuseid";
 
-@interface ViewController () <GCDAsyncUdpSocketDelegate, UITableViewDelegate, UITableViewDataSource>
+@interface ViewController () <UPnPSSDPDataDelegate, UITableViewDelegate, UITableViewDataSource>
 
 @property (strong, nonatomic) UITableView *tableView;
 
-@property (strong, nonatomic) GCDAsyncUdpSocket *udpSocket;
 @property (strong, nonatomic) NSMutableArray<Device *> *devices;
 
 @end
@@ -34,7 +34,7 @@ static NSString *const REUSECELLID = @"reuseid";
     self.title = @"设备列表";
     self.view.backgroundColor = [UIColor whiteColor];
     [self _initUI];
-    [self _refreshUdpSocket];
+    [self _searchDevice];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -64,7 +64,7 @@ static NSString *const REUSECELLID = @"reuseid";
 {
     [_devices removeAllObjects];
     [self.tableView reloadData];
-    [self _refreshUdpSocket];
+    [self _searchDevice];
 }
 
 #pragma mark - Table View Delegate & Datasource
@@ -84,7 +84,7 @@ static NSString *const REUSECELLID = @"reuseid";
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return self.devices ? self.devices.count : 1;
+    return self.devices && self.devices.count > 0 ? self.devices.count : 1;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -111,69 +111,21 @@ static NSString *const REUSECELLID = @"reuseid";
     return _devices;
 }
 
-- (void)_refreshUdpSocket
+- (void)_searchDevice
 {
-    if (self.udpSocket == nil)
-    {
-        self.udpSocket = [[GCDAsyncUdpSocket alloc] initWithDelegate:self delegateQueue:dispatch_get_main_queue()];
-        NSError *socketError = nil;
-        [self.udpSocket bindToPort:UDP_PORT error:&socketError];
-        if (socketError)
-        {
-            NSLog(@"套接字绑定错误: %@", socketError);
-        }
-        else
-        {
-            [self.udpSocket beginReceiving:&socketError];
-        }
-    }
-    
-    NSString *searchText = [self _SSDP_M_Search_RequestHeader];
-    
-    NSLog(@"发送请求:\n%@", searchText);
-    NSData *socketData = [searchText dataUsingEncoding:NSUTF8StringEncoding];
-    [self.udpSocket sendData:socketData toHost:LAN_MULTICAST_HOST_IP port:LAN_MULTICAST_HOST_PORT withTimeout:TIMEOUT tag:12];
-}
-
-- (NSString *)_SSDP_M_Search_RequestHeader
-{
-    NSMutableString *mutRequestString = [NSMutableString new];
-    [mutRequestString appendString:@"M-SEARCH * HTTP/1.1\r\n"];
-    [mutRequestString appendString:[NSString stringWithFormat:@"HOST:%@:%@\r\n", LAN_MULTICAST_HOST_IP, [NSString stringWithFormat:@"%d", LAN_MULTICAST_HOST_PORT]]];
-    [mutRequestString appendString:[NSString stringWithFormat:@"MAN:\"%@\"\r\n", MAN]];
-    [mutRequestString appendString:[NSString stringWithFormat:@"MX:%@\r\n", MX]];
-    [mutRequestString appendString:[NSString stringWithFormat:@"ST:%@\r\n", ST]];
-    [mutRequestString appendString:[NSString stringWithFormat:@"USER-AGENT:%@\r\n\r\n\r\n", USER_AGENT]];
-    
-    return mutRequestString.copy;
+    UPnPManager *manager = [UPnPManager sharedManager];
+    manager.ssdpDataDelegate = self;
+    [manager searchDevice];
 }
 
 #pragma mark - GCDAsyncUdpSocketDelegate
 
-- (void)udpSocket:(GCDAsyncUdpSocket *)sock didSendDataWithTag:(long)tag
+- (void)uPnpManager:(UPnPManager *)manager didDiscoverDevice:(Device *)device
 {
-    NSLog(@"发送信息成功");
-}
-
-- (void)udpSocket:(GCDAsyncUdpSocket *)sock didNotSendDataWithTag:(long)tag dueToError:(NSError *)error
-{
-    NSLog(@"发送信息失败");
-}
-
-- (void)udpSocket:(GCDAsyncUdpSocket *)sock didReceiveData:(NSData *)data fromAddress:(NSData *)address withFilterContext:(id)filterContext
-{
-    NSString *text = [NSString stringWithFormat:@"从地址:\n\n%@\n\n收到UDP套接字数据:\n\n%@", [[NSString alloc] initWithData:address encoding:NSUTF8StringEncoding], [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]];
-    NSLog(@"%@", text);
-    
-    //异步接收数据
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        SsdpResponseHeader *header = [[SsdpResponseHeader alloc] initWithReceivedMsg:[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]];
-        Device *device = [[Device alloc] initWithSsdpResponse:header];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self.devices addObject:device];
-            [self.tableView reloadData];
-            self.title = [NSString stringWithFormat:@"DLNA设备列表(%lu)", (unsigned long)self.devices.count];
-        });
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.devices addObject:device];
+        [self.tableView reloadData];
+        self.title = [NSString stringWithFormat:@"DLNA设备列表(%lu)", (unsigned long)self.devices.count];
     });
 }
 

@@ -10,8 +10,19 @@
 #import "Address.h"
 #import "Service.h"
 #import "UPnPActionRequest.h"
+#import "Device.h"
 
 @class UPnPManager;
+
+@protocol UPnPSSDPDataDelegate <NSObject>
+
+@optional
+- (void)uPnpManagerDidSendData:(UPnPManager *)manager;
+- (void)uPnpManager:(UPnPManager *)manager didNotSendDataDueToError:(NSError *)error;
+- (void)uPnpManager:(UPnPManager *)manager didDiscoverDevice:(Device *)device;
+
+@end
+
 @protocol UPnPControlPointDelegate <NSObject>
 
 @optional
@@ -36,6 +47,9 @@
 
 - (void)setRequest:(UPnPActionRequest * _Nullable)request;
 
+- (void)searchDevice;
+
 @property (weak, nonatomic) id <UPnPControlPointDelegate> _Nullable controlPointDelegate;
+@property (weak, nonatomic) id <UPnPSSDPDataDelegate> ssdpDataDelegate;
 
 @end
