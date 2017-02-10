@@ -28,6 +28,18 @@
     return [[UPnPActionRequest alloc] init];
 }
 
+- (instancetype)initWithAddress:(Address *)address service:(Service *)service action:(Action *)action
+{
+    self = [super init];
+    if (self)
+    {
+        _address = address;
+        _service = service;
+        _action = action;
+    }
+    return self;
+}
+
 - (NSMutableArray<NSString *> *)xmlLines
 {
     if (_xmlLines == nil)

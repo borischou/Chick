@@ -80,13 +80,13 @@
     [manager setRequest:request];
     [manager stopWithResponse:^(UPnPActionResponse * _Nullable actionResponse, NSURLResponse * _Nullable response, NSError * _Nullable error) {
         NSLog(@"Stop的回调:\n%@", actionResponse.xmlDictionary);
+        UPnPManager *aManager = [UPnPManager sharedManager];
+        UPnPActionRequest *aRequest = [UPnPActionRequest request];
+        aRequest.address = address;
+        aRequest.service = self.sdd.service;
+        [aManager setRequest:aRequest];
         dispatch_async_main_safe(^{
             NSLog(@"Stop的回调:\n%@", actionResponse.xmlDictionary);
-            UPnPManager *aManager = [UPnPManager sharedManager];
-            UPnPActionRequest *aRequest = [UPnPActionRequest request];
-            aRequest.address = address;
-            aRequest.service = self.sdd.service;
-            [aManager setRequest:aRequest];
             [aManager setAVTransportURI:TEST_VIDEO_URL response:^(UPnPActionResponse * _Nullable actionResponse, NSURLResponse * _Nullable response, NSError * _Nullable error) {
                 ControlPanelViewController *cpvc = [[ControlPanelViewController alloc] initWithSDD:self.sdd];
                 dispatch_async_main_safe(^{

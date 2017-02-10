@@ -18,8 +18,16 @@
 
 + (instancetype)request;
 
+- (instancetype)initWithAddress:(Address *)address service:(Service *)service action:(Action *)action;
+
+/*
+ * 清空请求体中的xml文本
+ */
 - (void)reset;
 
+/*
+ * 请求调用的动作名称（注意大小写一致）
+ */
 - (void)setActionName:(NSString *)actionName;
 
 /*
