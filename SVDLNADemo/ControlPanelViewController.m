@@ -34,6 +34,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.title = @"播放模式";
+    [self showInfo:@"正在播放..."];
     self.view.backgroundColor = [UIColor whiteColor];
     
     _reminderLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, Below_Navbar+10, Screen_Width-40, 100)];
@@ -79,6 +81,11 @@
     _testButton.frame = CGRectMake(20, _playButton.frame.origin.y+_playButton.frame.size.height+10, width, height);
 }
 
+- (void)showInfo:(NSString *)info
+{
+    _reminderLabel.text = info ? info : _reminderLabel.text;
+}
+
 - (void)testButtonPressed:(UIButton *)sender
 {
     UPnPManager *manager = [UPnPManager sharedManager];
@@ -105,6 +112,7 @@
     [manager playWithResponse:^(UPnPActionResponse * _Nullable actionResponse, NSURLResponse * _Nullable response, NSError * _Nullable error) {
         dispatch_async_main_safe(^{
             NSLog(@"Play的回调:\n%@", actionResponse.xmlDictionary);
+            [self showInfo:@"正在播放"];
         });
     }];
 }
@@ -120,6 +128,7 @@
     [manager pauseWithResponse:^(UPnPActionResponse * _Nullable actionResponse, NSURLResponse * _Nullable response, NSError * _Nullable error) {
         dispatch_async_main_safe(^{
             NSLog(@"Pause的回调:\n%@", actionResponse.xmlDictionary);
+            [self showInfo:@"已暂停"];
         });
     }];
 }
@@ -135,6 +144,7 @@
     [manager stopWithResponse:^(UPnPActionResponse * _Nullable actionResponse, NSURLResponse * _Nullable response, NSError * _Nullable error) {
         dispatch_async_main_safe(^{
             NSLog(@"Stop的回调:\n%@", actionResponse.xmlDictionary);
+            [self showInfo:@"已停止"];
         });
     }];
 }
