@@ -6,7 +6,7 @@
 //  Copyright © 2017年  bolizhou. All rights reserved.
 //
 
-#import "UPnPManager+Connection.h"
+#import "UPnPManager.h"
 #import "XMLDictionary.h"
 
 @implementation UPnPManager (Connection)

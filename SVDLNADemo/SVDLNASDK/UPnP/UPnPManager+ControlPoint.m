@@ -6,7 +6,7 @@
 //  Copyright © 2017年  bolizhou. All rights reserved.
 //
 
-#import "UPnPManager+ControlPoint.h"
+#import "UPnPManager.h"
 #import "UPnPActionRequest.h"
 #import <objc/runtime.h>
 

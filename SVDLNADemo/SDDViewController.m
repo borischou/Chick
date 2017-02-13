@@ -48,6 +48,21 @@ static NSString *const REUSECELLID = @"reusecellid";
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:REUSECELLID];
     [self.view addSubview:self.tableView];
     
+    Address *address = [CurrentDevice sharedDevice].device.address;
+    Service *service = self.service;
+    [[UPnPManager sharedManager] subscribeEventNotificationFromDeviceAddress:address service:service response:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error)
+     {
+         if (error == nil)
+         {
+             NSHTTPURLResponse *resp = (NSHTTPURLResponse *)response;
+             if (resp.statusCode == 200)
+             {
+                 NSString *sid = resp.allHeaderFields[@"SID"] ? resp.allHeaderFields[@"SID"] : nil;
+                 NSLog(@"DLNA事件订阅成功:\nSID: %@", sid);
+             }
+         }
+     }];
+    
     [self loadSDDWithURL:self.url];
 }
 

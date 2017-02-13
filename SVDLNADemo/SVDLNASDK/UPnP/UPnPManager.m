@@ -8,6 +8,10 @@
 
 #import "UPnPManager.h"
 #import "GCDAsyncUdpSocket.h"
+#import "GCDWebServer.h"
+#import "GCDWebServerDataRequest.h"
+#import "GCDWebServerDataResponse.h"
+#import "XMLDictionary.h"
 
 #define UDP_PORT 2345
 
@@ -29,9 +33,15 @@
 #define UPNP_WFA_DEVICE @"urn:schemas-wifialliance-org:device:WFADevice:1"
 #define UPNP_DEVICE_WITH(__UUID) [NSString stringWithFormat:@"uuid:device-%@", __UUID]
 
+//Server
+#define SERVER_PATH @"/dlna/callback"
+
 @interface UPnPManager () <GCDAsyncUdpSocketDelegate>
 
 @property (strong, nonatomic) GCDAsyncUdpSocket *udpSocket;
+@property (strong, nonatomic) Address *address;
+@property (strong, nonatomic) Service *service;
+@property (strong, nonatomic) GCDWebServer *webServer;
 
 @end
 
@@ -62,13 +72,94 @@
     _request = request;
 }
 
+- (void)setService:(Service *)service
+{
+    _service = service;
+}
+
+- (void)setAddress:(Address *)address
+{
+    _address = address;
+}
+
 - (void)searchDevice
 {
+    if (self.webServer == nil)
+    {
+        self.webServer = [[GCDWebServer alloc] init];
+        [self _startGCDWebServer];
+    }
     [self _setupUdpSocketWithUdpPort:UDP_PORT];
     [self _startSSDPSearchWithHostIP:LAN_MULTICAST_HOST_IP hostPort:LAN_MULTICAST_HOST_PORT];
 }
 
+- (void)subscribeEventNotificationFromDeviceAddress:(Address *)address service:(Service *)service response:(void (^)(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error))responseBlock
+{
+    self.address = address;
+    self.service = service;
+    NSString *url = nil;
+    NSString *eventSubURL = self.service.eventSubURL;
+    if ([self.service.eventSubURL hasPrefix:@"/"])
+    {
+        url = [NSString stringWithFormat:@"http://%@:%@%@", self.address.ipv4, self.address.port, eventSubURL];
+    }
+    else
+    {
+        url = [NSString stringWithFormat:@"http://%@:%@/%@", self.address.ipv4, self.address.port, eventSubURL];
+    }
+    NSString *str = self.webServer.serverURL.absoluteString;
+    if ([str hasSuffix:@"/"])
+    {
+        str = [str substringToIndex:str.length-1];
+    }
+    NSString *webServerURL = [NSString stringWithFormat:@"<%@%@>", str, SERVER_PATH];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:url.stringByRemovingPercentEncoding]];
+    request.HTTPMethod = @"SUBSCRIBE";
+    [request addValue:webServerURL forHTTPHeaderField:@"CALLBACK"];
+    [request addValue:@"upnp:event" forHTTPHeaderField:@"NT"];
+    [request addValue:@"Second-3600" forHTTPHeaderField:@"TIMEOUT"];
+    
+    [[[NSURLSession sharedSession] dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+        //SubscribeID
+        responseBlock(data, response, error);
+    }] resume];
+}
+
+- (void)subscribeEventNotificationFromDeviceAddress:(Address *)address service:(Service *)service
+{
+    [self subscribeEventNotificationFromDeviceAddress:address service:service response:nil];
+}
+
 #pragma mark - Private
+
+#pragma mark - GCDWebServer
+
+- (void)_startGCDWebServer
+{
+    __weak typeof(self) weakSelf = self;
+    [weakSelf.webServer addHandlerForMethod:@"NOTIFY" path:SERVER_PATH requestClass:[GCDWebServerDataRequest class] processBlock:^GCDWebServerResponse *(__kindof GCDWebServerRequest *request) {
+        GCDWebServerDataRequest *req = (GCDWebServerDataRequest *)request;
+        __strong typeof(self) strongSelf = weakSelf;
+        if (req.hasBody && strongSelf)
+        {
+            [strongSelf _parseEventNotificationMessage:req.data];
+        }
+        return [GCDWebServerDataResponse responseWithHTML:@"<html><body><p>Hello World</p></body></html>"];
+    }];
+    [self.webServer startWithPort:8899 bonjourName:nil];
+}
+
+- (void)_parseEventNotificationMessage:(NSData *)data
+{
+    if (data == nil)
+    {
+        return;
+    }
+    NSDictionary *dictData = [NSDictionary dictionaryWithXMLData:data];
+    NSLog(@"事件通知:\n%@", dictData);
+}
+
+#pragma mark - UDP
 
 - (void)_setupUdpSocketWithUdpPort:(NSUInteger)port
 {
@@ -106,11 +197,6 @@
     [mutRequestString appendString:[NSString stringWithFormat:@"ST:%@\r\n", ST]];
     [mutRequestString appendString:[NSString stringWithFormat:@"USER-AGENT:%@\r\n\r\n\r\n", USER_AGENT]];
     return mutRequestString.copy;
-}
-
-- (void)subscribeDeviceEventNotification
-{
-    
 }
 
 #pragma mark - GCDAsyncUdpSocketDelegate

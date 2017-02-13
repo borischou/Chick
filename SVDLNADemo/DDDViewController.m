@@ -54,13 +54,13 @@ static NSString *const REUSECELLID = @"reusecellid";
 - (void)loadDDDWithLocation:(NSString *)location
 {
     [[UPnPManager sharedManager] fetchDDDWithLocation:location successHandler:^(DeviceDescription * _Nullable ddd) {
-        self.title = ddd.friendlyName ? ddd.friendlyName : @"DDD";
         self.ddd = ddd;
         ddd.device = self.device;
         self.device.ddd = ddd;
         [[CurrentDevice sharedDevice] setDevice:self.device];
         [[CurrentDevice sharedDevice] setServices:self.ddd.services];
         dispatch_async_main_safe(^{
+            self.title = ddd.friendlyName ? ddd.friendlyName : @"DDD";
             [self.tableView reloadData];
         });
     } failureHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
