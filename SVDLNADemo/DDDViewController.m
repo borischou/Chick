@@ -18,19 +18,17 @@ static NSString *const REUSECELLID = @"reusecellid";
 
 @property (strong, nonatomic) UITableView *tableView;
 @property (strong, nonatomic) DeviceDescription *ddd;
-@property (copy, nonatomic) NSString *location;
 @property (strong, nonatomic) Device *device;
 
 @end
 
 @implementation DDDViewController
 
-- (instancetype)initWithLocation:(NSString *)location device:(Device *)device
+- (instancetype)initWithDevice:(Device *)device
 {
     self = [super init];
     if (self)
     {
-        _location = location;
         _device = device;
     }
     return self;
@@ -48,12 +46,13 @@ static NSString *const REUSECELLID = @"reusecellid";
     [self.view addSubview:self.tableView];
     
     self.title = @"正在加载...";
-    [self loadDDDWithLocation:self.location];
+    [self loadDDD];
 }
 
-- (void)loadDDDWithLocation:(NSString *)location
+- (void)loadDDD
 {
-    [[UPnPManager sharedManager] fetchDDDWithLocation:location successHandler:^(DeviceDescription * _Nullable ddd) {
+    [[UPnPManager sharedManager] setDevice:self.device];
+    [[UPnPManager sharedManager] fetchDDDSuccessHandler:^(DeviceDescription * _Nullable ddd) {
         self.ddd = ddd;
         ddd.device = self.device;
         self.device.ddd = ddd;
@@ -149,16 +148,7 @@ static NSString *const REUSECELLID = @"reusecellid";
         return;
     }
     Service *service = [self.ddd.services objectAtIndex:indexPath.row-7];
-    NSString *url = nil;
-    if ([service.SCPDURL hasPrefix:@"/"])
-    {
-        url = [NSString stringWithFormat:@"%@:%@%@", self.device.address.ipv4, self.device.address.port, service.SCPDURL];
-    }
-    else
-    {
-        url = [NSString stringWithFormat:@"%@:%@/%@", self.device.address.ipv4, self.device.address.port, service.SCPDURL];
-    }
-    SDDViewController *sddvc = [[SDDViewController alloc] initWithURL:url service:service];
+    SDDViewController *sddvc = [[SDDViewController alloc] initWithService:service];
     [self.navigationController pushViewController:sddvc animated:YES];
 }
 

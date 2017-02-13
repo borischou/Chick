@@ -14,6 +14,17 @@
 #import "ServiceDescription.h"
 #import "UPnPActionResponse.h"
 
+static NSString *const UPnPVideoStateChangedNotification;
+
+typedef NS_ENUM(NSInteger, UPnPEventTransportState)
+{
+    UPnPEventTransportStateUnknown,
+    UPnPEventTransportStatePlaying,
+    UPnPEventTransportStatePaused,
+    UPnPEventTransportStateStopped,
+    UPnPEventTransportStateTransitioning
+};
+
 @class UPnPManager;
 
 @protocol UPnPSSDPDataDelegate <NSObject>
@@ -43,6 +54,10 @@
 
 @property (strong, nonatomic) UPnPActionRequest * _Nullable request;
 
+@property (strong, nonatomic, readonly) Device *device;
+
+@property (strong, nonatomic, readonly) Service *service;
+
 + (_Nullable instancetype)sharedManager;
 
 - (_Nullable instancetype)initWithRequest:(UPnPActionRequest * _Nullable)request;
@@ -51,13 +66,13 @@
 
 - (void)setService:(Service *)service;
 
-- (void)setAddress:(Address *)address;
+- (void)setDevice:(Device *)device;
 
 - (void)searchDevice;
 
-- (void)subscribeEventNotificationFromDeviceAddress:(Address *)address service:(Service *)service;
+- (void)subscribeEventNotificationFromDevice:(Device *)device service:(Service *)service;
 
-- (void)subscribeEventNotificationFromDeviceAddress:(Address *)address service:(Service *)service response:(void (^)(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error))responseBlock;
+- (void)subscribeEventNotificationFromDevice:(Device *)device service:(Service *)service response:(void (^)(NSString * _Nullable subscribeID, NSURLResponse * _Nullable response, NSError * _Nullable error))responseBlock;
 
 @property (weak, nonatomic) id <UPnPControlPointDelegate> _Nullable controlPointDelegate;
 @property (weak, nonatomic) id <UPnPSSDPDataDelegate> ssdpDataDelegate;
@@ -72,8 +87,8 @@ typedef void(^SDDHandler)(ServiceDescription * _Nullable sdd);
 
 @interface UPnPManager (Connection)
 
-- (void)fetchDDDWithLocation:(NSString * _Nullable)location successHandler:(DDDHandler _Nullable)dddBlk failureHandler:(failureHandler _Nullable)failBlk;
-- (void)fetchSDDWithLocation:(NSString * _Nullable)location successHandler:(SDDHandler _Nullable)dddBlk failureHandler:(failureHandler _Nullable)failBlk;
+- (void)fetchDDDSuccessHandler:(DDDHandler _Nullable)dddBlk failureHandler:(failureHandler _Nullable)failBlk;
+- (void)fetchSDDSuccessHandler:(SDDHandler _Nullable)dddBlk failureHandler:(failureHandler _Nullable)failBlk;
 
 @end
 

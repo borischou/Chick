@@ -56,6 +56,8 @@
         [self.view addSubview:playButton];
         self.playButton = playButton;
     }
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(videoStateChangedNotification:) name:UPnPVideoStateChangedNotification object:nil];
 }
 
 - (NSString *)_argumentContent
@@ -66,6 +68,12 @@
         [mstr appendString:[NSString stringWithFormat:@"arg:\nname: %@\ndirection: %@\nrelatedStateVariable: %@\n\n", arg.name, arg.direction, arg.relatedStateVariable]];
     }
     return mstr.copy;
+}
+
+- (void)videoStateChangedNotification:(NSNotification *)notif
+{
+    NSDictionary *userInfo = notif.userInfo;
+    NSLog(@"状态改变通知: %@", userInfo[@"transportState"]);
 }
 
 - (void)playButtonPressed:(UIButton *)sender

@@ -36,10 +36,12 @@
 //Server
 #define SERVER_PATH @"/dlna/callback"
 
+static NSString *const UPnPVideoStateChangedNotification = @"UPnPVideoStateChangedNotification";
+
 @interface UPnPManager () <GCDAsyncUdpSocketDelegate>
 
 @property (strong, nonatomic) GCDAsyncUdpSocket *udpSocket;
-@property (strong, nonatomic) Address *address;
+@property (strong, nonatomic) Device *device;
 @property (strong, nonatomic) Service *service;
 @property (strong, nonatomic) GCDWebServer *webServer;
 
@@ -77,9 +79,9 @@
     _service = service;
 }
 
-- (void)setAddress:(Address *)address
+- (void)setDevice:(Device *)device
 {
-    _address = address;
+    _device = device;
 }
 
 - (void)searchDevice
@@ -93,19 +95,19 @@
     [self _startSSDPSearchWithHostIP:LAN_MULTICAST_HOST_IP hostPort:LAN_MULTICAST_HOST_PORT];
 }
 
-- (void)subscribeEventNotificationFromDeviceAddress:(Address *)address service:(Service *)service response:(void (^)(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error))responseBlock
+- (void)subscribeEventNotificationFromDevice:(Device *)device service:(Service *)service response:(void (^)(NSString * _Nullable subscribeID, NSURLResponse * _Nullable response, NSError * _Nullable error))responseBlock
 {
-    self.address = address;
+    self.device = device;
     self.service = service;
     NSString *url = nil;
     NSString *eventSubURL = self.service.eventSubURL;
     if ([self.service.eventSubURL hasPrefix:@"/"])
     {
-        url = [NSString stringWithFormat:@"http://%@:%@%@", self.address.ipv4, self.address.port, eventSubURL];
+        url = [NSString stringWithFormat:@"http://%@:%@%@", self.device.address.ipv4, self.device.address.port, eventSubURL];
     }
     else
     {
-        url = [NSString stringWithFormat:@"http://%@:%@/%@", self.address.ipv4, self.address.port, eventSubURL];
+        url = [NSString stringWithFormat:@"http://%@:%@/%@", self.device.address.ipv4, self.device.address.port, eventSubURL];
     }
     NSString *str = self.webServer.serverURL.absoluteString;
     if ([str hasSuffix:@"/"])
@@ -117,17 +119,34 @@
     request.HTTPMethod = @"SUBSCRIBE";
     [request addValue:webServerURL forHTTPHeaderField:@"CALLBACK"];
     [request addValue:@"upnp:event" forHTTPHeaderField:@"NT"];
-    [request addValue:@"Second-3600" forHTTPHeaderField:@"TIMEOUT"];
+    [request addValue:@"Infinite" forHTTPHeaderField:@"TIMEOUT"];
     
     [[[NSURLSession sharedSession] dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
         //SubscribeID
-        responseBlock(data, response, error);
+        if (error == nil)
+        {
+            NSHTTPURLResponse *resp = (NSHTTPURLResponse *)response;
+            if (resp.statusCode == 200)
+            {
+                NSString *sid = resp.allHeaderFields[@"SID"] ? resp.allHeaderFields[@"SID"] : nil;
+                NSLog(@"DLNA事件订阅成功:\nSID: %@", sid);
+                responseBlock(sid, response, nil);
+            }
+            else
+            {
+                responseBlock(nil, response, nil);
+            }
+        }
+        else
+        {
+            responseBlock(nil, response, error);
+        }
     }] resume];
 }
 
-- (void)subscribeEventNotificationFromDeviceAddress:(Address *)address service:(Service *)service
+- (void)subscribeEventNotificationFromDevice:(Device *)device service:(Service *)service
 {
-    [self subscribeEventNotificationFromDeviceAddress:address service:service response:nil];
+    [self subscribeEventNotificationFromDevice:device service:service response:nil];
 }
 
 #pragma mark - Private
@@ -156,7 +175,10 @@
         return;
     }
     NSDictionary *dictData = [NSDictionary dictionaryWithXMLData:data];
-    NSLog(@"事件通知:\n%@", dictData);
+    NSDictionary *eproperty = [NSDictionary dictionaryWithXMLString:[dictData stringValueForKeyPath:@"e:property.LastChange"]];
+    NSString *transportstate = [eproperty stringValueForKeyPath:@"InstanceID.TransportState._val"];
+    NSLog(@"事件通知:\n%@\n%@\n状态:%@", dictData, eproperty, transportstate);
+    [[NSNotificationCenter defaultCenter] postNotificationName:UPnPVideoStateChangedNotification object:nil userInfo:@{@"transportState": transportstate}];
 }
 
 #pragma mark - UDP

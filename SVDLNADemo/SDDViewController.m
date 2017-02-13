@@ -18,7 +18,6 @@ static NSString *const REUSECELLID = @"reusecellid";
 
 @property (strong, nonatomic) ServiceDescription *sdd;
 @property (strong, nonatomic) Service *service;
-@property (copy, nonatomic) NSString *url;
 
 @property (strong, nonatomic) UITableView *tableView;
 
@@ -26,12 +25,11 @@ static NSString *const REUSECELLID = @"reusecellid";
 
 @implementation SDDViewController
 
-- (instancetype)initWithURL:(NSString *)url service:(Service *)service
+- (instancetype)initWithService:(Service *)service
 {
     self = [super init];
     if (self)
     {
-        _url = url;
         _service = service;
     }
     return self;
@@ -48,37 +46,22 @@ static NSString *const REUSECELLID = @"reusecellid";
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:REUSECELLID];
     [self.view addSubview:self.tableView];
     
-    Address *address = [CurrentDevice sharedDevice].device.address;
+    Device *device = [CurrentDevice sharedDevice].device;
     Service *service = self.service;
-    [[UPnPManager sharedManager] subscribeEventNotificationFromDeviceAddress:address service:service response:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error)
-     {
-         if (error == nil)
-         {
-             NSHTTPURLResponse *resp = (NSHTTPURLResponse *)response;
-             if (resp.statusCode == 200)
-             {
-                 NSString *sid = resp.allHeaderFields[@"SID"] ? resp.allHeaderFields[@"SID"] : nil;
-                 NSLog(@"DLNA事件订阅成功:\nSID: %@", sid);
-             }
-         }
-     }];
+    [[UPnPManager sharedManager] subscribeEventNotificationFromDevice:device service:service response:^(NSString * _Nullable subscribeID, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+        if (error == nil)
+        {
+            NSLog(@"事件订阅成功, SID: %@", subscribeID);
+        }
+    }];
     
-    [self loadSDDWithURL:self.url];
+    [self loadSDD];
 }
 
-- (void)loadSDDWithURL:(NSString *)url
+- (void)loadSDD
 {
-    NSString *urlStr = nil;
-    if ([url hasPrefix:@"http"] == NO)
-    {
-        urlStr = [NSString stringWithFormat:@"http://%@", url];
-    }
-    else
-    {
-        urlStr = url;
-    }
-    
-    [[UPnPManager sharedManager] fetchSDDWithLocation:urlStr successHandler:^(ServiceDescription * _Nullable sdd) {
+    [[UPnPManager sharedManager] setService:self.service];
+    [[UPnPManager sharedManager] fetchSDDSuccessHandler:^(ServiceDescription * _Nullable sdd) {
         self.sdd = sdd;
         self.sdd.service = self.service;
         dispatch_async_main_safe(^{

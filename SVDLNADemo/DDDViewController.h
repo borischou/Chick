@@ -10,6 +10,6 @@
 
 @interface DDDViewController : UIViewController
 
-- (instancetype)initWithLocation:(NSString *)location device:(Device *)device;
+- (instancetype)initWithDevice:(Device *)device;
 
 @end

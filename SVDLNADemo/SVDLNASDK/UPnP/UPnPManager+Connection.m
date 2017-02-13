@@ -11,9 +11,9 @@
 
 @implementation UPnPManager (Connection)
 
-- (void)fetchDDDWithLocation:(NSString *)location successHandler:(DDDHandler)dddBlk failureHandler:(failureHandler)failBlk
+- (void)fetchDDDSuccessHandler:(DDDHandler)dddBlk failureHandler:(failureHandler)failBlk
 {
-    [self _requestDataWithURL:location successHandler:^(NSData * _Nullable data)
+    [self _requestDataWithURL:self.device.location successHandler:^(NSData * _Nullable data)
     {
         NSDictionary *dataDict = [NSDictionary dictionaryWithXMLData:data];
         DeviceDescription *ddd = [[DeviceDescription alloc] initWithDictionary:dataDict];
@@ -25,9 +25,27 @@
     }];
 }
 
-- (void)fetchSDDWithLocation:(NSString *)location successHandler:(SDDHandler)dddBlk failureHandler:(failureHandler)failBlk
+- (void)fetchSDDSuccessHandler:(SDDHandler)dddBlk failureHandler:(failureHandler)failBlk
 {
-    [self _requestDataWithURL:location successHandler:^(NSData * _Nullable data)
+    NSString *url = nil;
+    if ([self.service.SCPDURL hasPrefix:@"/"])
+    {
+        url = [NSString stringWithFormat:@"%@:%@%@", self.device.address.ipv4, self.device.address.port, self.service.SCPDURL];
+    }
+    else
+    {
+        url = [NSString stringWithFormat:@"%@:%@/%@", self.device.address.ipv4, self.device.address.port, self.service.SCPDURL];
+    }
+    NSString *urlStr = nil;
+    if ([url hasPrefix:@"http"] == NO)
+    {
+        urlStr = [NSString stringWithFormat:@"http://%@", url];
+    }
+    else
+    {
+        urlStr = url;
+    }
+    [self _requestDataWithURL:urlStr successHandler:^(NSData * _Nullable data)
     {
         NSDictionary *dataDict = [NSDictionary dictionaryWithXMLData:data];
         ServiceDescription *sdd = [[ServiceDescription alloc] initWithDictionary:dataDict];

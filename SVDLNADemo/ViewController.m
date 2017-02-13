@@ -90,7 +90,7 @@ static NSString *const REUSECELLID = @"reuseid";
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     Device *device = [self.devices objectAtIndex:indexPath.row];
-    DDDViewController *dddvc = [[DDDViewController alloc] initWithLocation:device.location device:device];
+    DDDViewController *dddvc = [[DDDViewController alloc] initWithDevice:device];
     dddvc.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:dddvc animated:YES];
 }
