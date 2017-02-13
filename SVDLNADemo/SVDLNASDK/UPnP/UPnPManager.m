@@ -108,6 +108,11 @@
     return mutRequestString.copy;
 }
 
+- (void)subscribeDeviceEventNotification
+{
+    
+}
+
 #pragma mark - GCDAsyncUdpSocketDelegate
 
 - (void)udpSocket:(GCDAsyncUdpSocket *)sock didReceiveData:(NSData *)data fromAddress:(NSData *)address withFilterContext:(id)filterContext
