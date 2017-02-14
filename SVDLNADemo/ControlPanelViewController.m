@@ -79,6 +79,18 @@
     _pauseButton.frame = CGRectMake(_playButton.frame.origin.x+_playButton.frame.size.width+20, top, width, height);
     _stopButton.frame = CGRectMake(_pauseButton.frame.origin.x+_pauseButton.frame.size.width+20, top, width, height);
     _testButton.frame = CGRectMake(20, _playButton.frame.origin.y+_playButton.frame.size.height+10, width, height);
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(videoStateChangedNotification:) name:UPnPVideoStateChangedNotification object:nil];
+}
+
+- (void)videoStateChangedNotification:(NSNotification *)notif
+{
+    NSDictionary *userInfo = notif.userInfo;
+    if (userInfo[@"transportState"] == nil)
+    {
+        return;
+    }
+    NSLog(@"视频播放状态改变通知: %@", userInfo[@"transportState"]);
 }
 
 - (void)showInfo:(NSString *)info

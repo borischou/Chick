@@ -177,6 +177,10 @@ static NSString *const UPnPVideoStateChangedNotification = @"UPnPVideoStateChang
     NSDictionary *dictData = [NSDictionary dictionaryWithXMLData:data];
     NSDictionary *eproperty = [NSDictionary dictionaryWithXMLString:[dictData stringValueForKeyPath:@"e:property.LastChange"]];
     NSString *transportstate = [eproperty stringValueForKeyPath:@"InstanceID.TransportState._val"];
+    if (transportstate == nil || transportstate.length <= 0)
+    {
+        return;
+    }
     NSLog(@"事件通知:\n%@\n%@\n状态:%@", dictData, eproperty, transportstate);
     [[NSNotificationCenter defaultCenter] postNotificationName:UPnPVideoStateChangedNotification object:nil userInfo:@{@"transportState": transportstate}];
 }
