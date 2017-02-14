@@ -15,6 +15,9 @@
 
 @interface UPnPActionRequest ()
 
+@property (strong, nonatomic) Service *service;
+@property (strong, nonatomic) Device *device;
+
 @property (copy, nonatomic) NSString *requestURL;
 @property (strong, nonatomic) NSData *requestBody;
 @property (strong, nonatomic) NSMutableArray<NSString *> *xmlLines;
@@ -28,14 +31,22 @@
     return [[UPnPActionRequest alloc] init];
 }
 
-- (instancetype)initWithAddress:(Address *)address service:(Service *)service action:(Action *)action
+- (instancetype)initWithAction:(Action *)action
 {
     self = [super init];
     if (self)
     {
-        _address = address;
-        _service = service;
         _action = action;
+    }
+    return self;
+}
+
+- (instancetype)init
+{
+    if (self = [super init])
+    {
+        _service = [UPnPManager sharedManager].service;
+        _device = [UPnPManager sharedManager].device;
     }
     return self;
 }
@@ -92,11 +103,11 @@
     
     if ([self.service.controlURL hasPrefix:@"/"])
     {
-        url = [NSString stringWithFormat:@"http://%@:%@%@", self.address.ipv4, self.address.port, controlURL];
+        url = [NSString stringWithFormat:@"http://%@:%@%@", self.device.address.ipv4, self.device.address.port, controlURL];
     }
     else
     {
-        url = [NSString stringWithFormat:@"http://%@:%@/%@", self.address.ipv4, self.address.port, controlURL];
+        url = [NSString stringWithFormat:@"http://%@:%@/%@", self.device.address.ipv4, self.device.address.port, controlURL];
     }
     _requestURL = url;
     [self setURL:[NSURL URLWithString:url]];

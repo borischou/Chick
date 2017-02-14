@@ -156,15 +156,20 @@ static NSString *const UPnPVideoStateChangedNotification = @"UPnPVideoStateChang
 - (void)_startGCDWebServer
 {
     __weak typeof(self) weakSelf = self;
-    [weakSelf.webServer addHandlerForMethod:@"NOTIFY" path:SERVER_PATH requestClass:[GCDWebServerDataRequest class] processBlock:^GCDWebServerResponse *(__kindof GCDWebServerRequest *request) {
+    
+    //(Asynchronous version) The handler returns immediately and calls back GCDWebServer later with the generated HTTP response
+    [weakSelf.webServer addHandlerForMethod:@"NOTIFY" path:SERVER_PATH requestClass:[GCDWebServerDataRequest class] asyncProcessBlock:^(__kindof GCDWebServerRequest *request, GCDWebServerCompletionBlock completionBlock) {
+        // Do some async operation like network access or file I/O (simulated here using dispatch_after())
         GCDWebServerDataRequest *req = (GCDWebServerDataRequest *)request;
         __strong typeof(self) strongSelf = weakSelf;
         if (req.hasBody && strongSelf)
         {
             [strongSelf _parseEventNotificationMessage:req.data];
         }
-        return [GCDWebServerDataResponse responseWithHTML:@"<html><body><p>Hello World</p></body></html>"];
+        GCDWebServerDataResponse* response = [GCDWebServerDataResponse responseWithHTML:@"<html><body><p>Hello World</p></body></html>"];
+        completionBlock(response);
     }];
+    
     [self.webServer startWithPort:8899 bonjourName:nil];
 }
 
@@ -176,13 +181,15 @@ static NSString *const UPnPVideoStateChangedNotification = @"UPnPVideoStateChang
     }
     NSDictionary *dictData = [NSDictionary dictionaryWithXMLData:data];
     NSDictionary *eproperty = [NSDictionary dictionaryWithXMLString:[dictData stringValueForKeyPath:@"e:property.LastChange"]];
-    NSString *transportstate = [eproperty stringValueForKeyPath:@"InstanceID.TransportState._val"];
+    NSString *transportstate = [eproperty stringValueForKeyPath:@"InstanceID.TransportState._val"] ? [eproperty stringValueForKeyPath:@"InstanceID.TransportState._val"] : [eproperty stringValueForKeyPath:@"InstanceID.TransportState.val"];
     if (transportstate == nil || transportstate.length <= 0)
     {
         return;
     }
-    NSLog(@"事件通知:\n%@\n%@\n状态:%@", dictData, eproperty, transportstate);
-    [[NSNotificationCenter defaultCenter] postNotificationName:UPnPVideoStateChangedNotification object:nil userInfo:@{@"transportState": transportstate}];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        NSLog(@"事件通知:\n%@\n%@\n状态:%@", dictData, eproperty, transportstate);
+        [[NSNotificationCenter defaultCenter] postNotificationName:UPnPVideoStateChangedNotification object:nil userInfo:@{@"transportState": transportstate}];
+    });
 }
 
 #pragma mark - UDP

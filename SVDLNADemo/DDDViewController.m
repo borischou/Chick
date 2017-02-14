@@ -56,8 +56,6 @@ static NSString *const REUSECELLID = @"reusecellid";
         self.ddd = ddd;
         ddd.device = self.device;
         self.device.ddd = ddd;
-        [[CurrentDevice sharedDevice] setDevice:self.device];
-        [[CurrentDevice sharedDevice] setServices:self.ddd.services];
         dispatch_async_main_safe(^{
             self.title = ddd.friendlyName ? ddd.friendlyName : @"DDD";
             [self.tableView reloadData];

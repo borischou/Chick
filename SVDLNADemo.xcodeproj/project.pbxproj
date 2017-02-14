@@ -41,7 +41,6 @@
 		F12C1B3B1E4E0A54002F9FAF /* Address.m in Sources */ = {isa = PBXBuildFile; fileRef = F12C1B291E4E0A54002F9FAF /* Address.m */; };
 		F12C1B3C1E4E0A54002F9FAF /* AllowedValueRange.m in Sources */ = {isa = PBXBuildFile; fileRef = F12C1B2B1E4E0A54002F9FAF /* AllowedValueRange.m */; };
 		F12C1B3D1E4E0A54002F9FAF /* Argument.m in Sources */ = {isa = PBXBuildFile; fileRef = F12C1B2D1E4E0A54002F9FAF /* Argument.m */; };
-		F12C1B3E1E4E0A54002F9FAF /* CurrentDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = F12C1B2F1E4E0A54002F9FAF /* CurrentDevice.m */; };
 		F12C1B3F1E4E0A54002F9FAF /* Device.m in Sources */ = {isa = PBXBuildFile; fileRef = F12C1B311E4E0A54002F9FAF /* Device.m */; };
 		F12C1B401E4E0A54002F9FAF /* DeviceDescription.m in Sources */ = {isa = PBXBuildFile; fileRef = F12C1B331E4E0A54002F9FAF /* DeviceDescription.m */; };
 		F12C1B411E4E0A54002F9FAF /* Service.m in Sources */ = {isa = PBXBuildFile; fileRef = F12C1B351E4E0A54002F9FAF /* Service.m */; };
@@ -146,8 +145,6 @@
 		F12C1B2B1E4E0A54002F9FAF /* AllowedValueRange.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AllowedValueRange.m; path = SVDLNASDK/Model/AllowedValueRange.m; sourceTree = "<group>"; };
 		F12C1B2C1E4E0A54002F9FAF /* Argument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Argument.h; path = SVDLNASDK/Model/Argument.h; sourceTree = "<group>"; };
 		F12C1B2D1E4E0A54002F9FAF /* Argument.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Argument.m; path = SVDLNASDK/Model/Argument.m; sourceTree = "<group>"; };
-		F12C1B2E1E4E0A54002F9FAF /* CurrentDevice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CurrentDevice.h; path = SVDLNASDK/Model/CurrentDevice.h; sourceTree = "<group>"; };
-		F12C1B2F1E4E0A54002F9FAF /* CurrentDevice.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CurrentDevice.m; path = SVDLNASDK/Model/CurrentDevice.m; sourceTree = "<group>"; };
 		F12C1B301E4E0A54002F9FAF /* Device.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Device.h; path = SVDLNASDK/Model/Device.h; sourceTree = "<group>"; };
 		F12C1B311E4E0A54002F9FAF /* Device.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Device.m; path = SVDLNASDK/Model/Device.m; sourceTree = "<group>"; };
 		F12C1B321E4E0A54002F9FAF /* DeviceDescription.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DeviceDescription.h; path = SVDLNASDK/Model/DeviceDescription.h; sourceTree = "<group>"; };
@@ -387,8 +384,6 @@
 				F12C1B2B1E4E0A54002F9FAF /* AllowedValueRange.m */,
 				F12C1B2C1E4E0A54002F9FAF /* Argument.h */,
 				F12C1B2D1E4E0A54002F9FAF /* Argument.m */,
-				F12C1B2E1E4E0A54002F9FAF /* CurrentDevice.h */,
-				F12C1B2F1E4E0A54002F9FAF /* CurrentDevice.m */,
 				F12C1B301E4E0A54002F9FAF /* Device.h */,
 				F12C1B311E4E0A54002F9FAF /* Device.m */,
 				F12C1B321E4E0A54002F9FAF /* DeviceDescription.h */,
@@ -580,7 +575,6 @@
 				F12C1B3D1E4E0A54002F9FAF /* Argument.m in Sources */,
 				5476967F1E49BA46001DAB5F /* DDDViewController.m in Sources */,
 				548BF8D01E482B060074F5F1 /* AppDelegate.m in Sources */,
-				F12C1B3E1E4E0A54002F9FAF /* CurrentDevice.m in Sources */,
 				F12C1B511E4E0A5F002F9FAF /* UPnPActionRequest.m in Sources */,
 				F12C1B231E4E0A45002F9FAF /* GCDAsyncUdpSocket.m in Sources */,
 				547696841E49CE88001DAB5F /* SDDViewController.m in Sources */,

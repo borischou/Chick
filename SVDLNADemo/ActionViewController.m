@@ -15,7 +15,7 @@
 @property (strong, nonatomic) ServiceDescription *sdd;
 
 @property (strong, nonatomic) UITextView *textView;
-@property (strong, nonatomic) UIButton *playButton;
+@property (strong, nonatomic) UIButton *actionButton;
 
 @end
 
@@ -45,17 +45,14 @@
     textView.text = [NSString stringWithFormat:@"Action name: %@\n\n%@", self.action.name, [self _argumentContent]];
     self.textView = textView;
     
-    if ([[self.action.name lowercaseString] isEqualToString:@"setavtransporturi"])
-    {
-        UIButton *playButton = [UIButton new];
-        [playButton setTitle:@"播放" forState:UIControlStateNormal];
-        [playButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        [playButton setBackgroundColor:[UIColor purpleColor]];
-        playButton.frame = CGRectMake(20, textView.frame.origin.y+textView.frame.size.height+10, textView.frame.size.width, 40);
-        [playButton addTarget:self action:@selector(playButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
-        [self.view addSubview:playButton];
-        self.playButton = playButton;
-    }
+    UIButton *actionButton = [UIButton new];
+    [actionButton setTitle:self.action.name forState:UIControlStateNormal];
+    [actionButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [actionButton setBackgroundColor:[UIColor purpleColor]];
+    actionButton.frame = CGRectMake(20, textView.frame.origin.y+textView.frame.size.height+10, textView.frame.size.width, 40);
+    [actionButton addTarget:self action:@selector(actionButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:actionButton];
+    self.actionButton = actionButton;
 }
 
 - (NSString *)_argumentContent
@@ -68,20 +65,17 @@
     return mstr.copy;
 }
 
-- (void)playButtonPressed:(UIButton *)sender
+- (void)actionButtonPressed:(UIButton *)sender
 {
     UPnPManager *manager = [UPnPManager sharedManager];
-    Address *address = [CurrentDevice sharedDevice].device.address;
     UPnPActionRequest *request = [[UPnPActionRequest alloc] init];
-    request.address = address;
-    request.service = self.sdd.service;
+    [request setAction:self.action];
     [manager setRequest:request];
     [manager stopWithResponse:^(UPnPActionResponse * _Nullable actionResponse, NSURLResponse * _Nullable response, NSError * _Nullable error) {
         NSLog(@"Stop的回调:\n%@", actionResponse.xmlDictionary);
         UPnPManager *aManager = [UPnPManager sharedManager];
         UPnPActionRequest *aRequest = [UPnPActionRequest request];
-        aRequest.address = address;
-        aRequest.service = self.sdd.service;
+        [aRequest setActionName:@"SetAVTransportURI"];
         [aManager setRequest:aRequest];
         dispatch_async_main_safe(^{
             NSLog(@"Stop的回调:\n%@", actionResponse.xmlDictionary);

@@ -90,7 +90,9 @@
     {
         return;
     }
-    NSLog(@"视频播放状态改变通知: %@", userInfo[@"transportState"]);
+    dispatch_async(dispatch_get_main_queue(), ^{
+        NSLog(@"视频播放状态改变通知: %@", userInfo[@"transportState"]);
+    });
 }
 
 - (void)showInfo:(NSString *)info
@@ -101,10 +103,8 @@
 - (void)testButtonPressed:(UIButton *)sender
 {
     UPnPManager *manager = [UPnPManager sharedManager];
-    Address *address = [CurrentDevice sharedDevice].device.address;
     UPnPActionRequest *request = [UPnPActionRequest request];
-    request.address = address;
-    request.service = self.sdd.service;
+    [request setActionName:@"GetTransportInfo"];
     [manager setRequest:request];
     [manager getTransportInfo:^(UPnPActionResponse * _Nullable actionResponse, NSURLResponse * _Nullable response, NSError * _Nullable error) {
         dispatch_async_main_safe(^{
@@ -116,10 +116,8 @@
 - (void)playButtonPressed:(UIButton *)sender
 {
     UPnPManager *manager = [UPnPManager sharedManager];
-    Address *address = [CurrentDevice sharedDevice].device.address;
     UPnPActionRequest *request = [UPnPActionRequest request];
-    request.address = address;
-    request.service = self.sdd.service;
+    [request setActionName:@"Play"];
     [manager setRequest:request];
     [manager playWithResponse:^(UPnPActionResponse * _Nullable actionResponse, NSURLResponse * _Nullable response, NSError * _Nullable error) {
         dispatch_async_main_safe(^{
@@ -132,10 +130,8 @@
 - (void)pauseButtonPressed:(UIButton *)sender
 {
     UPnPManager *manager = [UPnPManager sharedManager];
-    Address *address = [CurrentDevice sharedDevice].device.address;
     UPnPActionRequest *request = [[UPnPActionRequest alloc] init];
-    request.address = address;
-    request.service = self.sdd.service;
+    [request setActionName:@"Pause"];
     [manager setRequest:request];
     [manager pauseWithResponse:^(UPnPActionResponse * _Nullable actionResponse, NSURLResponse * _Nullable response, NSError * _Nullable error) {
         dispatch_async_main_safe(^{
@@ -148,10 +144,8 @@
 - (void)stopButtonPressed:(UIButton *)sender
 {
     UPnPManager *manager = [UPnPManager sharedManager];
-    Address *address = [CurrentDevice sharedDevice].device.address;
     UPnPActionRequest *request = [[UPnPActionRequest alloc] init];
-    request.address = address;
-    request.service = self.sdd.service;
+    [request setActionName:@"Stop"];
     [manager setRequest:request];
     [manager stopWithResponse:^(UPnPActionResponse * _Nullable actionResponse, NSURLResponse * _Nullable response, NSError * _Nullable error) {
         dispatch_async_main_safe(^{

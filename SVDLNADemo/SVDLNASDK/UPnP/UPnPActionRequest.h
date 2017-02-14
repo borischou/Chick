@@ -12,13 +12,11 @@
 
 @interface UPnPActionRequest : NSMutableURLRequest
 
-@property (strong, nonatomic) Address * _Nullable address;
-@property (strong, nonatomic) Service * _Nullable service;
 @property (strong, nonatomic) Action * _Nullable action;
 
 + (instancetype)request;
 
-- (instancetype)initWithAddress:(Address *)address service:(Service *)service action:(Action *)action;
+- (instancetype)initWithAction:(Action *)action;
 
 /*
  * 清空请求体中的xml文本

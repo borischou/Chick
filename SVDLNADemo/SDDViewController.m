@@ -46,7 +46,7 @@ static NSString *const REUSECELLID = @"reusecellid";
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:REUSECELLID];
     [self.view addSubview:self.tableView];
     
-    Device *device = [CurrentDevice sharedDevice].device;
+    Device *device = [UPnPManager sharedManager].device;
     Service *service = self.service;
     [[UPnPManager sharedManager] subscribeEventNotificationFromDevice:device service:service response:^(NSString * _Nullable subscribeID, NSURLResponse * _Nullable response, NSError * _Nullable error) {
         if (error == nil)
