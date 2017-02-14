@@ -283,6 +283,16 @@
 			name = Lib;
 			sourceTree = "<group>";
 		};
+		54801D061E52E169002AFE83 /* Header */ = {
+			isa = PBXGroup;
+			children = (
+				F12C1B301E4E0A54002F9FAF /* Device.h */,
+				F12C1B341E4E0A54002F9FAF /* Service.h */,
+				F12C1B4A1E4E0A5F002F9FAF /* UPnPManager.h */,
+			);
+			name = Header;
+			sourceTree = "<group>";
+		};
 		548BF8BF1E482B060074F5F1 = {
 			isa = PBXGroup;
 			children = (
@@ -352,6 +362,7 @@
 		F12C1B1C1E4E0A31002F9FAF /* SVDLNASDK */ = {
 			isa = PBXGroup;
 			children = (
+				54801D061E52E169002AFE83 /* Header */,
 				F12C1B581E4E0AD1002F9FAF /* UPnP */,
 				F12C1B571E4E0ABE002F9FAF /* Model */,
 				F12C1B561E4E0A9D002F9FAF /* Lib */,
@@ -384,11 +395,9 @@
 				F12C1B2B1E4E0A54002F9FAF /* AllowedValueRange.m */,
 				F12C1B2C1E4E0A54002F9FAF /* Argument.h */,
 				F12C1B2D1E4E0A54002F9FAF /* Argument.m */,
-				F12C1B301E4E0A54002F9FAF /* Device.h */,
 				F12C1B311E4E0A54002F9FAF /* Device.m */,
 				F12C1B321E4E0A54002F9FAF /* DeviceDescription.h */,
 				F12C1B331E4E0A54002F9FAF /* DeviceDescription.m */,
-				F12C1B341E4E0A54002F9FAF /* Service.h */,
 				F12C1B351E4E0A54002F9FAF /* Service.m */,
 				F12C1B361E4E0A54002F9FAF /* ServiceDescription.h */,
 				F12C1B371E4E0A54002F9FAF /* ServiceDescription.m */,
@@ -401,7 +410,6 @@
 		F12C1B581E4E0AD1002F9FAF /* UPnP */ = {
 			isa = PBXGroup;
 			children = (
-				F12C1B4A1E4E0A5F002F9FAF /* UPnPManager.h */,
 				F12C1B4B1E4E0A5F002F9FAF /* UPnPManager.m */,
 				F12C1B4C1E4E0A5F002F9FAF /* UPnPManager+Connection.h */,
 				F12C1B4D1E4E0A5F002F9FAF /* UPnPManager+Connection.m */,
