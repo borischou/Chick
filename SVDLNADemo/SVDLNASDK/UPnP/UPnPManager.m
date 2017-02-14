@@ -188,8 +188,36 @@ static NSString *const UPnPVideoStateChangedNotification = @"UPnPVideoStateChang
     }
     dispatch_async(dispatch_get_main_queue(), ^{
         NSLog(@"事件通知:\n%@\n%@\n状态:%@", dictData, eproperty, transportstate);
-        [[NSNotificationCenter defaultCenter] postNotificationName:UPnPVideoStateChangedNotification object:nil userInfo:@{@"transportState": transportstate}];
+        [[NSNotificationCenter defaultCenter] postNotificationName:UPnPVideoStateChangedNotification object:nil userInfo:@{@"transportState": @([self _transportStateWith:transportstate])}];
     });
+}
+
+- (UPnPEventTransportState)_transportStateWith:(NSString *)origin
+{
+    if (origin == nil || origin.length <= 0)
+    {
+        return UPnPEventTransportStateUnknown;
+    }
+    else if ([origin isEqualToString:@"PAUSED_PLAYBACK"])
+    {
+        return UPnPEventTransportStatePaused;
+    }
+    else if ([origin isEqualToString:@"PLAYING"])
+    {
+        return UPnPEventTransportStatePlaying;
+    }
+    else if ([origin isEqualToString:@"STOPPED"])
+    {
+        return UPnPEventTransportStateStopped;
+    }
+    else if ([origin isEqualToString:@"TRANSITIONING"])
+    {
+        return UPnPEventTransportStateTransitioning;
+    }
+    else
+    {
+        return UPnPEventTransportStateUnknown;
+    }
 }
 
 #pragma mark - UDP
