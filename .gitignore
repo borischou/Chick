@@ -22,8 +22,8 @@ xcuserdata
 *.moved-aside
 *.xcuserstate
 *.xcscmblueprint
-*.xcodeproj
-*.pbxproj
+#*.xcodeproj
+#*.pbxproj
 *.lock
 
 ## Obj-C/Swift specific
