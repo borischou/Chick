@@ -13,18 +13,10 @@
 // You will also need to set the Prefix Header build setting of one or more of your targets to reference this file.
 
 #import "ARCWeakRef.h"
-#import "SVDLNASDK/UPnP/UPnPActionResponse.h"
-#import "SVDLNASDK/UPnP/UPnPManager.h"
-#import "SVDLNASDK/UPnP/UPnPManager+ControlPoint.h"
-#import "SVDLNASDK/Model/ServiceDescription.h"
-#import "SVDLNASDK/Model/Device.h"
-#import "SVDLNASDK/Model/Action.h"
-#import "SVDLNASDK/Lib/XMLDictionary.h"
-#import "SVDLNASDK/Lib/GCDAsyncUdpSocket.h"
-#import "SVDLNASDK/UPnP/UPnPManager+Connection.h"
-#import "SVDLNASDK/Model/DeviceDescription.h"
-#import "SVDLNASDK/UPnP/UPnPActionRequest.h"
-#import "SVDLNASDK/Model/Address.h"
+
+#import <SVDLNA/UPnPManager.h>
+#import <SVDLNA/Device.h>
+#import <SVDLNA/Service.h>
 
 #define dispatch_async_main_safe(block)\
 if ([NSThread isMainThread]) {\

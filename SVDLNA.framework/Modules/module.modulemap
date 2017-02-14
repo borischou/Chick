@@ -1,0 +1,6 @@
+framework module SVDLNA {
+  umbrella header "SVDLNA.h"
+
+  export *
+  module * { export * }
+}
