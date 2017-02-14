@@ -84,9 +84,9 @@ typedef NS_ENUM(NSInteger, UPnPEventTransportState)
 
 - (void)searchDevice;
 
-- (void)subscribeEventNotificationFromDevice:(Device *)device service:(Service *)service;
+- (void)subscribeEventNotification;
 
-- (void)subscribeEventNotificationFromDevice:(Device *)device service:(Service *)service response:(void (^)(NSString * _Nullable subscribeID, NSURLResponse * _Nullable response, NSError * _Nullable error))responseBlock;
+- (void)subscribeEventNotificationResponse:(void (^)(NSString * _Nullable subscribeID, NSURLResponse * _Nullable response, NSError * _Nullable error))responseBlock;
 
 @property (weak, nonatomic) id <UPnPControlPointDelegate> _Nullable controlPointDelegate;
 @property (weak, nonatomic) id <UPnPSSDPDataDelegate> ssdpDataDelegate;

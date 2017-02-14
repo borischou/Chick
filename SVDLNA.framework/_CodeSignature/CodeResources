@@ -14,7 +14,7 @@
 		</data>
 		<key>Headers/UPnPManager.h</key>
 		<data>
-		YqBzeEtn474L3QgICqDXo7IWkJ0=
+		qYWBxXw7dADpjEajM1iLQLUWu2Y=
 		</data>
 		<key>Info.plist</key>
 		<data>
@@ -53,11 +53,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			YqBzeEtn474L3QgICqDXo7IWkJ0=
+			qYWBxXw7dADpjEajM1iLQLUWu2Y=
 			</data>
 			<key>hash2</key>
 			<data>
-			6vjcnnpoq1rfL9UejgVn41cor9fyQ7JF+wnfCj1ghPI=
+			VyKeXaiiM2L7k4oKg4JqDRA718K6Zx+YIzILGfjltRU=
 			</data>
 		</dict>
 		<key>Modules/module.modulemap</key>
