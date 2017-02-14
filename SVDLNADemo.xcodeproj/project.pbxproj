@@ -401,18 +401,18 @@
 		F12C1B581E4E0AD1002F9FAF /* UPnP */ = {
 			isa = PBXGroup;
 			children = (
-				F12C1B441E4E0A5F002F9FAF /* SsdpResponseHeader.h */,
-				F12C1B451E4E0A5F002F9FAF /* SsdpResponseHeader.m */,
-				F12C1B461E4E0A5F002F9FAF /* UPnPActionRequest.h */,
-				F12C1B471E4E0A5F002F9FAF /* UPnPActionRequest.m */,
-				F12C1B481E4E0A5F002F9FAF /* UPnPActionResponse.h */,
-				F12C1B491E4E0A5F002F9FAF /* UPnPActionResponse.m */,
 				F12C1B4A1E4E0A5F002F9FAF /* UPnPManager.h */,
 				F12C1B4B1E4E0A5F002F9FAF /* UPnPManager.m */,
 				F12C1B4C1E4E0A5F002F9FAF /* UPnPManager+Connection.h */,
 				F12C1B4D1E4E0A5F002F9FAF /* UPnPManager+Connection.m */,
 				F12C1B4E1E4E0A5F002F9FAF /* UPnPManager+ControlPoint.h */,
 				F12C1B4F1E4E0A5F002F9FAF /* UPnPManager+ControlPoint.m */,
+				F12C1B441E4E0A5F002F9FAF /* SsdpResponseHeader.h */,
+				F12C1B451E4E0A5F002F9FAF /* SsdpResponseHeader.m */,
+				F12C1B461E4E0A5F002F9FAF /* UPnPActionRequest.h */,
+				F12C1B471E4E0A5F002F9FAF /* UPnPActionRequest.m */,
+				F12C1B481E4E0A5F002F9FAF /* UPnPActionResponse.h */,
+				F12C1B491E4E0A5F002F9FAF /* UPnPActionResponse.m */,
 			);
 			name = UPnP;
 			sourceTree = "<group>";

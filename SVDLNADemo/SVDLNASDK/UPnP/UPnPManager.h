@@ -30,8 +30,11 @@ typedef NS_ENUM(NSInteger, UPnPEventTransportState)
 @protocol UPnPSSDPDataDelegate <NSObject>
 
 @optional
+
 - (void)uPnpManagerDidSendData:(UPnPManager *)manager;
+
 - (void)uPnpManager:(UPnPManager *)manager didNotSendDataDueToError:(NSError *)error;
+
 - (void)uPnpManager:(UPnPManager *)manager didDiscoverDevice:(Device *)device;
 
 @end
@@ -39,30 +42,32 @@ typedef NS_ENUM(NSInteger, UPnPEventTransportState)
 @protocol UPnPControlPointDelegate <NSObject>
 
 @optional
+
 - (void)uPnpManager:(UPnPManager * _Nullable)manager didGetTransportInfoResponse:(UPnPActionResponse * _Nullable)response;
+
 - (void)uPnpManager:(UPnPManager * _Nullable)manager didGetPositionInfoResponse:(UPnPActionResponse * _Nullable)response;
+
 - (void)uPnpManager:(UPnPManager * _Nullable)manager didPlayResponse:(UPnPActionResponse * _Nullable)response;
+
 - (void)uPnpManager:(UPnPManager * _Nullable)manager didPauseResponse:(UPnPActionResponse * _Nullable)response;
+
 - (void)uPnpManager:(UPnPManager * _Nullable)manager didStopResponse:(UPnPActionResponse * _Nullable)response;
+
 - (void)uPnpManager:(UPnPManager * _Nullable)manager didSeekTo:(NSString *)target response:(UPnPActionResponse *)response;
+
 - (void)uPnpManager:(UPnPManager * _Nullable)manager didSetAVTransportURI:(NSString * _Nullable)uri response:(UPnPActionResponse * _Nullable)response;
+
 - (void)uPnpManager:(UPnPManager * _Nullable)manager didSetNextAVTransportURI:(NSString * _Nullable)uri response:(UPnPActionResponse * _Nullable)response;
 
 @end
 
 @interface UPnPManager : NSObject
 
-@property (strong, nonatomic) UPnPActionRequest * _Nullable request;
-
 @property (strong, nonatomic, readonly) Device *device;
 
 @property (strong, nonatomic, readonly) Service *service;
 
 + (_Nullable instancetype)sharedManager;
-
-- (_Nullable instancetype)initWithRequest:(UPnPActionRequest * _Nullable)request;
-
-- (void)setRequest:(UPnPActionRequest * _Nullable)request;
 
 - (void)setService:(Service *)service;
 
@@ -88,6 +93,7 @@ typedef void(^SDDHandler)(ServiceDescription * _Nullable sdd);
 @interface UPnPManager (Connection)
 
 - (void)fetchDDDSuccessHandler:(DDDHandler _Nullable)dddBlk failureHandler:(failureHandler _Nullable)failBlk;
+
 - (void)fetchSDDSuccessHandler:(SDDHandler _Nullable)dddBlk failureHandler:(failureHandler _Nullable)failBlk;
 
 @end

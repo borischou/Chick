@@ -7,21 +7,18 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "Address.h"
+#import "Device.h"
 #import "Service.h"
 
 @interface UPnPActionRequest : NSMutableURLRequest
 
-@property (strong, nonatomic) Action * _Nullable action;
+@property (strong, nonatomic) Service *service;
+
+@property (strong, nonatomic) Device *device;
 
 + (instancetype)request;
 
-- (instancetype)initWithAction:(Action *)action;
-
-/*
- * 清空请求体中的xml文本
- */
-- (void)reset;
+- (instancetype)initWithActionName:(NSString *)actionName;
 
 /*
  * 请求调用的动作名称（注意大小写一致）

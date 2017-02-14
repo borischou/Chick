@@ -15,9 +15,7 @@
 
 @interface UPnPActionRequest ()
 
-@property (strong, nonatomic) Service *service;
-@property (strong, nonatomic) Device *device;
-
+@property (copy, nonatomic) NSString *actionName;
 @property (copy, nonatomic) NSString *requestURL;
 @property (strong, nonatomic) NSData *requestBody;
 @property (strong, nonatomic) NSMutableArray<NSString *> *xmlLines;
@@ -31,12 +29,12 @@
     return [[UPnPActionRequest alloc] init];
 }
 
-- (instancetype)initWithAction:(Action *)action
+- (instancetype)initWithActionName:(NSString *)actionName
 {
     self = [super init];
     if (self)
     {
-        _action = action;
+        _actionName = actionName;
     }
     return self;
 }
@@ -74,20 +72,20 @@
 
 -(void)_addXmlSoapWrapper
 {
-    NSString *start = [NSString stringWithFormat:@"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<s:Envelope s:encodingStyle=\"http://schemas.xmlsoap.org/soap/encoding/\" xmlns:s=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:u=\"%@\">\n<s:Body>\n<u:%@ xmlns:u=\"%@\">\n", self.service.serviceType, self.action.name, self.service.serviceType];
-    NSString *end = [NSString stringWithFormat:@"</u:%@>\n</s:Body>\n</s:Envelope>\r\n", self.action.name];
+    NSString *start = [NSString stringWithFormat:@"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<s:Envelope s:encodingStyle=\"http://schemas.xmlsoap.org/soap/encoding/\" xmlns:s=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:u=\"%@\">\n<s:Body>\n<u:%@ xmlns:u=\"%@\">\n", self.service.serviceType, self.actionName, self.service.serviceType];
+    NSString *end = [NSString stringWithFormat:@"</u:%@>\n</s:Body>\n</s:Envelope>\r\n", self.actionName];
     [self.xmlLines insertObject:start atIndex:0];
     [self.xmlLines addObject:end];
 }
 
 - (NSString *)_soapAction
 {
-    return [NSString stringWithFormat:@"\"%@#%@\"", self.service.serviceType, self.action.name];
+    return [NSString stringWithFormat:@"\"%@#%@\"", self.service.serviceType, self.actionName];
 }
 
 - (void)setActionName:(NSString *)actionName
 {
-    self.action.name = actionName;
+    _actionName = actionName;
 }
 
 - (void)composeRequest
@@ -123,20 +121,6 @@
     NSData *data = [mutStr dataUsingEncoding:NSUTF8StringEncoding];
     self.HTTPBody = data;
     _requestBody = data;
-}
-
-- (Action *)action
-{
-    if (_action == nil)
-    {
-        _action = [[Action alloc] init];
-    }
-    return _action;
-}
-
-- (void)reset
-{
-    [_xmlLines removeAllObjects];
 }
 
 @end

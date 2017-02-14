@@ -14,6 +14,7 @@
 #import "XMLDictionary.h"
 
 #define UDP_PORT 2345
+#define SERVER_PORT 8899
 
 //SSDP M-SEARCH Header
 #define LAN_MULTICAST_HOST_IP @"239.255.255.250"
@@ -60,18 +61,6 @@ static NSString *const UPnPVideoStateChangedNotification = @"UPnPVideoStateChang
         });
     }
     return manager;
-}
-
-- (instancetype)initWithRequest:(UPnPActionRequest *)request
-{
-    self = [UPnPManager sharedManager];
-    self.request = request;
-    return self;
-}
-
-- (void)setRequest:(UPnPActionRequest *)request;
-{
-    _request = request;
 }
 
 - (void)setService:(Service *)service
@@ -170,7 +159,7 @@ static NSString *const UPnPVideoStateChangedNotification = @"UPnPVideoStateChang
         completionBlock(response);
     }];
     
-    [self.webServer startWithPort:8899 bonjourName:nil];
+    [self.webServer startWithPort:SERVER_PORT bonjourName:nil];
 }
 
 - (void)_parseEventNotificationMessage:(NSData *)data

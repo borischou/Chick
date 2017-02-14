@@ -103,9 +103,6 @@
 - (void)testButtonPressed:(UIButton *)sender
 {
     UPnPManager *manager = [UPnPManager sharedManager];
-    UPnPActionRequest *request = [UPnPActionRequest request];
-    [request setActionName:@"GetTransportInfo"];
-    [manager setRequest:request];
     [manager getTransportInfo:^(UPnPActionResponse * _Nullable actionResponse, NSURLResponse * _Nullable response, NSError * _Nullable error) {
         dispatch_async_main_safe(^{
             NSLog(@"GetTransportInfo的回调:\n%@", actionResponse.xmlDictionary);
@@ -116,9 +113,6 @@
 - (void)playButtonPressed:(UIButton *)sender
 {
     UPnPManager *manager = [UPnPManager sharedManager];
-    UPnPActionRequest *request = [UPnPActionRequest request];
-    [request setActionName:@"Play"];
-    [manager setRequest:request];
     [manager playWithResponse:^(UPnPActionResponse * _Nullable actionResponse, NSURLResponse * _Nullable response, NSError * _Nullable error) {
         dispatch_async_main_safe(^{
             NSLog(@"Play的回调:\n%@", actionResponse.xmlDictionary);
@@ -130,9 +124,6 @@
 - (void)pauseButtonPressed:(UIButton *)sender
 {
     UPnPManager *manager = [UPnPManager sharedManager];
-    UPnPActionRequest *request = [[UPnPActionRequest alloc] init];
-    [request setActionName:@"Pause"];
-    [manager setRequest:request];
     [manager pauseWithResponse:^(UPnPActionResponse * _Nullable actionResponse, NSURLResponse * _Nullable response, NSError * _Nullable error) {
         dispatch_async_main_safe(^{
             NSLog(@"Pause的回调:\n%@", actionResponse.xmlDictionary);
@@ -144,9 +135,6 @@
 - (void)stopButtonPressed:(UIButton *)sender
 {
     UPnPManager *manager = [UPnPManager sharedManager];
-    UPnPActionRequest *request = [[UPnPActionRequest alloc] init];
-    [request setActionName:@"Stop"];
-    [manager setRequest:request];
     [manager stopWithResponse:^(UPnPActionResponse * _Nullable actionResponse, NSURLResponse * _Nullable response, NSError * _Nullable error) {
         dispatch_async_main_safe(^{
             NSLog(@"Stop的回调:\n%@", actionResponse.xmlDictionary);

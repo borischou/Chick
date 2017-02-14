@@ -68,15 +68,9 @@
 - (void)actionButtonPressed:(UIButton *)sender
 {
     UPnPManager *manager = [UPnPManager sharedManager];
-    UPnPActionRequest *request = [[UPnPActionRequest alloc] init];
-    [request setAction:self.action];
-    [manager setRequest:request];
     [manager stopWithResponse:^(UPnPActionResponse * _Nullable actionResponse, NSURLResponse * _Nullable response, NSError * _Nullable error) {
         NSLog(@"Stop的回调:\n%@", actionResponse.xmlDictionary);
         UPnPManager *aManager = [UPnPManager sharedManager];
-        UPnPActionRequest *aRequest = [UPnPActionRequest request];
-        [aRequest setActionName:@"SetAVTransportURI"];
-        [aManager setRequest:aRequest];
         dispatch_async_main_safe(^{
             NSLog(@"Stop的回调:\n%@", actionResponse.xmlDictionary);
             [aManager setAVTransportURI:TEST_VIDEO_URL response:^(UPnPActionResponse * _Nullable actionResponse, NSURLResponse * _Nullable response, NSError * _Nullable error) {
