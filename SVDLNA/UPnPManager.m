@@ -14,7 +14,7 @@
 #import "XMLDictionary.h"
 
 #define LOCAL_UDP_PORT  0       //本地UDP端口 0代表系统随机分配 可防止冲突 建议不要修改
-#define SERVER_PORT     54321   //本地服务器TCP端口
+#define SERVER_PORT     10190   //本地服务器TCP端口
 
 //SSDP M-SEARCH Header
 #define SSDP_MULTICAST_HOST_IP          @"239.255.255.250"  //默认组网IP 请勿修改
