@@ -29,13 +29,13 @@ static NSString *const REUSECELLID = @"reuseid";
     self.title = @"设备列表(正在搜索)";
     self.view.backgroundColor = [UIColor whiteColor];
     [self _initUI];
-    [self _searchDevice];
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
     self.navigationItem.rightBarButtonItem.enabled = YES;
+    [self _searchDevice];
 }
 
 #pragma mark - UI

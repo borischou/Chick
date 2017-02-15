@@ -75,13 +75,13 @@ static NSString *const UPnPVideoStateChangedNotification = @"UPnPVideoStateChang
 
 - (void)searchDevice
 {
-    [self _setupUdpSocket];
-    [self _startSSDPSearch];
     if (self.webServer == nil)
     {
         self.webServer = [[GCDWebServer alloc] init];
         [self _startGCDWebServer];
     }
+    [self _setupUdpSocket];
+    [self _startSSDPSearch];
 }
 
 - (void)subscribeEventNotificationResponse:(void (^)(NSString * _Nullable subscribeID, NSURLResponse * _Nullable response, NSError * _Nullable error))responseBlock
@@ -211,30 +211,35 @@ static NSString *const UPnPVideoStateChangedNotification = @"UPnPVideoStateChang
 
 - (void)_setupUdpSocket
 {
+    if (self.webServer && self.webServer.isRunning)
+    {
+        [self.webServer stop];
+        [self.webServer startWithPort:SERVER_PORT bonjourName:nil];
+    }
     if (self.udpSocket == nil)
     {
         self.udpSocket = [[GCDAsyncUdpSocket alloc] initWithDelegate:self delegateQueue:dispatch_get_main_queue()];
-        [self.udpSocket setIPv6Enabled:NO];
-        NSError *bindPortErr = nil;
-        if(![self.udpSocket bindToPort:LOCAL_UDP_PORT error:&bindPortErr])
-        {
-            NSLog(@"UDP绑定本地端口错误:\n%@\n", bindPortErr);
-        }
-        NSError *bindBroadErr = nil;
-        if (![self.udpSocket enableBroadcast:YES error:&bindBroadErr])
-        {
-            NSLog(@"UDP广播开启错误:\n%@\n", bindBroadErr);
-        }
-        NSError *joinGroupErr = nil;
-        if(![self.udpSocket joinMulticastGroup:SSDP_MULTICAST_HOST_IP error:&joinGroupErr])
-        {
-            NSLog(@"UDP加入组网错误:\n%@\n", joinGroupErr);
-        }
     }
-    
+    [self.udpSocket setIPv6Enabled:NO];
+    NSError *bindPortErr = nil;
+    if(![self.udpSocket bindToPort:LOCAL_UDP_PORT error:&bindPortErr])
+    {
+        NSLog(@"UDP绑定本地端口错误，重复绑定错误可忽略:\n%@\n", bindPortErr);
+    }
+    NSError *bindBroadErr = nil;
+    if (![self.udpSocket enableBroadcast:YES error:&bindBroadErr])
+    {
+        NSLog(@"UDP广播开启错误:\n%@\n", bindBroadErr);
+    }
+    NSError *joinGroupErr = nil;
+    if(![self.udpSocket joinMulticastGroup:SSDP_MULTICAST_HOST_IP error:&joinGroupErr])
+    {
+        NSLog(@"UDP加入组网错误，重复加入错误可忽略:\n%@\n", joinGroupErr);
+    }
     NSError *recvErr = nil;
     if (![self.udpSocket beginReceiving:&recvErr])
     {
+        [self.udpSocket close];
         NSLog(@"UDP开启接收错误: %@", recvErr);
     }
 }
