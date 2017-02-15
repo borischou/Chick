@@ -80,7 +80,7 @@ static NSString *const REUSECELLID = @"reuseid";
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return self.devices && self.devices.count > 0 ? self.devices.count : 1;
+    return self.devices && self.devices.count > 0 ? self.devices.count : 0;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
