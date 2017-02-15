@@ -26,7 +26,7 @@ static NSString *const REUSECELLID = @"reuseid";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.title = @"设备列表";
+    self.title = @"设备列表(正在搜索)";
     self.view.backgroundColor = [UIColor whiteColor];
     [self _initUI];
     [self _searchDevice];
@@ -57,6 +57,7 @@ static NSString *const REUSECELLID = @"reuseid";
 
 - (void)refreshButtonPressed:(UIBarButtonItem *)sender
 {
+    self.title = @"设备列表(正在刷新)";
     [_devices removeAllObjects];
     [self.tableView reloadData];
     [self _searchDevice];
