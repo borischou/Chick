@@ -13,8 +13,8 @@
 #import "GCDWebServerDataResponse.h"
 #import "XMLDictionary.h"
 
-#define LOCAL_UDP_PORT  2345 //本地UDP端口
-#define SERVER_PORT     8899 //本地服务器TCP端口
+#define LOCAL_UDP_PORT  0       //本地UDP端口 0代表系统随机分配 可防止冲突 建议不要修改
+#define SERVER_PORT     8899    //本地服务器TCP端口
 
 //SSDP M-SEARCH Header
 #define SSDP_MULTICAST_HOST_IP           @"239.255.255.250"  //默认组网IP 请勿修改
@@ -231,20 +231,7 @@ static NSString *const UPnPVideoStateChangedNotification = @"UPnPVideoStateChang
             NSLog(@"UDP加入组网错误:\n%@\n", joinGroupErr);
         }
     }
-    [self _restartGCDAsyncUdpSocket];
-}
-
-- (void)_restartGCDAsyncUdpSocket
-{
-    uint16_t port = self.udpSocket.localPort;
-    if (port == 0)
-    {
-        NSError *bindPortErr = nil;
-        if(![self.udpSocket bindToPort:LOCAL_UDP_PORT error:&bindPortErr])
-        {
-            NSLog(@"UDP绑定本地端口错误:\n%@\n", bindPortErr);
-        }
-    }
+    
     NSError *recvErr = nil;
     if (![self.udpSocket beginReceiving:&recvErr])
     {
