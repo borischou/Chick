@@ -25,7 +25,7 @@
      }];
 }
 
-- (void)fetchSDDSuccessHandler:(SDDHandler)dddBlk failureHandler:(failureHandler)failBlk
+- (void)fetchSDDSuccessHandler:(SDDHandler)sddBlk failureHandler:(failureHandler)failBlk
 {
     NSString *url = nil;
     if ([self.service.SCPDURL hasPrefix:@"/"])
@@ -49,7 +49,7 @@
      {
          NSDictionary *dataDict = [NSDictionary dictionaryWithXMLData:data];
          ServiceDescription *sdd = [[ServiceDescription alloc] initWithDictionary:dataDict];
-         dddBlk(sdd);
+         sddBlk(sdd);
      }
                failureHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error)
      {

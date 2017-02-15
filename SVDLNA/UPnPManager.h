@@ -21,8 +21,8 @@ typedef NS_ENUM(NSInteger, UPnPEventTransportState)         //视频播放状态
     UPnPEventTransportStateTransitioning
 };
 
-/*
- * upnp动作请求响应类
+/**
+ upnp动作请求响应类
  */
 @interface UPnPActionResponse : NSObject
 
@@ -39,6 +39,9 @@ typedef NS_ENUM(NSInteger, UPnPEventTransportState)         //视频播放状态
 
 @class UPnPManager;
 
+/**
+ SSDP搜索设备请求响应代理
+ */
 @protocol UPnPSSDPDataDelegate <NSObject>
 
 @optional
@@ -51,6 +54,9 @@ typedef NS_ENUM(NSInteger, UPnPEventTransportState)         //视频播放状态
 
 @end
 
+/**
+ upnp控制请求响应代理
+ */
 @protocol UPnPControlPointDelegate <NSObject>
 
 @optional
@@ -73,25 +79,55 @@ typedef NS_ENUM(NSInteger, UPnPEventTransportState)         //视频播放状态
 
 @end
 
+/**
+ DLNA主管理类，负责搜索、订阅、控制的请求调用
+ */
 @interface UPnPManager : NSObject
 
 @property (strong, nonatomic, readonly) Device *device;
 
 @property (strong, nonatomic, readonly) Service *service;
 
+/**
+ 全局共享管理类
+
+ @return 管理类单例
+ */
 + (_Nullable instancetype)sharedManager;
 
+/**
+ 设置当前服务
+
+ @param service 当前服务实例
+ */
 - (void)setService:(Service *)service;
 
+/**
+ 设置当前连接的设备
+
+ @param device 当前设备实例
+ */
 - (void)setDevice:(Device *)device;
 
+/**
+ 搜索设备
+ */
 - (void)searchDevice;
 
+/**
+ 订阅状态响应通知
+ */
 - (void)subscribeEventNotification;
 
+/**
+ 订阅状态响应通知
+
+ @param responseBlock 回调闭包，可保存订阅ID用于请求续订
+ */
 - (void)subscribeEventNotificationResponse:(void (^)(NSString * _Nullable subscribeID, NSURLResponse * _Nullable response, NSError * _Nullable error))responseBlock;
 
 @property (weak, nonatomic) id <UPnPControlPointDelegate> _Nullable controlPointDelegate;
+
 @property (weak, nonatomic) id <UPnPSSDPDataDelegate> ssdpDataDelegate;
 
 @end
@@ -104,9 +140,15 @@ typedef void(^SDDHandler)(ServiceDescription * _Nullable sdd);
 
 @interface UPnPManager (Connection)
 
+/**
+ 请求设备描述文档
+ */
 - (void)fetchDDDSuccessHandler:(DDDHandler _Nullable)dddBlk failureHandler:(failureHandler _Nullable)failBlk;
 
-- (void)fetchSDDSuccessHandler:(SDDHandler _Nullable)dddBlk failureHandler:(failureHandler _Nullable)failBlk;
+/**
+ 请求服务描述文档
+ */
+- (void)fetchSDDSuccessHandler:(SDDHandler _Nullable)sddBlk failureHandler:(failureHandler _Nullable)failBlk;
 
 @end
 
@@ -114,20 +156,49 @@ typedef void(^ActionResponseHandler)(UPnPActionResponse * _Nullable actionRespon
 
 @interface UPnPManager (ControlPoint)
 
+/**
+ 设置网络视频
+
+ @param uri 视频地址
+ @param responseHandler
+ */
 - (void)setAVTransportURI:(NSString * _Nullable)uri response:(ActionResponseHandler _Nullable)responseHandler;
 
+/**
+ 请求播放视频
+ */
 - (void)playWithResponse:(ActionResponseHandler)responseHandler;
 
+/**
+ 请求暂停视频
+ */
 - (void)pauseWithResponse:(ActionResponseHandler)responseHandler;
 
+/**
+ 请求停止视频
+ */
 - (void)stopWithResponse:(ActionResponseHandler)responseHandler;
 
+/**
+ 请求视频播放状态
+ */
 - (void)getTransportInfo:(ActionResponseHandler)responseHandler;
 
+/**
+ 请求视频播放时间戳
+ */
 - (void)getPositionInfo:(ActionResponseHandler)responseHandler;
 
+/**
+ 请求从指定时间点播放视频
+
+ @param target 播放开始时间点，如"00:12:15"
+ */
 - (void)seekTo:(NSString *)target response:(ActionResponseHandler)responseHandler;
 
+/**
+ 请求当前服务可调用的动作
+ */
 - (void)getCurrentTransportActions:(ActionResponseHandler)responseHandler;
 
 @end
