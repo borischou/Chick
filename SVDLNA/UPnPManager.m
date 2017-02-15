@@ -17,8 +17,8 @@
 #define SERVER_PORT     8899 //本地服务器TCP端口
 
 //SSDP M-SEARCH Header
-#define LAN_MULTICAST_HOST_IP           @"239.255.255.250"  //默认组网IP 请勿修改
-#define LAN_MULTICAST_HOST_PORT         1900                //默认组网端口 请勿修改
+#define SSDP_MULTICAST_HOST_IP           @"239.255.255.250"  //默认组网IP 请勿修改
+#define SSDP_MULTICAST_HOST_PORT         1900                //默认组网端口 请勿修改
 #define TIMEOUT                         -1                  //过期时间无限
 #define USER_AGENT @" "                                     //可增加CP版本信息等
 #define MAN                             @"ssdp:discover"    //默认搜索模式 请勿修改
@@ -218,7 +218,7 @@ static NSString *const UPnPVideoStateChangedNotification = @"UPnPVideoStateChang
         NSError *bindPortErr = nil, *bindBroadErr = nil, *joinGroupErr = nil, *recvErr = nil;
         BOOL bp = [self.udpSocket bindToPort:LOCAL_UDP_PORT error:&bindPortErr];
         BOOL eb = [self.udpSocket enableBroadcast:YES error:&bindBroadErr];
-        BOOL jm = [self.udpSocket joinMulticastGroup:LAN_MULTICAST_HOST_IP error:&joinGroupErr];
+        BOOL jm = [self.udpSocket joinMulticastGroup:SSDP_MULTICAST_HOST_IP error:&joinGroupErr];
         if ((bp || eb || jm) == NO)
         {
             NSLog(@"UDP绑定错误:\nbind port error: %@\nbind broadcast error: %@\njoin multicast group error: %@", bindPortErr, bindBroadErr, joinGroupErr);
@@ -239,14 +239,14 @@ static NSString *const UPnPVideoStateChangedNotification = @"UPnPVideoStateChang
     NSString *m_search_header_string = [self _SSDP__M_SEARCH_REQUEST_HEADER];
     NSLog(@"发送请求:\n%@", m_search_header_string);
     NSData *socketData = [m_search_header_string dataUsingEncoding:NSUTF8StringEncoding];
-    [self.udpSocket sendData:socketData toHost:LAN_MULTICAST_HOST_IP port:LAN_MULTICAST_HOST_PORT withTimeout:TIMEOUT tag:12];
+    [self.udpSocket sendData:socketData toHost:SSDP_MULTICAST_HOST_IP port:SSDP_MULTICAST_HOST_PORT withTimeout:TIMEOUT tag:12];
 }
 
 - (NSString *)_SSDP__M_SEARCH_REQUEST_HEADER
 {
     NSMutableString *mutRequestString = [NSMutableString new];
     [mutRequestString appendString:@"M-SEARCH * HTTP/1.1\r\n"];
-    [mutRequestString appendString:[NSString stringWithFormat:@"Host: %@:%@\r\n", LAN_MULTICAST_HOST_IP, [NSString stringWithFormat:@"%d", LAN_MULTICAST_HOST_PORT]]];
+    [mutRequestString appendString:[NSString stringWithFormat:@"Host: %@:%@\r\n", SSDP_MULTICAST_HOST_IP, [NSString stringWithFormat:@"%d", SSDP_MULTICAST_HOST_PORT]]];
     [mutRequestString appendString:[NSString stringWithFormat:@"MAN: \"%@\"\r\n", MAN]];
     [mutRequestString appendString:[NSString stringWithFormat:@"MX: %@\r\n", MX]];
     [mutRequestString appendString:[NSString stringWithFormat:@"ST: %@\r\n", ST]];
