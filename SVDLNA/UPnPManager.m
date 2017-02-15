@@ -260,7 +260,7 @@ static NSString *const UPnPVideoStateChangedNotification = @"UPnPVideoStateChang
 {
     NSString *text = [NSString stringWithFormat:@"从地址:\n\n%@\n\n收到UDP套接字数据:\n\n%@", [[NSString alloc] initWithData:address encoding:NSUTF8StringEncoding], [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]];
     NSLog(@"%@", text);
-    //异步接收数据
+    //异步处理数据
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         SsdpResponseHeader *header = [[SsdpResponseHeader alloc] initWithReceivedMsg:[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]];
         Device *device = [[Device alloc] initWithSsdpResponse:header];
