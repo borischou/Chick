@@ -215,7 +215,7 @@ static NSString *const UPnPVideoStateChangedNotification = @"UPnPVideoStateChang
     {
         self.udpSocket = [[GCDAsyncUdpSocket alloc] initWithDelegate:self delegateQueue:dispatch_get_main_queue()];
         [self.udpSocket setIPv6Enabled:NO];
-        NSError *bindPortErr = nil, *bindBroadErr = nil, *joinGroupErr = nil, *recvErr = nil;
+        NSError *bindPortErr = nil, *bindBroadErr = nil, *joinGroupErr = nil;
         BOOL bp = [self.udpSocket bindToPort:LOCAL_UDP_PORT error:&bindPortErr];
         BOOL eb = [self.udpSocket enableBroadcast:YES error:&bindBroadErr];
         BOOL jm = [self.udpSocket joinMulticastGroup:SSDP_MULTICAST_HOST_IP error:&joinGroupErr];
@@ -225,11 +225,21 @@ static NSString *const UPnPVideoStateChangedNotification = @"UPnPVideoStateChang
         }
         else
         {
+            NSError *recvErr = nil;
             BOOL br = [self.udpSocket beginReceiving:&recvErr];
             if (br == NO)
             {
                 NSLog(@"UDP接收错误: %@", recvErr);
             }
+        }
+    }
+    else
+    {
+        NSError *recvErr = nil;
+        BOOL br = [self.udpSocket beginReceiving:&recvErr];
+        if (br == NO)
+        {
+            NSLog(@"UDP接收错误: %@", recvErr);
         }
     }
 }
@@ -258,10 +268,10 @@ static NSString *const UPnPVideoStateChangedNotification = @"UPnPVideoStateChang
 
 - (void)udpSocket:(GCDAsyncUdpSocket *)sock didReceiveData:(NSData *)data fromAddress:(NSData *)address withFilterContext:(id)filterContext
 {
-    NSString *text = [NSString stringWithFormat:@"从地址:\n\n%@\n\n收到UDP套接字数据:\n\n%@", [[NSString alloc] initWithData:address encoding:NSUTF8StringEncoding], [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]];
-    NSLog(@"%@", text);
     //异步处理数据
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        NSString *text = [NSString stringWithFormat:@"从地址:\n\n%@\n\n收到UDP套接字数据:\n\n%@", [[NSString alloc] initWithData:address encoding:NSUTF8StringEncoding], [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]];
+        NSLog(@"%@", text);
         SsdpResponseHeader *header = [[SsdpResponseHeader alloc] initWithReceivedMsg:[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]];
         Device *device = [[Device alloc] initWithSsdpResponse:header];
         if ([self.ssdpDataDelegate respondsToSelector:@selector(uPnpManager:didDiscoverDevice:)])
