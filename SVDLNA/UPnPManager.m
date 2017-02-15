@@ -215,32 +215,40 @@ static NSString *const UPnPVideoStateChangedNotification = @"UPnPVideoStateChang
     {
         self.udpSocket = [[GCDAsyncUdpSocket alloc] initWithDelegate:self delegateQueue:dispatch_get_main_queue()];
         [self.udpSocket setIPv6Enabled:NO];
-        NSError *bindPortErr = nil, *bindBroadErr = nil, *joinGroupErr = nil;
-        BOOL bp = [self.udpSocket bindToPort:LOCAL_UDP_PORT error:&bindPortErr];
-        BOOL eb = [self.udpSocket enableBroadcast:YES error:&bindBroadErr];
-        BOOL jm = [self.udpSocket joinMulticastGroup:SSDP_MULTICAST_HOST_IP error:&joinGroupErr];
-        if ((bp || eb || jm) == NO)
+        NSError *bindPortErr = nil;
+        if(![self.udpSocket bindToPort:LOCAL_UDP_PORT error:&bindPortErr])
         {
-            NSLog(@"UDP绑定错误:\nbind port error: %@\nbind broadcast error: %@\njoin multicast group error: %@", bindPortErr, bindBroadErr, joinGroupErr);
+            NSLog(@"UDP绑定本地端口错误:\n%@\n", bindPortErr);
         }
-        else
+        NSError *bindBroadErr = nil;
+        if (![self.udpSocket enableBroadcast:YES error:&bindBroadErr])
         {
-            NSError *recvErr = nil;
-            BOOL br = [self.udpSocket beginReceiving:&recvErr];
-            if (br == NO)
-            {
-                NSLog(@"UDP接收错误: %@", recvErr);
-            }
+            NSLog(@"UDP广播开启错误:\n%@\n", bindBroadErr);
+        }
+        NSError *joinGroupErr = nil;
+        if(![self.udpSocket joinMulticastGroup:SSDP_MULTICAST_HOST_IP error:&joinGroupErr])
+        {
+            NSLog(@"UDP加入组网错误:\n%@\n", joinGroupErr);
         }
     }
-    else
+    [self _restartGCDAsyncUdpSocket];
+}
+
+- (void)_restartGCDAsyncUdpSocket
+{
+    uint16_t port = self.udpSocket.localPort;
+    if (port == 0)
     {
-        NSError *recvErr = nil;
-        BOOL br = [self.udpSocket beginReceiving:&recvErr];
-        if (br == NO)
+        NSError *bindPortErr = nil;
+        if(![self.udpSocket bindToPort:LOCAL_UDP_PORT error:&bindPortErr])
         {
-            NSLog(@"UDP接收错误: %@", recvErr);
+            NSLog(@"UDP绑定本地端口错误:\n%@\n", bindPortErr);
         }
+    }
+    NSError *recvErr = nil;
+    if (![self.udpSocket beginReceiving:&recvErr])
+    {
+        NSLog(@"UDP开启接收错误: %@", recvErr);
     }
 }
 
