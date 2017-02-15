@@ -75,13 +75,9 @@ static NSString *const UPnPVideoStateChangedNotification = @"UPnPVideoStateChang
 
 - (void)searchDevice
 {
-    if (self.webServer == nil)
-    {
-        self.webServer = [[GCDWebServer alloc] init];
-        [self _startGCDWebServer];
-    }
-    [self _setupUdpSocket];
-    [self _startSSDPSearch];
+    //先启动服务器后启动UDP，调用顺序不可改变
+    [self _startGCDWebServer];
+    [self _startUdpService];
 }
 
 - (void)subscribeEventNotificationResponse:(void (^)(NSString * _Nullable subscribeID, NSURLResponse * _Nullable response, NSError * _Nullable error))responseBlock
@@ -142,6 +138,10 @@ static NSString *const UPnPVideoStateChangedNotification = @"UPnPVideoStateChang
 
 - (void)_startGCDWebServer
 {
+    if (self.webServer == nil)
+    {
+        self.webServer = [[GCDWebServer alloc] init];
+    }
     __weak typeof(self) weakSelf = self;
     
     //(Asynchronous version) The handler returns immediately and calls back GCDWebServer later with the generated HTTP response
@@ -208,6 +208,12 @@ static NSString *const UPnPVideoStateChangedNotification = @"UPnPVideoStateChang
 }
 
 #pragma mark - UDP
+
+- (void)_startUdpService
+{
+    [self _setupUdpSocket];
+    [self _startSSDPSearch];
+}
 
 - (void)_setupUdpSocket
 {
