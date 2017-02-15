@@ -13,26 +13,26 @@
 #import "GCDWebServerDataResponse.h"
 #import "XMLDictionary.h"
 
-#define UDP_PORT 2345
-#define SERVER_PORT 8899
+#define LOCAL_UDP_PORT  2345 //本地UDP端口
+#define SERVER_PORT     8899 //本地服务器TCP端口
 
 //SSDP M-SEARCH Header
-#define LAN_MULTICAST_HOST_IP @"239.255.255.250"
-#define LAN_MULTICAST_HOST_PORT 1900
-#define TIMEOUT -1
-#define USER_AGENT @" "
-#define MAN @"ssdp:discover" //请勿修改
-#define MX @"5"
-#define ST UPNP_MEDIA_RENDERER
+#define LAN_MULTICAST_HOST_IP           @"239.255.255.250"  //默认组网IP 请勿修改
+#define LAN_MULTICAST_HOST_PORT         1900                //默认组网端口 请勿修改
+#define TIMEOUT                         -1                  //过期时间无限
+#define USER_AGENT @" "                                     //可增加CP版本信息等
+#define MAN                             @"ssdp:discover"    //默认搜索模式 请勿修改
+#define MX                              @"5"                //随机接收时间最大值
+#define ST                              UPNP_ROOT_DEVICE    //搜索设备类型
 
 //SSDP DEVICE
-#define UPNP_ALL @"ssdp:all"
-#define UPNP_ROOT_DEVICE @"upnp:rootdevice" //包括智能电视、机顶盒、路由器、支持DLNA的电脑设备等
-#define UPNP_MEDIA_RENDERER @"urn:schemas-upnp-org:device:MediaRenderer:1"
-#define UPNP_MEDIA_SERVER @"urn:schemas-upnp-org:device:MediaServer:1"
-#define UPNP_INTERNET_GATEWAY_DEVICE @"urn:schemas-upnp-org:device:InternetGatewayDevice:1"
-#define UPNP_WFA_DEVICE @"urn:schemas-wifialliance-org:device:WFADevice:1"
-#define UPNP_DEVICE_WITH(__UUID) [NSString stringWithFormat:@"uuid:device-%@", __UUID]
+#define UPNP_ALL                        @"ssdp:all"                                             //所有支持DLNA的智能设备
+#define UPNP_ROOT_DEVICE                @"upnp:rootdevice"                                      //智能电视、机顶盒、路由器、支持DLNA的电脑设备等
+#define UPNP_MEDIA_RENDERER             @"urn:schemas-upnp-org:device:MediaRenderer:1"          //可渲染设备
+#define UPNP_MEDIA_SERVER               @"urn:schemas-upnp-org:device:MediaServer:1"            //DLNA服务器
+#define UPNP_INTERNET_GATEWAY_DEVICE    @"urn:schemas-upnp-org:device:InternetGatewayDevice:1"  //网关设备
+#define UPNP_WFA_DEVICE                 @"urn:schemas-wifialliance-org:device:WFADevice:1"
+#define UPNP_DEVICE_WITH(__UUID)        [NSString stringWithFormat:@"uuid:device-%@", __UUID]   //指定UUID的设备
 
 //Server
 #define SERVER_PATH @"/dlna/callback"
@@ -75,8 +75,8 @@ static NSString *const UPnPVideoStateChangedNotification = @"UPnPVideoStateChang
 
 - (void)searchDevice
 {
-    [self _setupUdpSocketWithUdpPort:UDP_PORT];
-    [self _startSSDPSearchWithHostIP:LAN_MULTICAST_HOST_IP hostPort:LAN_MULTICAST_HOST_PORT];
+    [self _setupUdpSocket];
+    [self _startSSDPSearch];
     if (self.webServer == nil)
     {
         self.webServer = [[GCDWebServer alloc] init];
@@ -209,30 +209,37 @@ static NSString *const UPnPVideoStateChangedNotification = @"UPnPVideoStateChang
 
 #pragma mark - UDP
 
-- (void)_setupUdpSocketWithUdpPort:(NSUInteger)port
+- (void)_setupUdpSocket
 {
     if (self.udpSocket == nil)
     {
         self.udpSocket = [[GCDAsyncUdpSocket alloc] initWithDelegate:self delegateQueue:dispatch_get_main_queue()];
-        NSError *socketErr = nil;
-        [self.udpSocket bindToPort:port error:&socketErr];
-        if (socketErr)
+        [self.udpSocket setIPv6Enabled:NO];
+        NSError *bindPortErr = nil, *bindBroadErr = nil, *joinGroupErr = nil, *recvErr = nil;
+        BOOL bp = [self.udpSocket bindToPort:LOCAL_UDP_PORT error:&bindPortErr];
+        BOOL eb = [self.udpSocket enableBroadcast:YES error:&bindBroadErr];
+        BOOL jm = [self.udpSocket joinMulticastGroup:LAN_MULTICAST_HOST_IP error:&joinGroupErr];
+        if ((bp || eb || jm) == NO)
         {
-            NSLog(@"UDP套接字绑定错误: %@", socketErr);
+            NSLog(@"UDP绑定错误:\nbind port error: %@\nbind broadcast error: %@\njoin multicast group error: %@", bindPortErr, bindBroadErr, joinGroupErr);
         }
         else
         {
-            [self.udpSocket beginReceiving:&socketErr];
+            BOOL br = [self.udpSocket beginReceiving:&recvErr];
+            if (br == NO)
+            {
+                NSLog(@"UDP接收错误: %@", recvErr);
+            }
         }
     }
 }
 
-- (void)_startSSDPSearchWithHostIP:(NSString *)host hostPort:(NSUInteger)port
+- (void)_startSSDPSearch
 {
     NSString *m_search_header_string = [self _SSDP__M_SEARCH_REQUEST_HEADER];
     NSLog(@"发送请求:\n%@", m_search_header_string);
     NSData *socketData = [m_search_header_string dataUsingEncoding:NSUTF8StringEncoding];
-    [self.udpSocket sendData:socketData toHost:host port:port withTimeout:TIMEOUT tag:12];
+    [self.udpSocket sendData:socketData toHost:LAN_MULTICAST_HOST_IP port:LAN_MULTICAST_HOST_PORT withTimeout:TIMEOUT tag:12];
 }
 
 - (NSString *)_SSDP__M_SEARCH_REQUEST_HEADER

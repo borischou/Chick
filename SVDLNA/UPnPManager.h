@@ -10,9 +10,9 @@
 #import <SVDLNA/Service.h>
 #import <SVDLNA/Device.h>
 
-static NSString *const UPnPVideoStateChangedNotification;
+static NSString *const UPnPVideoStateChangedNotification;   //视频播放状态改变通知
 
-typedef NS_ENUM(NSInteger, UPnPEventTransportState)
+typedef NS_ENUM(NSInteger, UPnPEventTransportState)         //视频播放状态枚举
 {
     UPnPEventTransportStateUnknown,
     UPnPEventTransportStatePlaying,
@@ -21,6 +21,9 @@ typedef NS_ENUM(NSInteger, UPnPEventTransportState)
     UPnPEventTransportStateTransitioning
 };
 
+/*
+ * upnp动作请求响应类
+ */
 @interface UPnPActionResponse : NSObject
 
 @property (assign, nonatomic) NSInteger statusCode;

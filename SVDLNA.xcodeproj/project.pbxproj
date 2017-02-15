@@ -250,17 +250,17 @@
 		54801F341E52F024002AFE83 /* UPnP */ = {
 			isa = PBXGroup;
 			children = (
+				54801EEA1E52EDAF002AFE83 /* UPnPManager.m */,
+				54801EEB1E52EDAF002AFE83 /* UPnPManager+Connection.h */,
+				54801EEC1E52EDAF002AFE83 /* UPnPManager+Connection.m */,
+				54801EED1E52EDAF002AFE83 /* UPnPManager+ControlPoint.h */,
+				54801EEE1E52EDAF002AFE83 /* UPnPManager+ControlPoint.m */,
 				54801EE01E52EDAF002AFE83 /* SsdpResponseHeader.h */,
 				54801EE11E52EDAF002AFE83 /* SsdpResponseHeader.m */,
 				54801EE51E52EDAF002AFE83 /* UPnPActionRequest.h */,
 				54801EE61E52EDAF002AFE83 /* UPnPActionRequest.m */,
 				54801EE71E52EDAF002AFE83 /* UPnPActionResponse.h */,
 				54801EE81E52EDAF002AFE83 /* UPnPActionResponse.m */,
-				54801EEA1E52EDAF002AFE83 /* UPnPManager.m */,
-				54801EEB1E52EDAF002AFE83 /* UPnPManager+Connection.h */,
-				54801EEC1E52EDAF002AFE83 /* UPnPManager+Connection.m */,
-				54801EED1E52EDAF002AFE83 /* UPnPManager+ControlPoint.h */,
-				54801EEE1E52EDAF002AFE83 /* UPnPManager+ControlPoint.m */,
 			);
 			name = UPnP;
 			sourceTree = "<group>";

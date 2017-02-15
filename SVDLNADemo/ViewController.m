@@ -89,6 +89,10 @@ static NSString *const REUSECELLID = @"reuseid";
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if (self.devices == nil || self.devices.count == 0)
+    {
+        return;
+    }
     Device *device = [self.devices objectAtIndex:indexPath.row];
     DDDViewController *dddvc = [[DDDViewController alloc] initWithDevice:device];
     dddvc.hidesBottomBarWhenPushed = YES;
