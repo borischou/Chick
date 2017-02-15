@@ -141,23 +141,23 @@ static NSString *const UPnPVideoStateChangedNotification = @"UPnPVideoStateChang
     if (self.webServer == nil)
     {
         self.webServer = [[GCDWebServer alloc] init];
+        __weak typeof(self) weakSelf = self;
+        
+        //(Asynchronous version) The handler returns immediately and calls back GCDWebServer later with the generated HTTP response
+        [weakSelf.webServer addHandlerForMethod:@"NOTIFY" path:SERVER_PATH requestClass:[GCDWebServerDataRequest class] asyncProcessBlock:^(__kindof GCDWebServerRequest *request, GCDWebServerCompletionBlock completionBlock) {
+            // Do some async operation like network access or file I/O (simulated here using dispatch_after())
+            GCDWebServerDataRequest *req = (GCDWebServerDataRequest *)request;
+            __strong typeof(self) strongSelf = weakSelf;
+            if (req.hasBody && strongSelf)
+            {
+                [strongSelf _parseEventNotificationMessage:req.data];
+            }
+            GCDWebServerDataResponse* response = [GCDWebServerDataResponse responseWithHTML:@"<html><body><p>Hello World</p></body></html>"];
+            completionBlock(response);
+        }];
+        
+        [self.webServer startWithPort:SERVER_PORT bonjourName:nil];
     }
-    __weak typeof(self) weakSelf = self;
-    
-    //(Asynchronous version) The handler returns immediately and calls back GCDWebServer later with the generated HTTP response
-    [weakSelf.webServer addHandlerForMethod:@"NOTIFY" path:SERVER_PATH requestClass:[GCDWebServerDataRequest class] asyncProcessBlock:^(__kindof GCDWebServerRequest *request, GCDWebServerCompletionBlock completionBlock) {
-        // Do some async operation like network access or file I/O (simulated here using dispatch_after())
-        GCDWebServerDataRequest *req = (GCDWebServerDataRequest *)request;
-        __strong typeof(self) strongSelf = weakSelf;
-        if (req.hasBody && strongSelf)
-        {
-            [strongSelf _parseEventNotificationMessage:req.data];
-        }
-        GCDWebServerDataResponse* response = [GCDWebServerDataResponse responseWithHTML:@"<html><body><p>Hello World</p></body></html>"];
-        completionBlock(response);
-    }];
-    
-    [self.webServer startWithPort:SERVER_PORT bonjourName:nil];
 }
 
 - (void)_parseEventNotificationMessage:(NSData *)data
@@ -217,11 +217,6 @@ static NSString *const UPnPVideoStateChangedNotification = @"UPnPVideoStateChang
 
 - (void)_setupUdpSocket
 {
-    if (self.webServer && self.webServer.isRunning)
-    {
-        [self.webServer stop];
-        [self.webServer startWithPort:SERVER_PORT bonjourName:nil];
-    }
     if (self.udpSocket == nil)
     {
         self.udpSocket = [[GCDAsyncUdpSocket alloc] initWithDelegate:self delegateQueue:dispatch_get_main_queue()];
