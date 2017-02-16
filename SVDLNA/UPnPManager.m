@@ -13,13 +13,13 @@
 #import "GCDWebServerDataResponse.h"
 #import "XMLDictionary.h"
 
-#define LOCAL_UDP_PORT  0       //本地UDP端口 0代表系统随机分配 可防止冲突 建议不要修改
+#define LOCAL_UDP_PORT  0       //本地UDP端口 0:系统随机分配 可防止冲突 建议不要修改
 #define SERVER_PORT     10190   //本地服务器TCP端口
 
 //SSDP M-SEARCH Header
 #define SSDP_MULTICAST_HOST_IP          @"239.255.255.250"  //默认组网IP 请勿修改
 #define SSDP_MULTICAST_HOST_PORT        1900                //默认组网端口 请勿修改
-#define TIMEOUT                         -1                  //过期时间无限
+#define TIMEOUT                         -1                  //过期时间 -1:无限
 #define USER_AGENT @" "                                     //可增加CP版本信息等
 #define MAN                             @"ssdp:discover"    //默认搜索模式 请勿修改
 #define MX                              @"5"                //随机接收时间最大值
