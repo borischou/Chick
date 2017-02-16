@@ -222,6 +222,10 @@ static NSString *const UPnPVideoStateChangedNotification = @"UPnPVideoStateChang
     {
         self.udpSocket = [[GCDAsyncUdpSocket alloc] initWithDelegate:self delegateQueue:dispatch_get_main_queue()];
     }
+    else if (self.udpSocket.isConnected || self.udpSocket.isClosed == NO)
+    {
+        [self.udpSocket close];
+    }
     [self.udpSocket setIPv6Enabled:NO];
     NSError *bindPortErr = nil;
     if(![self.udpSocket bindToPort:LOCAL_UDP_PORT error:&bindPortErr])
