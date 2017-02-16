@@ -13,8 +13,8 @@
 #import "GCDWebServerDataResponse.h"
 #import "XMLDictionary.h"
 
-#define LOCAL_UDP_PORT  0       //本地UDP端口 0:系统随机分配 可防止冲突 建议不要修改
-#define SERVER_PORT     10190   //本地服务器TCP端口
+#define LOCAL_UDP_PORT    0         //本地UDP端口 0:系统随机分配 可防止冲突 建议不要修改
+#define LOCAL_SERVER_PORT 190     //本地服务器TCP端口
 
 //SSDP M-SEARCH Header
 #define SSDP_MULTICAST_HOST_IP          @"239.255.255.250"  //默认组网IP 请勿修改
@@ -22,8 +22,9 @@
 #define TIMEOUT                         -1                  //过期时间 -1:无限
 #define USER_AGENT @" "                                     //可增加CP版本信息等
 #define MAN                             @"ssdp:discover"    //默认搜索模式 请勿修改
-#define MX                              @"5"                //随机接收时间最大值
+#define MX                              @"1"                //随机接收时间最大值
 #define ST                              UPNP_ROOT_DEVICE    //搜索设备类型
+#define CONNECTION                      @"close"
 
 //SSDP DEVICE
 #define UPNP_ALL                        @"ssdp:all"                                             //所有支持DLNA的智能设备
@@ -156,7 +157,7 @@ static NSString *const UPnPVideoStateChangedNotification = @"UPnPVideoStateChang
             completionBlock(response);
         }];
         
-        [self.webServer startWithPort:SERVER_PORT bonjourName:nil];
+        [self.webServer startWithPort:LOCAL_SERVER_PORT bonjourName:nil];
     }
 }
 
@@ -257,11 +258,12 @@ static NSString *const UPnPVideoStateChangedNotification = @"UPnPVideoStateChang
 {
     NSMutableString *mutRequestString = [NSMutableString new];
     [mutRequestString appendString:@"M-SEARCH * HTTP/1.1\r\n"];
-    [mutRequestString appendString:[NSString stringWithFormat:@"Host: %@:%@\r\n", SSDP_MULTICAST_HOST_IP, [NSString stringWithFormat:@"%d", SSDP_MULTICAST_HOST_PORT]]];
-    [mutRequestString appendString:[NSString stringWithFormat:@"MAN: \"%@\"\r\n", MAN]];
     [mutRequestString appendString:[NSString stringWithFormat:@"MX: %@\r\n", MX]];
     [mutRequestString appendString:[NSString stringWithFormat:@"ST: %@\r\n", ST]];
-    [mutRequestString appendString:[NSString stringWithFormat:@"User-Agent: %@\r\n\r\n\r\n", USER_AGENT]];
+    [mutRequestString appendString:[NSString stringWithFormat:@"MAN: \"%@\"\r\n", MAN]];
+    [mutRequestString appendString:[NSString stringWithFormat:@"User-Agent: %@\r\n", USER_AGENT]];
+    [mutRequestString appendString:[NSString stringWithFormat:@"Connection: %@\r\n", CONNECTION]];
+    [mutRequestString appendString:[NSString stringWithFormat:@"Host: %@:%@\r\n\r\n", SSDP_MULTICAST_HOST_IP, [NSString stringWithFormat:@"%d", SSDP_MULTICAST_HOST_PORT]]];
     return mutRequestString.copy;
 }
 
