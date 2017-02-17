@@ -20,11 +20,11 @@
 #define SSDP_MULTICAST_HOST_IP          @"239.255.255.250"  //默认组网IP 请勿修改
 #define SSDP_MULTICAST_HOST_PORT        1900                //默认组网端口 请勿修改
 #define TIMEOUT                         -1                  //过期时间 -1:无限
-#define USER_AGENT @" "                                     //可增加CP版本信息等
+#define USER_AGENT @"Sohu TV iOS DLNA Test"                 //可增加CP版本信息等
 #define MAN                             @"ssdp:discover"    //默认搜索模式 请勿修改
 #define MX                              @"1"                //随机接收时间最大值
 #define ST                              UPNP_ROOT_DEVICE    //搜索设备类型
-#define CONNECTION                      @"close"
+#define CONNECTION                      @"close"            //连接状态 Keep-Alive:保持 close:不保持
 
 //SSDP DEVICE
 #define UPNP_ALL                        @"ssdp:all"                                             //所有支持DLNA的智能设备
