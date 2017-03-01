@@ -588,6 +588,10 @@ static NSString *const UPnPVideoStateChangedNotification = @"UPnPVideoStateChang
     
     [self _httpRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
         UPnPActionResponse *actResp = [[UPnPActionResponse alloc] initWithData:data];
+        if ([self.controlPointDelegate respondsToSelector:@selector(uPnpManager:didGetCurrentTransportActionsResponse:)])
+        {
+            [self.controlPointDelegate uPnpManager:self didGetCurrentTransportActionsResponse:actResp];
+        }
         responseHandler(actResp, response, error);
     }];
 }
@@ -606,6 +610,10 @@ static NSString *const UPnPVideoStateChangedNotification = @"UPnPVideoStateChang
     
     [self _httpRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
         UPnPActionResponse *actResp = [[UPnPActionResponse alloc] initWithData:data];
+        if ([self.controlPointDelegate respondsToSelector:@selector(uPnpManager:didSetVolume:response:)])
+        {
+            [self.controlPointDelegate uPnpManager:self didSetVolume:volume response:actResp];
+        }
         responseHandler(actResp, response, error);
     }];
 }

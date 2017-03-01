@@ -77,6 +77,10 @@ typedef NS_ENUM(NSInteger, UPnPEventTransportState)         //视频播放状态
 
 - (void)uPnpManager:(UPnPManager * _Nullable)manager didSetNextAVTransportURI:(NSString * _Nullable)uri response:(UPnPActionResponse * _Nullable)response;
 
+- (void)uPnpManager:(UPnPManager *)manager didGetCurrentTransportActionsResponse:(UPnPActionResponse *)response;
+
+- (void)uPnpManager:(UPnPManager *)manager didSetVolume:(NSString *)volume response:(UPnPActionResponse *)response;
+
 @end
 
 /**
