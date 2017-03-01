@@ -12,6 +12,7 @@
 #import "GCDWebServerDataRequest.h"
 #import "GCDWebServerDataResponse.h"
 #import "XMLDictionary.h"
+#import "UPnPActionRequest.h"
 
 #define LOCAL_UDP_PORT    0         //本地UDP端口 0:系统随机分配 可防止冲突 建议不要修改
 #define LOCAL_SERVER_PORT 10190     //本地服务器TCP端口
@@ -38,14 +39,19 @@
 //Server
 #define SERVER_PATH @"/dlna/callback"
 
+typedef void(^completionHandler)(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error);
+
 static NSString *const UPnPVideoStateChangedNotification = @"UPnPVideoStateChangedNotification";
 
 @interface UPnPManager () <GCDAsyncUdpSocketDelegate>
 
 @property (strong, nonatomic) GCDAsyncUdpSocket *udpSocket;
+@property (strong, nonatomic) GCDWebServer *webServer;
 @property (strong, nonatomic) Device *device;
 @property (strong, nonatomic) Service *service;
-@property (strong, nonatomic) GCDWebServer *webServer;
+@property (strong, nonatomic) Service *avTransportService;
+@property (strong, nonatomic) Service *renderingControlService;
+@property (strong, nonatomic) NSURLSession *sharedSession;
 
 @end
 
@@ -81,11 +87,11 @@ static NSString *const UPnPVideoStateChangedNotification = @"UPnPVideoStateChang
     [self _startUdpService];
 }
 
-- (void)subscribeEventNotificationResponse:(void (^)(NSString * _Nullable subscribeID, NSURLResponse * _Nullable response, NSError * _Nullable error))responseBlock
+- (void)subscribeEventNotificationForService:(Service *)service response:(void (^)(NSString * _Nullable subscribeID, NSURLResponse * _Nullable response, NSError * _Nullable error))responseBlock
 {
     NSString *url = nil;
-    NSString *eventSubURL = self.service.eventSubURL;
-    if ([self.service.eventSubURL hasPrefix:@"/"])
+    NSString *eventSubURL = service.eventSubURL;
+    if ([service.eventSubURL hasPrefix:@"/"])
     {
         url = [NSString stringWithFormat:@"http://%@:%@%@", self.device.address.ipv4, self.device.address.port, eventSubURL];
     }
@@ -128,9 +134,14 @@ static NSString *const UPnPVideoStateChangedNotification = @"UPnPVideoStateChang
     }] resume];
 }
 
-- (void)subscribeEventNotification
+- (void)subscribeEventNotificationForAVTransport
 {
-    [self subscribeEventNotificationResponse:nil];
+    [self subscribeEventNotificationForService:self.avTransportService response:nil];
+}
+
+- (void)subscribeEventNotificationForAVTransportResponse:(void (^)(NSString * _Nullable, NSURLResponse * _Nullable, NSError * _Nullable))responseBlock
+{
+    [self subscribeEventNotificationForService:self.avTransportService response:responseBlock];
 }
 
 #pragma mark - Private
@@ -309,6 +320,308 @@ static NSString *const UPnPVideoStateChangedNotification = @"UPnPVideoStateChang
     {
         [self.ssdpDataDelegate uPnpManager:self didNotSendDataDueToError:error];
     }
+}
+
+#pragma mark - Connection
+
+- (void)fetchDDDSuccessHandler:(DDDHandler)dddBlk failureHandler:(failureHandler)failBlk
+{
+    [self _requestDataWithURL:self.device.location successHandler:^(NSData * _Nullable data)
+    {
+        NSDictionary *dataDict = [NSDictionary dictionaryWithXMLData:data];
+        DeviceDescription *ddd = [[DeviceDescription alloc] initWithDictionary:dataDict];
+        [self _saveMainServices:ddd.services];
+        dddBlk(ddd);
+    }
+    failureHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error)
+    {
+        failBlk(data, response, error);
+    }];
+}
+
+- (void)fetchSDDSuccessHandler:(SDDHandler)sddBlk failureHandler:(failureHandler)failBlk
+{
+    NSString *url = nil;
+    if ([self.service.SCPDURL hasPrefix:@"/"])
+    {
+        url = [NSString stringWithFormat:@"%@:%@%@", self.device.address.ipv4, self.device.address.port, self.service.SCPDURL];
+    }
+    else
+    {
+        url = [NSString stringWithFormat:@"%@:%@/%@", self.device.address.ipv4, self.device.address.port, self.service.SCPDURL];
+    }
+    NSString *urlStr = nil;
+    if ([url hasPrefix:@"http"] == NO)
+    {
+        urlStr = [NSString stringWithFormat:@"http://%@", url];
+    }
+    else
+    {
+        urlStr = url;
+    }
+    [self _requestDataWithURL:urlStr successHandler:^(NSData * _Nullable data)
+    {
+        NSDictionary *dataDict = [NSDictionary dictionaryWithXMLData:data];
+        ServiceDescription *sdd = [[ServiceDescription alloc] initWithDictionary:dataDict];
+        sddBlk(sdd);
+    }
+    failureHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error)
+    {
+        failBlk(data, response, error);
+    }];
+}
+
+#pragma mark - Private
+
+- (void)_saveMainServices:(NSArray *)services;
+{
+    NSArray<Service *> *aServices = services;
+    if (aServices != nil || aServices.count > 0)
+    {
+        [aServices enumerateObjectsUsingBlock:^(Service * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop)
+         {
+             Service *service = (Service *)obj;
+             if (service.serviceID != nil && service.serviceID.length > 0)
+             {
+                 if ([service.serviceID.lowercaseString containsString:@"avtransport"])
+                 {
+                     self.avTransportService = service;
+                 }
+                 else if ([service.serviceID.lowercaseString containsString:@"renderingcontrol"])
+                 {
+                     self.renderingControlService = service;
+                 }
+             }
+         }];
+    }
+}
+
+- (void)_requestDataWithURL:(NSString * _Nullable)url
+             successHandler:(successHandler _Nonnull)successblk
+             failureHandler:(failureHandler _Nonnull)failureblk;
+{
+    NSURLSession *session = [NSURLSession sharedSession];
+    NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:url]];
+    [[session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error)
+      {
+          if (data && data.length > 0 && error == nil)
+          {
+              successblk(data);
+          }
+          else
+          {
+              failureblk(data, response, error);
+          }
+      }] resume];
+}
+
+#pragma mark - ControlPoint
+
+#pragma mark - AVTransport
+
+- (void)setAVTransportURI:(NSString * _Nullable)uri response:(ActionResponseHandler)responseHandler
+{
+    UPnPActionRequest *request = [[UPnPActionRequest alloc] initWithActionName:@"SetAVTransportURI"];
+    request.service = self.avTransportService;
+    request.device = self.device;
+    NSString *encodedURI = uri.stringByRemovingPercentEncoding;
+    [request addParameterWithKey:@"InstanceID" value:@"0"];
+    [request addParameterWithKey:@"CurrentURI" value:encodedURI];
+    [request addParameterWithKey:@"CurrentURIMetaData" value:@""];
+    [request composeRequest];
+    
+    [self _httpRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+        UPnPActionResponse *actResp = [[UPnPActionResponse alloc] initWithData:data];
+        NSHTTPURLResponse *resp = (NSHTTPURLResponse *)response;
+        actResp.statusCode = resp.statusCode;
+        if ([self.controlPointDelegate respondsToSelector:@selector(uPnpManager:didSetAVTransportURI:response:)])
+        {
+            [self.controlPointDelegate uPnpManager:self didSetAVTransportURI:uri response:actResp];
+        }
+        responseHandler(actResp, response, error);
+    }];
+}
+
+- (void)setNextAVTransportURI:(NSString *)uri response:(ActionResponseHandler)responseHandler
+{
+    UPnPActionRequest *request = [[UPnPActionRequest alloc] initWithActionName:@"SetNextAVTransportURI"];
+    request.service = self.avTransportService;
+    request.device = self.device;
+    NSString *encodedURI = uri.stringByRemovingPercentEncoding;
+    [request addParameterWithKey:@"InstanceID" value:@"0"];
+    [request addParameterWithKey:@"NextURI" value:encodedURI];
+    [request addParameterWithKey:@"NextURIMetaData" value:@""];
+    [request composeRequest];
+    
+    [self _httpRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+        UPnPActionResponse *actResp = [[UPnPActionResponse alloc] initWithData:data];
+        NSHTTPURLResponse *resp = (NSHTTPURLResponse *)response;
+        actResp.statusCode = resp.statusCode;
+        if ([self.controlPointDelegate respondsToSelector:@selector(uPnpManager:didSetNextAVTransportURI:response:)])
+        {
+            [self.controlPointDelegate uPnpManager:self didSetNextAVTransportURI:uri response:actResp];
+        }
+        responseHandler(actResp, response, error);
+    }];
+}
+
+- (void)seekTo:(NSString *)target response:(ActionResponseHandler)responseHandler
+{
+    UPnPActionRequest *request = [[UPnPActionRequest alloc] initWithActionName:@"Seek"];
+    request.service = self.avTransportService;
+    request.device = self.device;
+    [request addParameterWithKey:@"InstanceID" value:@"0"];
+    [request addParameterWithKey:@"Unit" value:@"REL_TIME"];
+    [request addParameterWithKey:@"Target" value:target];
+    [request composeRequest];
+    
+    [self _httpRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+        UPnPActionResponse *actResp = [[UPnPActionResponse alloc] initWithData:data];
+        NSHTTPURLResponse *resp = (NSHTTPURLResponse *)response;
+        actResp.statusCode = resp.statusCode;
+        if ([self.controlPointDelegate respondsToSelector:@selector(uPnpManager:didSeekTo:response:)])
+        {
+            [self.controlPointDelegate uPnpManager:self didSeekTo:target response:actResp];
+        }
+        responseHandler(actResp, response, error);
+    }];
+}
+
+- (void)playWithResponse:(ActionResponseHandler)responseHandler
+{
+    UPnPActionRequest *request = [[UPnPActionRequest alloc] initWithActionName:@"Play"];
+    request.service = self.avTransportService;
+    request.device = self.device;
+    [request addParameterWithKey:@"InstanceID" value:@"0"];
+    [request addParameterWithKey:@"Speed" value:@"1"];
+    [request composeRequest];
+    
+    [self _httpRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+        UPnPActionResponse *actResp = [[UPnPActionResponse alloc] initWithData:data];
+        if ([self.controlPointDelegate respondsToSelector:@selector(uPnpManager:didPlayResponse:)])
+        {
+            [self.controlPointDelegate uPnpManager:self didPlayResponse:actResp];
+        }
+        responseHandler(actResp, response, error);
+    }];
+}
+
+- (void)pauseWithResponse:(ActionResponseHandler)responseHandler
+{
+    UPnPActionRequest *request = [[UPnPActionRequest alloc] initWithActionName:@"Pause"];
+    request.service = self.avTransportService;
+    request.device = self.device;
+    [request addParameterWithKey:@"InstanceID" value:@"0"];
+    [request composeRequest];
+    
+    [self _httpRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+        UPnPActionResponse *actResp = [[UPnPActionResponse alloc] initWithData:data];
+        if ([self.controlPointDelegate respondsToSelector:@selector(uPnpManager:didPauseResponse:)])
+        {
+            [self.controlPointDelegate uPnpManager:self didPauseResponse:actResp];
+        }
+        responseHandler(actResp, response, error);
+    }];
+}
+
+- (void)stopWithResponse:(ActionResponseHandler)responseHandler
+{
+    UPnPActionRequest *request = [[UPnPActionRequest alloc] initWithActionName:@"Stop"];
+    request.service = self.avTransportService;
+    request.device = self.device;
+    [request addParameterWithKey:@"InstanceID" value:@"0"];
+    [request composeRequest];
+    
+    [self _httpRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+        UPnPActionResponse *actResp = [[UPnPActionResponse alloc] initWithData:data];
+        if ([self.controlPointDelegate respondsToSelector:@selector(uPnpManager:didStopResponse:)])
+        {
+            [self.controlPointDelegate uPnpManager:self didStopResponse:actResp];
+        }
+        responseHandler(actResp, response, error);
+    }];
+}
+
+- (void)getTransportInfo:(ActionResponseHandler)responseHandler
+{
+    UPnPActionRequest *request = [[UPnPActionRequest alloc] initWithActionName:@"GetTransportInfo"];
+    request.service = self.avTransportService;
+    request.device = self.device;
+    [request addParameterWithKey:@"InstanceID" value:@"0"];
+    [request composeRequest];
+    
+    [self _httpRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+        UPnPActionResponse *actResp = [[UPnPActionResponse alloc] initWithData:data];
+        if ([self.controlPointDelegate respondsToSelector:@selector(uPnpManager:didGetTransportInfoResponse:)])
+        {
+            [self.controlPointDelegate uPnpManager:self didGetTransportInfoResponse:actResp];
+        }
+        responseHandler(actResp, response, error);
+    }];
+}
+
+- (void)getPositionInfo:(ActionResponseHandler)responseHandler
+{
+    UPnPActionRequest *request = [[UPnPActionRequest alloc] initWithActionName:@"GetPositionInfo"];
+    request.service = self.avTransportService;
+    request.device = self.device;
+    [request addParameterWithKey:@"InstanceID" value:@"0"];
+    [request composeRequest];
+    
+    [self _httpRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+        UPnPActionResponse *actResp = [[UPnPActionResponse alloc] initWithData:data];
+        if ([self.controlPointDelegate respondsToSelector:@selector(uPnpManager:didGetPositionInfoResponse:)])
+        {
+            [self.controlPointDelegate uPnpManager:self didGetPositionInfoResponse:actResp];
+        }
+        responseHandler(actResp, response, error);
+    }];
+}
+
+- (void)getCurrentTransportActions:(ActionResponseHandler)responseHandler
+{
+    UPnPActionRequest *request = [[UPnPActionRequest alloc] initWithActionName:@"GetCurrentTransportActions"];
+    request.service = self.avTransportService;
+    request.device = self.device;
+    [request addParameterWithKey:@"InstanceID" value:@"0"];
+    [request composeRequest];
+    
+    [self _httpRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+        UPnPActionResponse *actResp = [[UPnPActionResponse alloc] initWithData:data];
+        responseHandler(actResp, response, error);
+    }];
+}
+
+#pragma mark - RenderingControl
+
+- (void)setVolume:(NSString *)volume response:(ActionResponseHandler)responseHandler
+{
+    UPnPActionRequest *request = [[UPnPActionRequest alloc] initWithActionName:@"SetVolume"];
+    request.service = self.renderingControlService;
+    request.device = self.device;
+    [request addParameterWithKey:@"InstanceID" value:@"0"];
+    [request addParameterWithKey:@"Channel" value:@"Master"];
+    [request addParameterWithKey:@"DesiredVolume" value:volume];
+    [request composeRequest];
+    
+    [self _httpRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+        UPnPActionResponse *actResp = [[UPnPActionResponse alloc] initWithData:data];
+        responseHandler(actResp, response, error);
+    }];
+}
+
+#pragma mark - Private
+
+- (void)_httpRequest:(UPnPActionRequest *)request completionHandler:(completionHandler)handler
+{
+    if (self.sharedSession == nil)
+    {
+        self.sharedSession = [NSURLSession sharedSession];
+    }
+    NSURLSession *session = self.sharedSession;
+    [[session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+        handler(data, response, error);
+    }] resume];
 }
 
 @end

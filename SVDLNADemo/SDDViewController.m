@@ -46,9 +46,9 @@ static NSString *const REUSECELLID = @"reusecellid";
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:REUSECELLID];
     [self.view addSubview:self.tableView];
     
-    Service *service = self.service;
-    [[UPnPManager sharedManager] setService:service];
-    [[UPnPManager sharedManager] subscribeEventNotificationResponse:^(NSString * _Nullable subscribeID, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+//    Service *service = self.service;
+//    [[UPnPManager sharedManager] setService:service];
+    [[UPnPManager sharedManager] subscribeEventNotificationForAVTransportResponse:^(NSString * _Nullable subscribeID, NSURLResponse * _Nullable response, NSError * _Nullable error) {
         if (error == nil)
         {
             NSLog(@"事件订阅成功, SID: %@", subscribeID);

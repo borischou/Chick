@@ -36,6 +36,7 @@ static NSString *const REUSECELLID = @"reuseid";
 {
     [super viewDidAppear:animated];
     self.navigationItem.rightBarButtonItem.enabled = YES;
+    [self _refreshDevice];
 }
 
 #pragma mark - UI
@@ -56,6 +57,11 @@ static NSString *const REUSECELLID = @"reuseid";
 #pragma mark - Action
 
 - (void)refreshButtonPressed:(UIBarButtonItem *)sender
+{
+    [self _refreshDevice];
+}
+
+- (void)_refreshDevice
 {
     self.title = @"设备列表(正在刷新)";
     [_devices removeAllObjects];

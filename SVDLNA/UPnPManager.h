@@ -84,8 +84,16 @@ typedef NS_ENUM(NSInteger, UPnPEventTransportState)         //视频播放状态
  */
 @interface UPnPManager : NSObject
 
+
+/**
+ 当前设备
+ */
 @property (strong, nonatomic, readonly) Device *device;
 
+
+/**
+ 当前服务
+ */
 @property (strong, nonatomic, readonly) Service *service;
 
 /**
@@ -115,16 +123,24 @@ typedef NS_ENUM(NSInteger, UPnPEventTransportState)         //视频播放状态
 - (void)searchDevice;
 
 /**
- 订阅状态响应通知
+ 订阅AVTransport服务的状态响应通知
  */
-- (void)subscribeEventNotification;
+- (void)subscribeEventNotificationForAVTransport;
 
 /**
- 订阅状态响应通知
+ 订阅AVTransport服务的状态响应通知
 
  @param responseBlock 回调闭包，可保存订阅ID用于请求续订
  */
-- (void)subscribeEventNotificationResponse:(void (^)(NSString * _Nullable subscribeID, NSURLResponse * _Nullable response, NSError * _Nullable error))responseBlock;
+- (void)subscribeEventNotificationForAVTransportResponse:(void (^)(NSString * _Nullable subscribeID, NSURLResponse * _Nullable response, NSError * _Nullable error))responseBlock;
+
+/**
+ 订阅指定服务的状态响应通知
+
+ @param service 指定的服务实例
+ @param responseBlock 回调闭包
+ */
+- (void)subscribeEventNotificationForService:(Service *)service response:(void (^)(NSString * _Nullable subscribeID, NSURLResponse * _Nullable response, NSError * _Nullable error))responseBlock;
 
 @property (weak, nonatomic) id <UPnPControlPointDelegate> _Nullable controlPointDelegate;
 
@@ -200,5 +216,13 @@ typedef void(^ActionResponseHandler)(UPnPActionResponse * _Nullable actionRespon
  请求当前服务可调用的动作
  */
 - (void)getCurrentTransportActions:(ActionResponseHandler)responseHandler;
+
+
+/**
+ 请求设置当前音量（绝对值）
+
+ @param volume 当前音量
+ */
+- (void)setVolume:(NSString *)volume response:(ActionResponseHandler)responseHandler;
 
 @end
