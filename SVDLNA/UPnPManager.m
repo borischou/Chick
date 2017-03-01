@@ -168,9 +168,14 @@ static NSString *const UPnPVideoStateChangedNotification = @"UPnPVideoStateChang
         return;
     }
     NSDictionary *dictData = [NSDictionary dictionaryWithXMLData:data];
-    NSDictionary *eproperty = [NSDictionary dictionaryWithXMLString:[dictData stringValueForKeyPath:@"e:property.LastChange"]];
+    NSString *lastChange = [dictData stringValueForKeyPath:@"e:property.LastChange"];
+    if (lastChange == nil || [lastChange isKindOfClass:[NSNull class]] || lastChange.length <= 0)
+    {
+        return;
+    }
+    NSDictionary *eproperty = [NSDictionary dictionaryWithXMLString:lastChange];
     NSString *transportstate = [eproperty stringValueForKeyPath:@"InstanceID.TransportState._val"] ? [eproperty stringValueForKeyPath:@"InstanceID.TransportState._val"] : [eproperty stringValueForKeyPath:@"InstanceID.TransportState.val"];
-    if (transportstate == nil || transportstate.length <= 0)
+    if (transportstate == nil || [transportstate isKindOfClass:[NSNull class]] || transportstate.length <= 0)
     {
         return;
     }

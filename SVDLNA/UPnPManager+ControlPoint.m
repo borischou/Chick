@@ -85,7 +85,7 @@ static NSString *const KEY_SHARED_SESSION = @"sharedSessionKey";
     request.device = self.device;
     [request addParameterWithKey:@"InstanceID" value:@"0"];
     [request addParameterWithKey:@"Unit" value:@"REL_TIME"];
-    [request addParameterWithKey:@"Target" value:@"00:00:01"];
+    [request addParameterWithKey:@"Target" value:target];
     [request composeRequest];
     
     [self _httpRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {

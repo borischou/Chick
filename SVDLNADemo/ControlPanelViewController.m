@@ -103,10 +103,8 @@
 - (void)testButtonPressed:(UIButton *)sender
 {
     UPnPManager *manager = [UPnPManager sharedManager];
-    [manager getTransportInfo:^(UPnPActionResponse * _Nullable actionResponse, NSURLResponse * _Nullable response, NSError * _Nullable error) {
-        dispatch_async_main_safe(^{
-            NSLog(@"GetTransportInfo的回调:\n%@", actionResponse.xmlDictionary);
-        });
+    [manager seekTo:@"00:00:30" response:^(UPnPActionResponse * _Nullable actionResponse, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+        NSLog(@"seekTo的回调:\n%@", actionResponse.xmlDictionary);
     }];
 }
 
