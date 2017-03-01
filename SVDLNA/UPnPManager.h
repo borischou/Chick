@@ -179,12 +179,20 @@ typedef void(^ActionResponseHandler)(UPnPActionResponse * _Nullable actionRespon
 #pragma mark - AVTransport
 
 /**
- 设置网络视频
+ 设置当前播放的网络视频URI
 
  @param uri 视频地址
  @param responseHandler
  */
 - (void)setAVTransportURI:(NSString * _Nullable)uri response:(ActionResponseHandler _Nullable)responseHandler;
+
+/**
+ 设置下一个联播视频URI
+
+ @param uri 下一个视频地址
+ @param responseHandler
+ */
+- (void)setNextAVTransportURI:(NSString *)uri response:(ActionResponseHandler)responseHandler;
 
 /**
  请求播放视频

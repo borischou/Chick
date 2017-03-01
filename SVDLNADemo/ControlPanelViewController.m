@@ -102,11 +102,9 @@
 
 - (void)testButtonPressed:(UIButton *)sender
 {
-    static NSInteger currentVolume = 1;
-    NSString *volumeSet = [NSString stringWithFormat:@"%ld", ++currentVolume];
     UPnPManager *manager = [UPnPManager sharedManager];
-    [manager setVolume:volumeSet response:^(UPnPActionResponse * _Nullable actionResponse, NSURLResponse * _Nullable response, NSError * _Nullable error) {
-        NSLog(@"setVolume的回调:\n%@", actionResponse.xmlDictionary);
+    [manager setNextAVTransportURI:TEST_VIDEO_URL response:^(UPnPActionResponse * _Nullable actionResponse, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+        NSLog(@"setNextAVTransportURI的回调:\n%@", actionResponse.xmlDictionary);
     }];
 }
 
