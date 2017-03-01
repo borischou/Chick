@@ -176,6 +176,8 @@ typedef void(^ActionResponseHandler)(UPnPActionResponse * _Nullable actionRespon
 
 @interface UPnPManager (ControlPoint)
 
+#pragma mark - AVTransport
+
 /**
  设置网络视频
 
@@ -221,6 +223,7 @@ typedef void(^ActionResponseHandler)(UPnPActionResponse * _Nullable actionRespon
  */
 - (void)getCurrentTransportActions:(ActionResponseHandler)responseHandler;
 
+#pragma mark - RenderingControl
 
 /**
  请求设置当前音量（绝对值）
