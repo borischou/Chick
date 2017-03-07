@@ -10,4 +10,23 @@
 
 @implementation Address
 
+- (instancetype)initWithCoder:(NSCoder *)aDecoder
+{
+    self = [super init];
+    if (self)
+    {
+        _ipv4 = [aDecoder decodeObjectForKey:@"dlna_device_address_ipv4"];
+        _ipv6 = [aDecoder decodeObjectForKey:@"dlna_device_address_ipv6"];
+        _port = [aDecoder decodeObjectForKey:@"dlna_device_address_port"];
+    }
+    return self;
+}
+
+- (void)encodeWithCoder:(NSCoder *)aCoder
+{
+    [aCoder encodeObject:_ipv4 forKey:@"dlna_device_address_ipv4"];
+    [aCoder encodeObject:_ipv6 forKey:@"dlna_device_address_ipv6"];
+    [aCoder encodeObject:_port forKey:@"dlna_device_address_port"];
+}
+
 @end

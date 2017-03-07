@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <SVDLNA/Service.h>
 
-@interface Address : NSObject
+@interface Address : NSObject <NSCoding>
 
 @property (copy, nonatomic) NSString *ipv4;
 @property (copy, nonatomic) NSString *ipv6;
@@ -54,7 +54,7 @@
 
 @end
 
-@interface Device : NSObject
+@interface Device : NSObject <NSCoding>
 
 @property (strong, nonatomic) DeviceDescription *ddd;
 @property (strong, nonatomic) Address *address;
@@ -68,6 +68,8 @@
 @property (copy, nonatomic) NSString *date;
 
 - (instancetype)initWithSsdpResponse:(SsdpResponseHeader *)header;
+
+- (BOOL)isIPv4Equal:(Device *)object;
 
 @end
 

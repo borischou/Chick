@@ -129,6 +129,13 @@ static NSString *const REUSECELLID = @"reuseid";
 - (void)uPnpManager:(UPnPManager *)manager didDiscoverDevice:(Device *)device
 {
     dispatch_async(dispatch_get_main_queue(), ^{
+        for (int i = 0; i < self.devices.count; i ++)
+        {
+            if ([device isIPv4Equal:[self.devices objectAtIndex:i]])
+            {
+                return;
+            }
+        }
         [self.devices addObject:device];
         [self.tableView reloadData];
         self.title = [NSString stringWithFormat:@"DLNA设备列表(%lu)", (unsigned long)self.devices.count];
