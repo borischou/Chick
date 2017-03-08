@@ -27,13 +27,13 @@ typedef NS_ENUM(NSInteger, UPnPEventTransportState)         //视频播放状态
 @interface UPnPActionResponse : NSObject
 
 @property (assign, nonatomic) NSInteger statusCode;
-@property (copy, nonatomic) NSString *respMsg;
-@property (copy, nonatomic) NSString *errorCode;
-@property (copy, nonatomic) NSString *errorDescription;
-@property (copy, nonatomic) NSArray<Action *> *actions;
-@property (copy, nonatomic) NSDictionary *xmlDictionary;
+@property (copy, nonatomic) NSString * _Nullable respMsg;
+@property (copy, nonatomic) NSString * _Nullable errorCode;
+@property (copy, nonatomic) NSString * _Nullable errorDescription;
+@property (copy, nonatomic) NSArray<Action *> * _Nullable actions;
+@property (copy, nonatomic) NSDictionary * _Nullable xmlDictionary;
 
-- (instancetype)initWithData:(NSData *)data;
+- (instancetype _Nonnull)initWithData:(NSData * _Nullable)data;
 
 @end
 
@@ -46,11 +46,11 @@ typedef NS_ENUM(NSInteger, UPnPEventTransportState)         //视频播放状态
 
 @optional
 
-- (void)uPnpManagerDidSendData:(UPnPManager *)manager;
+- (void)uPnpManagerDidSendData:(UPnPManager * _Nonnull)manager;
 
-- (void)uPnpManager:(UPnPManager *)manager didNotSendDataDueToError:(NSError *)error;
+- (void)uPnpManager:(UPnPManager * _Nonnull)manager didNotSendDataDueToError:(NSError * _Nullable)error;
 
-- (void)uPnpManager:(UPnPManager *)manager didDiscoverDevice:(Device *)device;
+- (void)uPnpManager:(UPnPManager * _Nonnull)manager didDiscoverDevice:(Device * _Nullable)device;
 
 @end
 
@@ -136,7 +136,7 @@ typedef NS_ENUM(NSInteger, UPnPEventTransportState)         //视频播放状态
  
  @param responseBlock 回调闭包，可保存订阅ID用于请求续订
  */
-- (void)subscribeEventNotificationForAVTransportResponse:(void (^)(NSString * _Nullable subscribeID, NSURLResponse * _Nullable response, NSError * _Nullable error))responseBlock;
+- (void)subscribeEventNotificationForAVTransportResponse:(void (^ _Nullable)(NSString * _Nullable subscribeID, NSURLResponse * _Nullable response, NSError * _Nullable error))responseBlock;
 
 /**
  订阅指定服务的状态响应通知
@@ -144,11 +144,11 @@ typedef NS_ENUM(NSInteger, UPnPEventTransportState)         //视频播放状态
  @param service 指定的服务实例
  @param responseBlock 回调闭包
  */
-- (void)subscribeEventNotificationForService:(Service *)service response:(void (^)(NSString * _Nullable subscribeID, NSURLResponse * _Nullable response, NSError * _Nullable error))responseBlock;
+- (void)subscribeEventNotificationForService:(Service * _Nonnull)service response:(void (^ _Nullable)(NSString * _Nullable subscribeID, NSURLResponse * _Nullable response, NSError * _Nullable error))responseBlock;
 
 @property (weak, nonatomic) id <UPnPControlPointDelegate> _Nullable controlPointDelegate;
 
-@property (weak, nonatomic) id <UPnPSSDPDataDelegate> ssdpDataDelegate;
+@property (weak, nonatomic) id <UPnPSSDPDataDelegate> _Nullable ssdpDataDelegate;
 
 @end
 
