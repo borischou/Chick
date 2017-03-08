@@ -10,7 +10,7 @@
 #import <SVDLNA/Service.h>
 #import <SVDLNA/Device.h>
 
-static NSString *const UPnPVideoStateChangedNotification;   //视频播放状态改变通知
+static NSString *const _Nonnull UPnPVideoStateChangedNotification;   //视频播放状态改变通知
 
 typedef NS_ENUM(NSInteger, UPnPEventTransportState)         //视频播放状态枚举
 {
@@ -61,25 +61,25 @@ typedef NS_ENUM(NSInteger, UPnPEventTransportState)         //视频播放状态
 
 @optional
 
-- (void)uPnpManager:(UPnPManager * _Nullable)manager didGetTransportInfoResponse:(UPnPActionResponse * _Nullable)response;
+- (void)uPnpManager:(UPnPManager * _Nonnull)manager didGetTransportInfoResponse:(UPnPActionResponse * _Nullable)response;
 
-- (void)uPnpManager:(UPnPManager * _Nullable)manager didGetPositionInfoResponse:(UPnPActionResponse * _Nullable)response;
+- (void)uPnpManager:(UPnPManager * _Nonnull)manager didGetPositionInfoResponse:(UPnPActionResponse * _Nullable)response;
 
-- (void)uPnpManager:(UPnPManager * _Nullable)manager didPlayResponse:(UPnPActionResponse * _Nullable)response;
+- (void)uPnpManager:(UPnPManager * _Nonnull)manager didPlayResponse:(UPnPActionResponse * _Nullable)response;
 
-- (void)uPnpManager:(UPnPManager * _Nullable)manager didPauseResponse:(UPnPActionResponse * _Nullable)response;
+- (void)uPnpManager:(UPnPManager * _Nonnull)manager didPauseResponse:(UPnPActionResponse * _Nullable)response;
 
-- (void)uPnpManager:(UPnPManager * _Nullable)manager didStopResponse:(UPnPActionResponse * _Nullable)response;
+- (void)uPnpManager:(UPnPManager * _Nonnull)manager didStopResponse:(UPnPActionResponse * _Nullable)response;
 
-- (void)uPnpManager:(UPnPManager * _Nullable)manager didSeekTo:(NSString *)target response:(UPnPActionResponse *)response;
+- (void)uPnpManager:(UPnPManager * _Nonnull)manager didSeekTo:(NSString * _Nonnull)target response:(UPnPActionResponse * _Nullable)response;
 
-- (void)uPnpManager:(UPnPManager * _Nullable)manager didSetAVTransportURI:(NSString * _Nullable)uri response:(UPnPActionResponse * _Nullable)response;
+- (void)uPnpManager:(UPnPManager * _Nonnull)manager didSetAVTransportURI:(NSString * _Nullable)uri response:(UPnPActionResponse * _Nullable)response;
 
-- (void)uPnpManager:(UPnPManager * _Nullable)manager didSetNextAVTransportURI:(NSString * _Nullable)uri response:(UPnPActionResponse * _Nullable)response;
+- (void)uPnpManager:(UPnPManager * _Nonnull)manager didSetNextAVTransportURI:(NSString * _Nullable)uri response:(UPnPActionResponse * _Nullable)response;
 
-- (void)uPnpManager:(UPnPManager *)manager didGetCurrentTransportActionsResponse:(UPnPActionResponse *)response;
+- (void)uPnpManager:(UPnPManager * _Nonnull)manager didGetCurrentTransportActionsResponse:(UPnPActionResponse * _Nullable)response;
 
-- (void)uPnpManager:(UPnPManager *)manager didSetVolume:(NSString *)volume response:(UPnPActionResponse *)response;
+- (void)uPnpManager:(UPnPManager * _Nonnull)manager didSetVolume:(NSString * _Nonnull)volume response:(UPnPActionResponse * _Nullable)response;
 
 @end
 
@@ -92,34 +92,34 @@ typedef NS_ENUM(NSInteger, UPnPEventTransportState)         //视频播放状态
 /**
  当前设备
  */
-@property (strong, nonatomic, readonly) Device *device;
+@property (strong, nonatomic, readonly) Device * _Nullable device;
 
 
 /**
  当前服务
  */
-@property (strong, nonatomic, readonly) Service *service;
+@property (strong, nonatomic, readonly) Service * _Nullable service;
 
 /**
  全局共享管理类
-
+ 
  @return 管理类单例
  */
 + (_Nullable instancetype)sharedManager;
 
 /**
  设置当前服务
-
+ 
  @param service 当前服务实例
  */
-- (void)setService:(Service *)service;
+- (void)setService:(Service * _Nullable)service;
 
 /**
  设置当前连接的设备
-
+ 
  @param device 当前设备实例
  */
-- (void)setDevice:(Device *)device;
+- (void)setDevice:(Device * _Nullable)device;
 
 /**
  搜索设备
@@ -133,14 +133,14 @@ typedef NS_ENUM(NSInteger, UPnPEventTransportState)         //视频播放状态
 
 /**
  订阅AVTransport服务的状态响应通知
-
+ 
  @param responseBlock 回调闭包，可保存订阅ID用于请求续订
  */
 - (void)subscribeEventNotificationForAVTransportResponse:(void (^)(NSString * _Nullable subscribeID, NSURLResponse * _Nullable response, NSError * _Nullable error))responseBlock;
 
 /**
  订阅指定服务的状态响应通知
-
+ 
  @param service 指定的服务实例
  @param responseBlock 回调闭包
  */
@@ -167,10 +167,10 @@ typedef void(^SDDHandler)(ServiceDescription * _Nullable sdd);
 
 /**
  根据指定设备请求设备描述文档
-
+ 
  @param device 指定的设备
  */
-- (void)fetchDDDWithDevice:(Device *)device successHandler:(DDDHandler)dddBlk failureHandler:(failureHandler)failBlk;
+- (void)fetchDDDWithDevice:(Device * _Nonnull)device successHandler:(DDDHandler _Nullable)dddBlk failureHandler:(failureHandler _Nullable)failBlk;
 
 /**
  请求服务描述文档
@@ -187,64 +187,64 @@ typedef void(^ActionResponseHandler)(UPnPActionResponse * _Nullable actionRespon
 
 /**
  设置当前播放的网络视频URI
-
+ 
  @param uri 视频地址
  @param responseHandler
  */
-- (void)setAVTransportURI:(NSString * _Nullable)uri response:(ActionResponseHandler _Nullable)responseHandler;
+- (void)setAVTransportURI:(NSString * _Nonnull)uri response:(ActionResponseHandler _Nullable)responseHandler;
 
 /**
  设置下一个联播视频URI
-
+ 
  @param uri 下一个视频地址
  @param responseHandler
  */
-- (void)setNextAVTransportURI:(NSString *)uri response:(ActionResponseHandler)responseHandler;
+- (void)setNextAVTransportURI:(NSString * _Nonnull)uri response:(ActionResponseHandler _Nullable)responseHandler;
 
 /**
  请求播放视频
  */
-- (void)playWithResponse:(ActionResponseHandler)responseHandler;
+- (void)playWithResponse:(ActionResponseHandler _Nullable)responseHandler;
 
 /**
  请求暂停视频
  */
-- (void)pauseWithResponse:(ActionResponseHandler)responseHandler;
+- (void)pauseWithResponse:(ActionResponseHandler _Nullable)responseHandler;
 
 /**
  请求停止视频
  */
-- (void)stopWithResponse:(ActionResponseHandler)responseHandler;
+- (void)stopWithResponse:(ActionResponseHandler _Nullable)responseHandler;
 
 /**
  请求视频播放状态
  */
-- (void)getTransportInfo:(ActionResponseHandler)responseHandler;
+- (void)getTransportInfo:(ActionResponseHandler _Nullable)responseHandler;
 
 /**
  请求视频播放时间戳
  */
-- (void)getPositionInfo:(ActionResponseHandler)responseHandler;
+- (void)getPositionInfo:(ActionResponseHandler _Nullable)responseHandler;
 
 /**
  请求从指定时间点播放视频
-
+ 
  @param target 播放开始时间点，如"00:12:15"
  */
-- (void)seekTo:(NSString *)target response:(ActionResponseHandler)responseHandler;
+- (void)seekTo:(NSString * _Nonnull)target response:(ActionResponseHandler _Nullable)responseHandler;
 
 /**
  请求当前服务可调用的动作
  */
-- (void)getCurrentTransportActions:(ActionResponseHandler)responseHandler;
+- (void)getCurrentTransportActions:(ActionResponseHandler _Nullable)responseHandler;
 
 #pragma mark - RenderingControl
 
 /**
  请求设置当前音量（绝对值）
-
+ 
  @param volume 当前音量
  */
-- (void)setVolume:(NSString *)volume response:(ActionResponseHandler)responseHandler;
+- (void)setVolume:(NSString * _Nonnull)volume response:(ActionResponseHandler _Nullable)responseHandler;
 
 @end

@@ -433,7 +433,7 @@ static NSString *const UPnPVideoStateChangedNotification = @"UPnPVideoStateChang
 
 #pragma mark - AVTransport
 
-- (void)setAVTransportURI:(NSString * _Nullable)uri response:(ActionResponseHandler)responseHandler
+- (void)setAVTransportURI:(NSString * _Nonnull)uri response:(ActionResponseHandler)responseHandler
 {
     UPnPActionRequest *request = [[UPnPActionRequest alloc] initWithActionName:@"SetAVTransportURI"];
     request.service = self.avTransportService;
