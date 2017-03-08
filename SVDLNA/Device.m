@@ -41,12 +41,27 @@
     [aCoder encodeObject:_date forKey:@"dlna_device_date"];
 }
 
+- (id)copyWithZone:(NSZone *)zone
+{
+    Device *device = [[Device allocWithZone:zone] init];
+    device.address = self.address.copy;
+    device.location = self.location.copy;
+    device.maxAge = self.maxAge.copy;
+    device.server = self.server.copy;
+    device.bootid_upnp_org = self.bootid_upnp_org.copy;
+    device.configid_upnp_org = self.configid_upnp_org.copy;
+    device.usn = self.usn.copy;
+    device.st = self.st.copy;
+    device.date = self.date.copy;
+    return device;
+}
+
 - (instancetype)initWithSsdpResponse:(SsdpResponseHeader *)header
 {
     self = [super init];
     if (self)
     {
-        _address = header.address;
+        _address = header.address.copy;
         _location = header.location.copy;
         _server = header.server.copy;
         _maxAge = header.maxAge.copy;

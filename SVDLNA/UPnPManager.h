@@ -161,9 +161,16 @@ typedef void(^SDDHandler)(ServiceDescription * _Nullable sdd);
 @interface UPnPManager (Connection)
 
 /**
- 请求设备描述文档
+ 请求当前默认设备的设备描述文档
  */
 - (void)fetchDDDSuccessHandler:(DDDHandler _Nullable)dddBlk failureHandler:(failureHandler _Nullable)failBlk;
+
+/**
+ 根据指定设备请求设备描述文档
+
+ @param device 指定的设备
+ */
+- (void)fetchDDDWithDevice:(Device *)device successHandler:(DDDHandler)dddBlk failureHandler:(failureHandler)failBlk;
 
 /**
  请求服务描述文档

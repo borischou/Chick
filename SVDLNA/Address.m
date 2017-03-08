@@ -29,4 +29,13 @@
     [aCoder encodeObject:_port forKey:@"dlna_device_address_port"];
 }
 
+- (id)copyWithZone:(NSZone *)zone
+{
+    Address *address = [[Address allocWithZone:zone] init];
+    address.ipv4 = self.ipv4.copy;
+    address.ipv6 = self.ipv6.copy;
+    address.port = self.port.copy;
+    return address;
+}
+
 @end

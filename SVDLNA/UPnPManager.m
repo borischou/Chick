@@ -339,6 +339,20 @@ static NSString *const UPnPVideoStateChangedNotification = @"UPnPVideoStateChang
     }];
 }
 
+- (void)fetchDDDWithDevice:(Device *)device successHandler:(DDDHandler)dddBlk failureHandler:(failureHandler)failBlk
+{
+    [self _requestDataWithURL:device ? device.location : @"" successHandler:^(NSData * _Nullable data)
+    {
+        NSDictionary *dataDict = [NSDictionary dictionaryWithXMLData:data];
+        DeviceDescription *ddd = [[DeviceDescription alloc] initWithDictionary:dataDict];
+        dddBlk(ddd);
+    }
+    failureHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error)
+    {
+        failBlk(data, response, error);
+    }];
+}
+
 - (void)fetchSDDSuccessHandler:(SDDHandler)sddBlk failureHandler:(failureHandler)failBlk
 {
     NSString *url = nil;
