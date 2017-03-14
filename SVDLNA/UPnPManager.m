@@ -449,6 +449,8 @@ static NSString *const UPnPVideoStateChangedNotification = @"UPnPVideoStateChang
      
      http://123.125.110.142/varietyts.tc.qq.com/czB5_6tLF4n-S17_dyCRLOdR_4mBqSFvXXMN2NDEGHkPzlkVXUMBfmjc78zVcvrnbhL-9ClDjx9Gr77bdtZSMlS5L4WRXNvFn-ePwZrcvKQaOv56nf7a2g/p0023es7ytw.320093.ts.m3u8?ver=4&&sdtfrom=v3000&&platform=10403&&appver=5.4.1.17650&&projection=dlna
      
+     http://123.125.110.142/vlivehls.tc.qq.com/mp4/18/k5SWyc1rs3y8FuzpXpljaBkNCe5cqMsArqcOj4e4JpQLVbO5rWiuyQ/_hjMNWeFlzG5KM0lkKGSLsbW9oQW-KAgilgBTG0gsmgbzaCHkX63KNKtnPJX3bgDtBI3JzQI2ZuFadkwUwiqCXadjlPHJaZ29A0OnAA9XL3hsZn8lkomQw/v00171d97b8.p209.mp4/v00171d97b8.p209.mp4.av.m3u8?fn=p209&amp;bw=2000&amp;st=0&amp;et=0&amp;iv=&amp;ivfn=&amp;ivfc=&amp;ivt=&amp;ivs=&amp;ivd=&amp;ivl=&amp;ftype=mp4&amp;fbw=93&amp;type=m3u8&amp;drm=0&amp;sdtfrom=v3000&amp;platform=10403&amp;appver=5.4.1.17650&amp;projection=dlna
+     
      <DIDL-Lite xmlns="urn:schemas-upnp-org:metadata-1-0/DIDL-Lite/" xmlns:upnp="urn:schemas-upnp-org:metadata-1-0/upnp/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:sec="http://www.sec.co.kr/">
         <item id="0" parentID="0" restricted="0">
             <res protocolInfo="http-get:*:video/mp4:DLNA.ORG_PN=MP3;DLNA.ORG_OP=01;DLNA.ORG_FLAGS=01500000000000000000000000000000">http://123.125.110.142/varietyts.tc.qq.com/czB5_6tLF4n-S17_dyCRLOdR_4mBqSFvXXMN2NDEGHkPzlkVXUMBfmjc78zVcvrnbhL-9ClDjx9Gr77bdtZSMlS5L4WRXNvFn-ePwZrcvKQaOv56nf7a2g/p0023es7ytw.320093.ts.m3u8?ver=4&&sdtfrom=v3000&&platform=10403&&appver=5.4.1.17650&&projection=dlna</res>
