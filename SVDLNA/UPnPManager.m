@@ -441,7 +441,34 @@ static NSString *const UPnPVideoStateChangedNotification = @"UPnPVideoStateChang
     NSString *encodedURI = uri.stringByRemovingPercentEncoding;
     [request addParameterWithKey:@"InstanceID" value:@"0"];
     [request addParameterWithKey:@"CurrentURI" value:encodedURI];
-    [request addParameterWithKey:@"CurrentURIMetaData" value:@""];
+    NSString *metadata = [NSString stringWithFormat:@"&lt;DIDL-Lite xmlns=&quot;urn:schemas-upnp-org:metadata-1-0/DIDL-Lite/&quot; xmlns:upnp=&quot;urn:schemas-upnp-org:metadata-1-0/upnp/&quot; xmlns:dc=&quot;http://purl.org/dc/elements/1.1/&quot; xmlns:sec=&quot;http://www.sec.co.kr/&quot;&gt;&lt;item id=&quot;0&quot; parentID=&quot;0&quot; restricted=&quot;0&quot;&gt;&lt;res protocolInfo=&quot;http-get:*:video/mp4:DLNA.ORG_PN=MP3;DLNA.ORG_OP=01;DLNA.ORG_FLAGS=01500000000000000000000000000000&quot;&gt;%@&lt;/res&gt;&lt;upnp:albumArtURI&gt;&lt;/upnp:albumArtURI&gt;&lt;upnp:class&gt;object.item.videoItem&lt;/upnp:class&gt;&lt;/item&gt;&lt;/DIDL-Lite&gt;", encodedURI];
+    [request addParameterWithKey:@"CurrentURIMetaData" value:metadata];
+    
+    /*
+     腾讯
+     
+     <DIDL-Lite xmlns="urn:schemas-upnp-org:metadata-1-0/DIDL-Lite/" xmlns:upnp="urn:schemas-upnp-org:metadata-1-0/upnp/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:sec="http://www.sec.co.kr/">
+        <item id="0" parentID="0" restricted="0">
+            <res protocolInfo="http-get:*:video/mp4:DLNA.ORG_PN=MP3;DLNA.ORG_OP=01;DLNA.ORG_FLAGS=01500000000000000000000000000000">http://123.125.110.142/varietyts.tc.qq.com/czB5_6tLF4n-S17_dyCRLOdR_4mBqSFvXXMN2NDEGHkPzlkVXUMBfmjc78zVcvrnbhL-9ClDjx9Gr77bdtZSMlS5L4WRXNvFn-ePwZrcvKQaOv56nf7a2g/p0023es7ytw.320093.ts.m3u8?ver=4&&sdtfrom=v3000&&platform=10403&&appver=5.4.1.17650&&projection=dlna</res>
+            <upnp:albumArtURI></upnp:albumArtURI>
+            <upnp:class>object.item.videoItem</upnp:class>
+        </item>
+     </DIDL-Lite>
+
+     爱奇艺
+     
+     http://cache.m.iqiyi.com:80/mus/text/540794800/f4cbd2ad1a47299900e61fc74628f700/afbe8fd3d73448c9/2014742093/20160921/46/94/1a35e3fe81180831dd5ce4e1bf79720b.m3u8?np_tag=nginx_part_tag&amp;qd_originate=tmts_py&amp;tvid=540794800&amp;bossStatus=0&amp;qd_vip=0&amp;px=f6NLq8jIAQfootRtWdh7M85xpIUdy2Revm201djfKeim1xNDm3Wv9LN7YrCFklyu399V59d&amp;qd_src=02032001010000000000-04000000001000000000-01&amp;prv=&amp;previewType=&amp;previewTime=&amp;from=&amp;qd_time=1489390095645&amp;qd_sc=aaa39fb417879800361891d1d86152fc&amp;qypid=540794800_04000000001000000000_1&amp;qd_k=f0c7b660ce74ebba7761252376cf34c8&amp;other=
+     
+     <DIDL-Lite xmlns=\"urn:schemas-upnp-org:metadata-1-0/DIDL-Lite/\" xmlns:dc=\"http://purl.org/dc/elements/1.1/\" xmlns:upnp=\"urn:schemas-upnp-org:metadata-1-0/upnp/\">
+        <item id=\"unknown\" parentID=\"-1\" restricted=\"1\">
+            <upnp:genre>Unknown</upnp:genre>
+            <upnp:storageMedium>UNKNOWN</upnp:storageMedium>
+            <upnp:writeStatus>UNKNOWN</upnp:writeStatus>
+            <upnp:class>object.item.videoItem.movie</upnp:class>
+            <dc:title>unknown</dc:title>
+        </item>
+     </DIDL-Lite>
+     */
     [request composeRequest];
     
     [self _httpRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {

@@ -103,8 +103,10 @@
 - (void)testButtonPressed:(UIButton *)sender
 {
     UPnPManager *manager = [UPnPManager sharedManager];
-    [manager setNextAVTransportURI:TEST_VIDEO_URL response:^(UPnPActionResponse * _Nullable actionResponse, NSURLResponse * _Nullable response, NSError * _Nullable error) {
-        NSLog(@"setNextAVTransportURI的回调:\n%@", actionResponse.xmlDictionary);
+    [manager getTransportInfo:^(UPnPActionResponse * _Nullable actionResponse, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+        dispatch_async_main_safe(^{
+            NSLog(@"getTransportInfo的回调:\n%@", actionResponse.xmlDictionary);
+        });
     }];
 }
 

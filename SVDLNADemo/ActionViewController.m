@@ -73,7 +73,7 @@
         UPnPManager *aManager = [UPnPManager sharedManager];
         dispatch_async_main_safe(^{
             NSLog(@"Stop的回调:\n%@", actionResponse.xmlDictionary);
-            [aManager setAVTransportURI:TEST_VIDEO_URL response:^(UPnPActionResponse * _Nullable actionResponse, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+            [aManager setAVTransportURI:TEST_URL response:^(UPnPActionResponse * _Nullable actionResponse, NSURLResponse * _Nullable response, NSError * _Nullable error) {
                 ControlPanelViewController *cpvc = [[ControlPanelViewController alloc] initWithSDD:self.sdd];
                 dispatch_async_main_safe(^{
                     NSLog(@"setAVTransportURI的回调:\n%@", actionResponse.xmlDictionary);
