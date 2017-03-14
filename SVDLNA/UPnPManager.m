@@ -447,6 +447,8 @@ static NSString *const UPnPVideoStateChangedNotification = @"UPnPVideoStateChang
     /*
      腾讯
      
+     http://123.125.110.142/varietyts.tc.qq.com/czB5_6tLF4n-S17_dyCRLOdR_4mBqSFvXXMN2NDEGHkPzlkVXUMBfmjc78zVcvrnbhL-9ClDjx9Gr77bdtZSMlS5L4WRXNvFn-ePwZrcvKQaOv56nf7a2g/p0023es7ytw.320093.ts.m3u8?ver=4&&sdtfrom=v3000&&platform=10403&&appver=5.4.1.17650&&projection=dlna
+     
      <DIDL-Lite xmlns="urn:schemas-upnp-org:metadata-1-0/DIDL-Lite/" xmlns:upnp="urn:schemas-upnp-org:metadata-1-0/upnp/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:sec="http://www.sec.co.kr/">
         <item id="0" parentID="0" restricted="0">
             <res protocolInfo="http-get:*:video/mp4:DLNA.ORG_PN=MP3;DLNA.ORG_OP=01;DLNA.ORG_FLAGS=01500000000000000000000000000000">http://123.125.110.142/varietyts.tc.qq.com/czB5_6tLF4n-S17_dyCRLOdR_4mBqSFvXXMN2NDEGHkPzlkVXUMBfmjc78zVcvrnbhL-9ClDjx9Gr77bdtZSMlS5L4WRXNvFn-ePwZrcvKQaOv56nf7a2g/p0023es7ytw.320093.ts.m3u8?ver=4&&sdtfrom=v3000&&platform=10403&&appver=5.4.1.17650&&projection=dlna</res>
