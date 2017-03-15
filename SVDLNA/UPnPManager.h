@@ -127,6 +127,13 @@ typedef NS_ENUM(NSInteger, UPnPEventTransportState)         //视频播放状态
 - (void)searchDevice;
 
 /**
+ 搜索设备
+ 
+ @param enable 是否开启本地DLNA服务器
+ */
+- (void)searchDeviceWithDLNALocalServiceEnabled:(BOOL)enable;
+
+/**
  订阅AVTransport服务的状态响应通知
  */
 - (void)subscribeEventNotificationForAVTransport;

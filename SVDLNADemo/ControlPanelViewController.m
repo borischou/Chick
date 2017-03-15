@@ -104,9 +104,7 @@
 {
     UPnPManager *manager = [UPnPManager sharedManager];
     [manager getTransportInfo:^(UPnPActionResponse * _Nullable actionResponse, NSURLResponse * _Nullable response, NSError * _Nullable error) {
-        dispatch_async_main_safe(^{
-            NSLog(@"getTransportInfo的回调:\n%@", actionResponse.xmlDictionary);
-        });
+        NSLog(@"getTransportInfo的回调:\n%@", actionResponse.xmlDictionary);
     }];
 }
 
@@ -114,8 +112,8 @@
 {
     UPnPManager *manager = [UPnPManager sharedManager];
     [manager playWithResponse:^(UPnPActionResponse * _Nullable actionResponse, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+        NSLog(@"Play的回调:\n%@", actionResponse.xmlDictionary);
         dispatch_async_main_safe(^{
-            NSLog(@"Play的回调:\n%@", actionResponse.xmlDictionary);
             [self showInfo:@"正在播放"];
         });
     }];
